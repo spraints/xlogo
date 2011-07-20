@@ -1,7 +1,7 @@
 {\rtf1\mac\ansicpg10000\cocoartf102
 {\fonttbl\f0\froman\fcharset77 Palatino-Bold;\f1\froman\fcharset77 Palatino-Roman;}
-{\colortbl;\red255\green255\blue255;\red0\green0\blue255;\red0\green77\blue105;\red95\green95\blue95;
-\red255\green0\blue0;\red1\green77\blue255;\red4\green21\blue255;}
+{\colortbl;\red255\green255\blue255;\red0\green0\blue255;\red127\green127\blue255;\red95\green95\blue95;
+\red255\green127\blue127;\red255\green0\blue0;\red4\green21\blue255;}
 \pard\tx4320\tx5040\tx8640\tx9360\tx10080\tx10800\tx11520\tx12240\tx12960\tx13680\tx14400\tx15120\tx15840\tx16560\tx17280\tx18000\ql\qnatural
 
 \f0\b\fs40 \cf0 Logo commands:\
@@ -9,72 +9,83 @@
 
 \f1\b0\fs24 \cf0 \
 \pard\tx4320\tx5040\tx8640\tx9360\tx10080\tx10800\tx11520\tx12240\tx12960\tx13680\tx14400\tx15120\tx15840\tx16560\tx17280\tx18000\ql\qnatural
-\cf2 already implemented\cf0 \
+\cf2 already implemented, should work\cf0 		(RGB:0000ff)\
+\cf3 partly implemented, probably works\cf0 		(RGB:ff7f7f)\cf4 \
 \pard\tx4320\tx5040\tx8640\tx9360\tx10080\tx10800\tx11520\tx12240\tx12960\tx13680\tx14400\tx15120\tx15840\tx16560\tx17280\tx18000\ql\qnatural
-\cf3 partly implemented\cf4 \
-(supposed to be) supported\cf0 \
+\cf5 recognized, possible, not yet implemented\cf0 	(RGB:ff7f7f)\
 \pard\tx4320\tx5040\tx8640\tx9360\tx10080\tx10800\tx11520\tx12240\tx12960\tx13680\tx14400\tx15120\tx15840\tx16560\tx17280\tx18000\ql\qnatural
-\cf5 not (yet) supported\cf0 \
+\cf6 not recognized, not implemented\cf0 		(RGB:ff0000)\
 \
 primitives:\
-\
 \pard\tx4320\tx5040\tx8640\tx9360\tx10080\tx10800\tx11520\tx12240\tx12960\tx13680\tx14400\tx15120\tx15840\tx16560\tx17280\tx18000\ql\qnatural
+\cf2 #\cf0 comment	everything after # is ignored (the rest of the line is ignored).\
+\
 \cf2 seth\cf0  expression	set heading to <expression> degrees\
 \cf2 setxy\cf0  expression expression	put the turtle on position (expression,expression)\
 \pard\tx4320\tx5040\tx8640\tx9360\tx10080\tx10800\tx11520\tx12240\tx12960\tx13680\tx14400\tx15120\tx15840\tx16560\tx17280\tx18000\ql\qnatural
-\cf4 setpos\cf0  [expression expression]	put the turtle on position (expression,expression)\
-\cf4 setc\cf0  "red	set color to red\
-\cf4 setbg\cf0  "cyan	set background (paper) color to cyan\
-\cf4 make\cf0  "variable expression	create a new variable and assign <expression> to it\
-\cf3 tto\cf0  name	activate turtle of specified name. Eg. talkto "bob or talkto [bob linda phil]\
-\cf4 fill\cf0 	flood-fill\
+\cf5 setpos\cf0  [expression expression]	put the turtle on position (expression,expression)\
+\pard\tx4320\tx5040\tx8640\tx9360\tx10080\tx10800\tx11520\tx12240\tx12960\tx13680\tx14400\tx15120\tx15840\tx16560\tx17280\tx18000\ql\qnatural
+\cf2 setc\cf0  "red	set color to red\
+\cf2 setbg\cf0  "cyan	set background (paper) color to cyan\
+\cf2 make\cf0  "variable expression	create a new variable and assign <expression> to it\
+\cf3 tto\cf0  name	activate turtle of specified name. Eg. tto "bob or tto [bob linda phil]\
+\pard\tx4320\tx5040\tx8640\tx9360\tx10080\tx10800\tx11520\tx12240\tx12960\tx13680\tx14400\tx15120\tx15840\tx16560\tx17280\tx18000\ql\qnatural
+\cf5 fill\cf0 	flood-fill\
 \pard\tx4320\tx5040\tx8640\tx9360\tx10080\tx10800\tx11520\tx12240\tx12960\tx13680\tx14400\tx15120\tx15840\tx16560\tx17280\tx18000\ql\qnatural
 \cf2 pu\cf0 	don't draw when moving\
+\cf2 pe\cf0 	erase when moving\
 \cf2 pd\cf0 	draw when moving\
 \cf2 fd \cf0 expression	go forward <steps> steps\
 \cf2 bk \cf0 expression	go back <steps> steps\
-\pard\tx4320\tx5040\tx8640\tx9360\tx10080\tx10800\tx11520\tx12240\tx12960\tx13680\tx14400\tx15120\tx15840\tx16560\tx17280\tx18000\ql\qnatural
-\cf4 repeat\cf0  expression [ ... ]	repeat code inside bracket <expression> times\
-\pard\tx4320\tx5040\tx8640\tx9360\tx10080\tx10800\tx11520\tx12240\tx12960\tx13680\tx14400\tx15120\tx15840\tx16560\tx17280\tx18000\ql\qnatural
+\cf2 repeat\cf0  expression [ ... ]	repeat code inside bracket <expression> times\
 \cf2 ht\cf0 	make turtle invisible\
 \cf2 st\cf0 	make turtle visible\
 \cf2 cg\cf0 	clear graphics (clear screen, bring turtle back to the center)\
 \pard\tx4320\tx5040\tx8640\tx9360\tx10080\tx10800\tx11520\tx12240\tx12960\tx13680\tx14400\tx15120\tx15840\tx16560\tx17280\tx18000\ql\qnatural
-\cf5 cc\cf0 	clear commands\
+\cf6 cc\cf0 	clear commands\
 \pard\tx4320\tx5040\tx8640\tx9360\tx10080\tx10800\tx11520\tx12240\tx12960\tx13680\tx14400\tx15120\tx15840\tx16560\tx17280\tx18000\ql\qnatural
-\cf4 to\cf0  procedureName	begin a procedure\
-\cf4 to\cf0  procedureName :var	begin a procedure that takes parameter <var>\
-\cf4 end\cf0 	end a procedure\
-\cf4 if\cf0  expression [ ... ]	run the code inside the brackets if the result of the expression is not zero\
-\cf4 ifelse\cf0  expression [ ... ] [ ... ]	run the code inside the first bracketset if the result of the expression is not zero, otherwise run the code inside the second bracketset\
+\cf5 to\cf0  procedureName	begin a procedure\
+\cf5 to\cf0  procedureName :var	begin a procedure that takes parameter <var>\
+\cf5 end\cf0 	end a procedure\
+\cf5 if\cf0  expression [ ... ]	run the code inside the brackets if the result of the expression is not zero\
+\cf5 ifelse\cf0  expression [ ... ] [ ... ]	run the code inside the first bracketset if the result of the expression is not zero, otherwise run the code inside the second bracketset\
 \pard\tx4320\tx5040\tx8640\tx9360\tx10080\tx10800\tx11520\tx12240\tx12960\tx13680\tx14400\tx15120\tx15840\tx16560\tx17280\tx18000\ql\qnatural
 \cf2 lt \cf0 expression	turn left <degrees> degrees\
 \cf2 rt \cf0 expression	turn right <degrees> degrees\
 \
 primitives, long form:\
 \
-\pard\tx4320\tx5040\tx8640\tx9360\tx10080\tx10800\tx11520\tx12240\tx12960\tx13680\tx14400\tx15120\tx15840\tx16560\tx17280\tx18000\ql\qnatural
-\cf6 sestpensize\cf0  size	set the size of the drawing lines to <size>\
-\pard\tx4320\tx5040\tx8640\tx9360\tx10080\tx10800\tx11520\tx12240\tx12960\tx13680\tx14400\tx15120\tx15840\tx16560\tx17280\tx18000\ql\qnatural
+\cf2 setpensize\cf0  size	set the size of the drawing lines to <size>\
 \cf2 setheading\cf0  degrees	set heading to <degrees>\
 \pard\tx4320\tx5040\tx8640\tx9360\tx10080\tx10800\tx11520\tx12240\tx12960\tx13680\tx14400\tx15120\tx15840\tx16560\tx17280\tx18000\ql\qnatural
-\cf4 setposition\cf0  [expression expression]	put the turtle on position (expression,expression)\
-\cf4 setcolor\cf0  expression	set color  to color <expression>\
-\cf4 setbackground\cf0  "green	set background (paper) color to green\
+\cf6 setposition\cf0  [expression expression]	put the turtle on position (expression,expression)\
+\pard\tx4320\tx5040\tx8640\tx9360\tx10080\tx10800\tx11520\tx12240\tx12960\tx13680\tx14400\tx15120\tx15840\tx16560\tx17280\tx18000\ql\qnatural
+\cf2 setcolor\cf0  expression	set color  to color <expression>\
+\cf2 setbackground\cf0  "green	set background (paper) color to green\
 \cf3 talkto\cf0  name	activate turtle of specified name. Eg. talkto "bob or talkto [bob linda phil]\
 \pard\tx4320\tx5040\tx8640\tx9360\tx10080\tx10800\tx11520\tx12240\tx12960\tx13680\tx14400\tx15120\tx15840\tx16560\tx17280\tx18000\ql\qnatural
+\cf5 floodfill\cf0 	flood-fill\
+\pard\tx4320\tx5040\tx8640\tx9360\tx10080\tx10800\tx11520\tx12240\tx12960\tx13680\tx14400\tx15120\tx15840\tx16560\tx17280\tx18000\ql\qnatural
 \cf2 penup\cf0 	don't draw when moving\
+\cf2 penerase\cf0 	erase when moving\
 \cf2 pendown\cf0 	draw when moving\
 \cf2 forward \cf0 expression	go forward <expression> steps\
 \cf2 back \cf0 expression	go back <expression> steps\
 \cf2 hideturtle\cf0 	make turtle invisible\
 \cf2 showturtle\cf0 	make turtle visible\
+\cf2 clear\cf0 	clear graphics (clear screen, bring turtle back to the center)\
 \cf2 cleargraphics\cf0 	clear graphics (clear screen, bring turtle back to the center)\
 \pard\tx4320\tx5040\tx8640\tx9360\tx10080\tx10800\tx11520\tx12240\tx12960\tx13680\tx14400\tx15120\tx15840\tx16560\tx17280\tx18000\ql\qnatural
 \cf5 clearcommands\cf0 	clear commands\
-\cf7 newturtle\cf0  "bob	create a new turtle named bob (you will get an error, if you try creating a turtle with the same name of an existing turtle)\
-\cf5 remove\cf0  "bob	get rid of bob\
 \pard\tx4320\tx5040\tx8640\tx9360\tx10080\tx10800\tx11520\tx12240\tx12960\tx13680\tx14400\tx15120\tx15840\tx16560\tx17280\tx18000\ql\qnatural
+\cf7 newturtle\cf0  "bob	create a new turtle named bob (you will get an error, if you try creating a turtle with the same name of an existing turtle)\
+\pard\tx4320\tx5040\tx8640\tx9360\tx10080\tx10800\tx11520\tx12240\tx12960\tx13680\tx14400\tx15120\tx15840\tx16560\tx17280\tx18000\ql\qnatural
+\cf2 remove\cf0  "bob	get rid of bob\
+\cf2 removeturtle\cf0  "bob	get rid of bob\
+\cf2 setturtlecolor\cf0  expression	change color of current turtle(s) to expression (can be color name)\
+\cf2 setturtlesize\cf0  expression	change size of turtle (1.0 = normal size)\
+\
+\
 \cf2 left \cf0 expression	turn left <expression> degrees	(same as right -(<expression>))\
 \cf2 right \cf0 expression	turn right <expression> degrees	(same as left -(<expression>))\
 \cf2 leftTurn \cf0 expression	turn left <expression> degrees	(same as right -(<expression>))\
@@ -84,24 +95,24 @@ aliased commands:\
 \
 \cf2 home\cf0 	return turtle to the center of the screen	(same as setxy 0 0)\
 \cf2 n\cf0 	set direction to 0 degrees	(same as seth 0)\
-\cf2 nw\cf0 	set direction to 45 degrees	(same as seth 45)\
-\cf2 w\cf0 	set direction to 90 degrees	(same as seth 90)\
-\cf2 sw\cf0 	set direction to 135 degrees	(same as seth 135)\
+\cf2 ne\cf0 	set direction to 45 degrees	(same as seth 45)\
+\cf2 e\cf0 	set direction to 90 degrees	(same as seth 90)\
+\cf2 se\cf0 	set direction to 135 degrees	(same as seth 135)\
 \cf2 s\cf0 	set direction to 180 degrees	(same as seth 180)\
-\cf2 se\cf0 	set direction to 225 degrees	(same as seth 225)\
-\cf2 e\cf0 	set direction to 270 degrees	(same as seth 270)\
-\cf2 ne\cf0 	set direction to 315 degrees	(same as seth 315)\
+\cf2 sw\cf0 	set direction to 225 degrees	(same as seth 225)\
+\cf2 w\cf0 	set direction to 270 degrees	(same as seth 270)\
+\cf2 nw\cf0 	set direction to 315 degrees	(same as seth 315)\
 \
 aliased commands, long form:\
 \
 \cf2 north\cf0 	set direction to 0 degrees\
-\cf2 northwest\cf0 	set direction to 45 degrees\
-\cf2 west\cf0 	set direction to 90 degrees\
-\cf2 southwest\cf0 	set direction to 135 degrees\
+\cf2 northeast\cf0 	set direction to 45 degrees\
+\cf2 east\cf0 	set direction to 90 degrees\
+\cf2 southeast\cf0 	set direction to 135 degrees\
 \cf2 south\cf0 	set direction to 180 degrees\
-\cf2 southeast\cf0 	set direction to 225 degrees\
-\cf2 east\cf0 	set direction to 270 degrees\
-\cf2 northeast\cf0 	set direction to 315 degrees\
+\cf2 southwest\cf0 	set direction to 225 degrees\
+\cf2 west\cf0 	set direction to 270 degrees\
+\cf2 northwest\cf0 	set direction to 315 degrees\
 \
 \
 \

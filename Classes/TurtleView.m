@@ -29,10 +29,20 @@
 //   SUCH DAMAGE.
 //
 
+#if (defined(DEBUGFLAG) && DEBUGFLAG)
+//#define TIME_IT
+#endif
+
 #import "TurtleView.h"
 #import "DrawCommand.h"
 #import "Turtle.h"
 #import "LogoParser.h"
+#import "LogoColorTable.h"
+#import "Preferences.h"
+
+#ifdef TIME_IT
+#include "Utilities.h"
+#endif
 
 @implementation TurtleView
 
@@ -44,7 +54,6 @@
 		path = NULL;
 		drawCommands = NULL;
 		paperColor = 0;
-		lineWidth = 3.0;
 	}
 	return(self);
 }
@@ -52,36 +61,24 @@
 - (void)dealloc
 {
 	[path release];
-	[drawCommands release];
+	[self clear];
 	[super dealloc];
 }
 
 - (void)setup
 {
 	initializeFlag = YES;
-	[self setPaperColor:7];
-	
-	// Let's get the line width from the user preferences
-	defaults = [NSUserDefaults standardUserDefaults];
-	lineWidthString = [defaults objectForKey:@"Line Width"];
-	if(lineWidthString)
-	    {
-	    [self setPenSize: [lineWidthString floatValue]];
-	    }
-	else
-	    {
-	    [self setPenSize: 3.0];
-	    }
+	[self setPaperColor:[LogoColorTable indexByName:@"white"]];
 }
 
 
 // Added by Jeff Skrysak
 - (BOOL)isOpaque
 {
-    // According to Apple (the DotView example), this is good for NSViews that
-    // fill themselves totally, and re-draw themselves totally. It is supposed to
-    // help performance. Check the NSView documentation to verify.
-    return YES;
+	// According to Apple (the DotView example), this is good for NSViews that
+	// fill themselves totally, and re-draw themselves totally. It is supposed to
+	// help performance. Check the NSView documentation to verify.
+	return YES;
 }
 
 //************************************************************/
@@ -89,89 +86,132 @@
 //
 - (void)drawRect:(NSRect)rect
 {
-    DrawCommand	*drawCommand;
-    unsigned	i;
-    unsigned	count;
-    NSPoint	pt;
-    NSArray	*turtles;
-    float	hOffset;
-    float	vOffset;
-    NSColor	*theColor;
-    NSColor     *borderColor;  // Added by Jeff Skrysak
-    int		rgb[] = { 0x000000, 0x0000ff, 0xff0000, 0xff00ff, 0x00ff00, 0x00ffff, 0xffff00, 0xffffff };
-    int		col;
-    float	r;
-    float	g;
-    float	b;
+#ifdef TIME_IT
+	static int		initTime = 1;
+	static double	startTime1;
+	static double	startTime2;
+	register double	time1;
+	register double	time2;
+	register double	time;
+#endif
 
-    // If the view hasn't been setup, do that now
-    if(!initializeFlag)
+	DrawCommand	*drawCommand;
+	unsigned	i;
+	unsigned	count;
+	NSPoint		pt;
+	NSArray		*turtles;
+	float		hOffset;
+	float		vOffset;
+	NSColor		*theColor;
+	float		lineWidth;
+
+#ifdef TIME_IT
+	if(initTime)
 	{
-	[self setup];
+		initTime = 0;
+		startTime1 = FSTime();
+		startTime2 = FSTime();
+	}
+	else
+	{
+		time = FSTime();
+		time1 = time - startTime1;
+//		DEBUGMSG("time spent outside drawRect:%g seconds\n", time1);
+		startTime2 = time;
+	}
+#endif
+	// If the view hasn't been setup, do that now
+	if(!initializeFlag)
+	{
+		[self setup];
+	}
+#if (defined(DEBUGFLAG) && DEBUGFLAG)
+//#define DISABLE_DRAWING
+#endif
+
+#ifndef DISABLE_DRAWING
+	theColor = [LogoColorTable color:[self paperColor]];
+
+	if(!path)
+	{
+		path = [[[NSBezierPath alloc] init] retain];
+		[path setLineCapStyle:NSRoundLineCapStyle];
+		[path setLineJoinStyle:NSRoundLineJoinStyle];
+		[path setMiterLimit:4.0];
 	}
 
-    col = rgb[7 & ((int) [self paperColor])];
-    r = (1.0 / 256.0) * ((float) (0xff & (col >> 16)));
-    g = (1.0 / 256.0) * ((float) (0xff & (col >> 8)));
-    b = (1.0 / 256.0) * ((float) (0xff & col));
-    theColor = [NSColor colorWithCalibratedRed:r green:g blue:b alpha:1.0];
+	// Draw the background (white)
+	[theColor set];		// this does cost something. (2% cpu-time)
+	NSRectFill(rect);	// This does cost a whole lot.
 
-	
-    if(!path)
-	{
-	path = [[[NSBezierPath alloc] init] retain];
+	// Find home (0, 0)
+	hOffset = [self frame].size.width / 2;
+	vOffset = [self frame].size.height / 2;
+
+	// Fix for antialiasing:
+	hOffset = (float) ((int) hOffset) + .5;
+	vOffset = (float) ((int) vOffset) + .5;
+
+	// Start off at (0, 0)
+	pt.x = hOffset;
+	pt.y = vOffset;
+
+	// Get the path's line width again, in case it has changed
+	lineWidth = [[Preferences sharedInstance] lineWidth];
+
+	// Go through all of the paths and draw them
+	count = [drawCommands count];
+
 	[path setLineWidth:lineWidth];
-	[path setLineCapStyle:NSRoundLineCapStyle];
-	[path setLineJoinStyle:NSRoundLineJoinStyle];
-	[path setMiterLimit:4.0];
-	}
-
-    // Draw the background (white)
-    [theColor set];
-    NSRectFill(rect);
-	
-    // Draw a border (default: black, 1 pixel wide) around the view [Added by Jeff Skrysak]
-    borderColor = [NSColor blackColor];
-    [borderColor set];
-    NSFrameRect(rect);             
-
-    // Find home (0, 0)
-    hOffset = [self frame].size.width / 2;
-    vOffset = [self frame].size.height / 2;
-
-    // Start off at (0, 0)
-    pt.x = hOffset;
-    pt.y = vOffset;
-
-    // Go through all of the paths and draw them
-    count = [drawCommands count];
-    for(i = 0; i < count; i++)
+//		[path setLineWidth:[[Preferences sharedInstance] lineWidth]];	// implement this
+	for(i = 0; i < count; i++)
 	{
-	[path setLineWidth:lineWidth];
-	drawCommand = [drawCommands objectAtIndex:i];
-	[[drawCommand color] set];
-	pt = [drawCommand fromPoint];
-	pt.x += hOffset;
-	pt.y += vOffset;
-	[path moveToPoint:pt];
-	pt = [drawCommand toPoint];
-	pt.x += hOffset;
-	pt.y += vOffset;
-	[path lineToPoint:pt];
-	[path stroke];
-	[path removeAllPoints];
+		drawCommand = [drawCommands objectAtIndex:i];
+		if([drawCommand color] != theColor)	// only set the color if it has changed (this is a try of optimizing the app)
+		{
+			theColor = [drawCommand color];
+			[theColor set];
+		}
+		if([drawCommand lineWidth] != lineWidth)
+		{
+			lineWidth = [drawCommand lineWidth];
+			[path setLineWidth:lineWidth];
+		}
+
+		// Drawing one line at a time is faster than drawing multiple lines. This is due to that Quartz would have to do much more rendering on line-ends if we're drawing more than one line at a time. (eg. line-ends 'bends', instead of 'breaks')
+		pt = [drawCommand fromPoint];
+		pt.x += hOffset;
+		pt.y += vOffset;
+		[path moveToPoint:pt];
+		pt = [drawCommand toPoint];
+		pt.x += hOffset;
+		pt.y += vOffset;
+		[path lineToPoint:pt];
+		[path stroke];
+		[path removeAllPoints];		// removing all points is faster than deallocating and reallocating. <JB>
 	}
 
-    pt.x = hOffset;
-    pt.y = vOffset;
-    turtles = [parser turtles];   // Get the list of turtles
-    count = [turtles count];      // Find the number of turtles
+	pt.x = hOffset;
+	pt.y = vOffset;
+	turtles = [parser turtles];		// Get the list of turtles
+	count = [turtles count];		// Find the number of turtles
 
-    // Now draw edach turtle
-    for(i = 0; i < count; i++)
+	// Now draw edach turtle
+	for(i = 0; i < count; i++)
 	{
-	[[turtles objectAtIndex:i] drawAtOffset:pt];
+		[[turtles objectAtIndex:i] drawAtOffset:pt];
 	}
+	// Draw a border (default: black, 1 pixel wide) around the view [Added by Jeff Skrysak]
+	[[NSColor blackColor] set];
+	NSFrameRect(rect);
+#endif
+#ifdef TIME_IT
+	time = FSTime();
+	time2 = time - startTime2;
+//	DEBUGMSG("time inside drawRect:%g seconds\n", time2);
+	DEBUGMSG("inside:%g%%, outside:%g%%\n", time2 * 100.0 / (time1 + time2), time1 * 100.0 / (time1 + time2));
+	startTime1 = time;
+#endif
 }
 
 //************************************************************/
@@ -179,45 +219,46 @@
 //
 - (void)addCommand:(DrawCommand *)drawCommand
 {
-    // Okay, if the view hasn't initialized yet, get that done
-    if(!initializeFlag)
+	// Okay, if the view hasn't initialized yet, get that done
+	if(!initializeFlag)
 	{
-	[self setup];
+		[self setup];
 	}
 
-    // Also, if the array of commands hasn't been initialized yet, do that
-    // otherwise we could get some nasty effects
-    if(!drawCommands)
+	// Also, if the array of commands hasn't been initialized yet, do that
+	// otherwise we could get some nasty effects
+	if(!drawCommands)
 	{
-	drawCommands = [[NSMutableArray array] retain];
+		drawCommands = [[NSMutableArray array] retain];
 	}
 
-    // NOW we add the new command..
-    [drawCommands addObject:drawCommand];
+	// NOW we add the new command..
+	[drawCommands addObject:drawCommand];
 }
 
 - (BOOL)clear
 {
-    if(!initializeFlag)
+	if(!initializeFlag)
 	{
-	[self setup];
+		[self setup];
 	}
-    
-    if(drawCommands)
+
+	if(drawCommands)
 	{
-	[drawCommands release];
-	drawCommands = NULL;
-	return(YES);
+		[drawCommands removeAllObjects];	// it seems this is not done on release!
+		[drawCommands release];
+		drawCommands = NULL;
+		return(YES);
 	}
 	return(NO);
 }
 
 - (BOOL)setPaperColor:(float)aPaperColor
 {
-    if(paperColor != aPaperColor)
+	if(paperColor != aPaperColor)
 	{
-	paperColor = aPaperColor;
-	return(YES);
+		paperColor = aPaperColor;
+		return(YES);
 	}
 	return(NO);
 }
@@ -225,19 +266,7 @@
 // Accessor method
 - (float)paperColor
 {
-    return(paperColor);
+	return(paperColor);
 }
 
-// Accessor method
-- (BOOL)setPenSize:(float)newLineWidth
-{
-    lineWidth = newLineWidth;
-    return(YES);
-}
-
-// Accessor method
-- (float)penSize
-{
-    return(lineWidth);
-}
 @end

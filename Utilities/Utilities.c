@@ -29,13 +29,19 @@
 //   SUCH DAMAGE.
 //
 
+#include <string.h>	/* for strlen */
+#include <stdlib.h>	/* for malloc */
+#include <time.h>
+#include <sys/time.h>
+#include <unistd.h>
+
 #include "Utilities.h"
 
-float my_fmod(float value, float maxvalue)	/* this mod is for floats, but also allows (positive) mod on negative values */
+double my_dmod(double value, double maxvalue)	/* this mod is for floats, but also allows (positive) mod on negative values */
 {
-	register float	tmp;
+	register double	tmp;
 	register int	i;
-	register float	half;
+	register double	half;
 
 	tmp = maxvalue;
 	if(tmp - 1.0 == tmp)	/* infinite */
@@ -73,6 +79,44 @@ float my_fmod(float value, float maxvalue)	/* this mod is for floats, but also a
 		}
 	}
 	return(value);
+}
+
+unichar *strdup2unistr(const char *string)
+{
+	unichar				*result;
+	unsigned long		length;
+	register const char	*s;
+	register unichar	*d;
+	register unichar	c;
+
+	length = strlen(string);
+	result = (unichar *)malloc(sizeof(unichar *) * (length + 1));
+	if(result)
+	{
+		s = string;
+		d = result;
+		c = (unichar) (0xff & *s++);
+		while(c)
+		{
+			*d++ = c;
+			c = (unichar) (0xff & *s++);
+		}
+		*d++ = c;
+	}
+	return(result);
+}
+
+unsigned long unilength(const unichar *string)
+{
+	register const unichar	*s;
+
+	s = string;
+	if(s)
+	{
+		while(*s++){}
+		return(s - string - 1);
+	}
+	return(0);
 }
 
 int unimatchin(const unichar *string1, const unichar *string2, unsigned long length)
@@ -131,3 +175,40 @@ int unimatchin(const unichar *string1, const unichar *string2, unsigned long len
 	return(0);
 }
 
+unsigned long JBRandom()	/* can't name it rand(), can't name it random(), and probably can't name it Random() either! */
+{
+	static long		seed = 0;
+	time_t			now;
+	register long	r;
+	register long	m;
+
+	r = seed;
+	m = 0xbb40e62d;
+	if(0 == r)
+	{
+		time(&now);
+		r = (long) now << 16;
+		time(&now);
+		r |= (long) now;
+	}
+	r *= m;
+	r = 1 - r;
+	seed = r;
+	return(0x00ffffff & (r >> 8));
+}
+
+double FSMicroseconds()
+{
+	struct timeval	tv;
+
+	gettimeofday(&tv, NULL);
+	return(((double) tv.tv_sec) * 1000000.0 + ((double) tv.tv_usec));
+}
+
+double FSTime()
+{
+	struct timeval	tv;
+
+	gettimeofday(&tv, NULL);
+	return(((double) tv.tv_sec) + ((double) tv.tv_usec) * 0.000001);
+}

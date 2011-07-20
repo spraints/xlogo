@@ -31,7 +31,11 @@
 
 #include "Debugging.h"
 
-#import <Foundation/Foundation.h>	// need typedef unsigned short unichar; from NSString.h
+//#import <Foundation/Foundation.h>	// need typedef unsigned short unichar; from NSString.h
+
+#ifndef NSMaximumStringLength		/* sorry, can't detect NSString.h any other way! */
+typedef unsigned short unichar;
+#endif
 
 #ifndef _Utilities_h_
 #define _Utilities_h_
@@ -40,8 +44,13 @@
 extern "C" {
 #endif
 
-float my_fmod(float value, float maxvalue);
+double my_dmod(double value, double maxvalue);
+unsigned long unilength(const unichar *string);
+unichar *strdup2unistr(const char *string);
 int unimatchin(const unichar *string1, const unichar *string2, unsigned long length);
+unsigned long JBRandom();
+double FSMicroseconds();
+double FSTime();
 
 #ifdef __cplusplus
 }

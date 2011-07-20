@@ -33,48 +33,59 @@
 
 #import <Cocoa/Cocoa.h>
 
+enum
+{
+	kPenUp		= 0,
+	kPenErase	= 1,
+	kPenDown	= 2
+};
+
 @interface Turtle : NSObject
 {
-    IBOutlet id errorView;
-    IBOutlet id outputView;
+    IBOutlet id		errorView;
+    IBOutlet id		outputView;
 
-	NSString		*turtleName;      // Name of the turtle
-	NSColor			*turtleColor;     // Color of the turtle
-	float			turtleSize;       // Size of the turtle (normally 1.0)
-	const float		*turtleShape;     // Shape of the turtle (polygon points)
-	NSBezierPath	        *path;
+	NSString		*turtleName;		// Name of the turtle
+	float			turtleColor;		// Color of the turtle
+	float			turtleSize;			// Size of the turtle (normally 1.0)
+	const float		*turtleShape;		// Shape of the turtle (polygon points)
+	NSBezierPath	*path;
 
-	NSPoint			location;         // Location of the turtle
-	float			direction;        // Direction they are facing
-	float			penColor;         // Drawing color
-	BOOL			draw;             // Pen up or pen down
-	BOOL			visible;          // Show the turtle to the user or not
+	NSPoint			location;			// Location of the turtle
+	float			direction;			// Direction they are facing
+	float			penColor;			// Drawing color
+	float			penSize;			// Size of pen in pixels (lineWidth)
+	int				pen;				// Pen up or pen down
+	BOOL			visible;			// Show the turtle to the user or not
 }
 
 // Creation and destruction
-- (id)initWithName:(NSString *)aName andColor:(NSColor *)aColor;
+- (id)initWithName:(NSString *)aName andColor:(float)aColor;
 - (void)dealloc;
 
 // Accessor methods
 - (void)setTurtleName:(NSString *)aName;
 - (NSString *)turtleName;
-- (void)setTurtleColor:(NSColor *)aColor;
-- (NSColor *)turtleColor;
-- (void)setTurtleSize:(float)aTurtleSize;
-- (float)turtleSize;
 - (void)setTurtleShape:(const float *)aShape;	// { first point direction, first point steps, [direction, steps, ...], 360.0 (end marker) }
 - (void)setOutputView:(id)aOutputView;
 - outputView;
 - (void)setErrorView:(id)aErrorView;
 - errorView;
-- (NSPoint)location;
+
+- (BOOL)setTurtleColor:(float)aColor;
+- (float)turtleColor;
+- (BOOL)setTurtleSize:(float)aTurtleSize;
+- (float)turtleSize;
 - (BOOL)setLocation:(NSPoint)aLocation;
-- (float)direction;
+- (NSPoint)location;
 - (BOOL)setDirection:(float)aDirection;
-- (BOOL)visible;
+- (float)direction;
 - (BOOL)setVisible:(BOOL)aVisible;
+- (BOOL)visible;
 - (BOOL)setPenColor:(float)aPenColor;
 - (float)penColor;
+- (BOOL)setPenSize:(float)aPenSize;
+- (float)penSize;
 
 // Draw Commands
 - (void)drawTriangleAt:(NSPoint)aPoint heading:(float)aDirection withColor:(NSColor *)aColor;
@@ -100,6 +111,7 @@
 - (BOOL)turnLeft:(float)aDegrees;
 - (BOOL)turnRight:(float)aDegrees;
 - (BOOL)penUp;
+- (BOOL)penErase;
 - (BOOL)penDown;
 - (BOOL)hide;
 - (BOOL)show;

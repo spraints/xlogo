@@ -77,19 +77,23 @@ enum
 	IBOutlet id		outputView;
 	IBOutlet id		errorView;
 
-	NSMutableArray	*turtles;
+	const unichar	*listing;				// listing
+	const unichar	*programCounter;		// current position in listing
+
+	NSMutableArray	*turtles;				// the available turtles (inactive+active)
 	NSMutableArray	*listeningTurtles;		// the active turtles
 
-	const unichar	*listing;
-	const unichar	*programCounter;
-	NSMutableArray	*stack;
-	unsigned		stackIndex;
-	NSMutableArray	*variables;
+	NSMutableArray	*variables;				// variables (names+expressions)
+	NSMutableArray	*stack;					// call-stack (not used yet)
+	unsigned		stackIndex;				// current index in call-stack
 }
 
 // Creation and destruction
 - (id)initWithOutputView:(id)aOutputView errorView:(id)aErrorView;
 - (void)dealloc;
+
+- (void)forgetAll;	// forget all recordings, but don't change display
+- (void)reset;		// clears display and creates a new turtle
 
 // Turtle management
 - (void)addTurtle:(Turtle *)aTurtle;

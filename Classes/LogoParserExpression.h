@@ -29,6 +29,8 @@
 //   SUCH DAMAGE.
 //
 
+#include "Debugging.h"
+
 #import "LogoParser.h"
 
 
@@ -36,6 +38,7 @@
 - (BOOL)getList:(const unichar **)p_list andLength:(unsigned long *)p_length;
 - (BOOL)getWord:(const unichar **)p_word andLength:(unsigned long *)p_length;
 - (BOOL)getFloat:(float *)p_float;
+- (BOOL)getDouble:(double *)p_double;
 - (BOOL)level1:(Expression *)expression;			// only included, because it's used from level7!
 - (BOOL)getExpression:(Expression *)expression;		// entry point
 @end

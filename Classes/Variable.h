@@ -29,6 +29,8 @@
 //   SUCH DAMAGE.
 //
 
+#include "Debugging.h"
+
 #import <Foundation/Foundation.h>
 
 @class Expression;

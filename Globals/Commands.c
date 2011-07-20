@@ -29,10 +29,14 @@
 //   SUCH DAMAGE.
 //
 
-#include "Commands.h"
+#include <string.h>		/* for NULL, strlen and strcpy */
+#include <stdlib.h>		/* for malloc */
+
 #include "Utilities.h"
+#include "Commands.h"
 
 Command	*g_commands = NULL;
+long	g_commandCount = 0;
 
 void InitCommands()
 {
@@ -41,71 +45,76 @@ void InitCommands()
 	{
 		const unsigned char	*name;
 		long				commandNumber;
+		unsigned char		matchTemplate[8];
 	};
 
 	static CommandList	commandList[]= {
-		{ "bk", kCommandBack },						/* implemented */
-		{ "fd", kCommandForward },					/* implemented */
-		{ "lt", kCommandLeftTurn },					/* implemented */
-		{ "rt", kCommandRightTurn },				/* implemented */
-		{ "pd", kCommandPenDown },					/* implemented */
-		{ "pu", kCommandPenUp },					/* implemented */
-		{ "if", kCommandIf },
-		{ "n", kCommandNorth },						/* implemented */
-		{ "nw", kCommandNorthWest },				/* implemented */
-		{ "w", kCommandWest },						/* implemented */
-		{ "sw", kCommandSouthWest },				/* implemented */
-		{ "s", kCommandSouth },						/* implemented */
-		{ "se", kCommandSouthEast },				/* implemented */
-		{ "e", kCommandEast },						/* implemented */
-		{ "ne", kCommandNorthEast },				/* implemented */
-		{ "ht", kCommandHideTurtle },				/* implemented */
-		{ "st", kCommandShowTurtle },				/* implemented */
-		{ "cg", kCommandClearGraphics },			/* implemented */
-		{ "cc", kCommandClearCommands },
-		{ "to", kCommandTo },
-		{ "tto", kCommandTalkTo },					/* implemented */
-		{ "end", kCommandEnd },
-		{ "ifelse", kCommandIfElse },
-		{ "fill", kCommandFloodFill },
-		{ "seth", kCommandSetHeading },				/* implemented */
-		{ "setc", kCommandSetColor },
-		{ "setbg", kCommandSetBackground },
-		{ "setxy", kCommandSetXY },
-		{ "setpos", kCommandSetPosition },
-		{ "newturtle", kCommandNewTurtle },			/* implemented */
-		{ "remove", kCommandRemoveTurtle },			/* implemented */
-		{ "repeat", kCommandRepeat },				/* implemented */
-		{ "make", kCommandMake },					/* implemented */
+		{ "bk", kCommandBack, { kExpressionTypeNumber, 0 } },									/* implemented */
+		{ "fd", kCommandForward, { kExpressionTypeNumber, 0 } },								/* implemented */
+		{ "lt", kCommandLeftTurn, { kExpressionTypeNumber, 0 } },								/* implemented */
+		{ "rt", kCommandRightTurn, { kExpressionTypeNumber, 0 } },								/* implemented */
+		{ "pd", kCommandPenDown, { 0 } },														/* implemented */
+		{ "pe", kCommandPenErase, { 0 } },														/* implemented */
+		{ "pu", kCommandPenUp, { 0 } },															/* implemented */
+		{ "if", kCommandIf, { kExpressionTypeNumber, kExpressionTypeList, 0 } },				/* implemented */
+		{ "n", kCommandNorth, { 0 } },															/* implemented */
+		{ "nw", kCommandNorthWest, { 0 } },														/* implemented */
+		{ "w", kCommandWest, { 0 } },															/* implemented */
+		{ "sw", kCommandSouthWest, { 0 } },														/* implemented */
+		{ "s", kCommandSouth, { 0 } },															/* implemented */
+		{ "se", kCommandSouthEast, { 0 } },														/* implemented */
+		{ "e", kCommandEast, { 0 } },															/* implemented */
+		{ "ne", kCommandNorthEast, { 0 } },														/* implemented */
+		{ "ht", kCommandHideTurtle, { 0 } },													/* implemented */
+		{ "st", kCommandShowTurtle, { 0 } },													/* implemented */
+		{ "cg", kCommandClearGraphics, { 0 } },													/* implemented */
+		{ "cc", kCommandClearCommands, { 0 } },
+		{ "to", kCommandTo, { 0 } },
+		{ "tto", kCommandTalkTo, { kExpressionTypeStringOrList, 0 } },							/* implemented */
+		{ "end", kCommandEnd, { 0 } },
+		{ "ifelse", kCommandIfElse, { kExpressionTypeNumber, kExpressionTypeList, kExpressionTypeList, 0 } },	/* implemented */
+		{ "fill", kCommandFloodFill, { 0 } },
+		{ "seth", kCommandSetHeading, { kExpressionTypeNumber, 0 } },							/* implemented */
+		{ "setc", kCommandSetColor, { kExpressionTypeNumberOrString, 0 } },						/* implemented */
+		{ "setbg", kCommandSetBackground, { kExpressionTypeNumberOrString, 0 } },				/* implemented */
+		{ "setxy", kCommandSetXY, { kExpressionTypeNumber, kExpressionTypeNumber, 0 } },		/* implemented */
+		{ "setpos", kCommandSetPosition, { kExpressionTypeList, 0 } },
+		{ "newturtle", kCommandNewTurtle, { kExpressionTypeStringOrList, 0 } },					/* implemented */
+		{ "remove", kCommandRemoveTurtle, { kExpressionTypeStringOrList, 0 } },					/* implemented */
+		{ "setturtlecolor", kCommandSetTurtleColor, { kExpressionTypeNumberOrString, 0 } },		/* implemented */
+		{ "setturtlesize", kCommandSetTurtleSize, { kExpressionTypeNumber, 0 } },				/* implemented */
+		{ "repeat", kCommandRepeat, { kExpressionTypeNumber, kExpressionTypeList, 0 } },		/* implemented */
+		{ "make", kCommandMake, { kExpressionTypeStringOrList, kExpressionTypeAny, 0 } },		/* implemented */
 
-		{ "back", kCommandBack },					/* implemented */
-		{ "forward", kCommandForward },				/* implemented */
-		{ "left", kCommandLeftTurn },				/* implemented */
-		{ "right", kCommandRightTurn },				/* implemented */
-		{ "pendown", kCommandPenDown },				/* implemented */
-		{ "penup", kCommandPenUp },					/* implemented */
-		{ "north", kCommandNorth },					/* implemented */
-		{ "northwest", kCommandNorthWest },			/* implemented */
-		{ "west", kCommandWest },					/* implemented */
-		{ "southwest", kCommandSouthWest },			/* implemented */
-		{ "south", kCommandSouth },					/* implemented */
-		{ "southeast", kCommandSouthEast },			/* implemented */
-		{ "east", kCommandEast },					/* implemented */
-		{ "northeast", kCommandNorthEast },			/* implemented */
-		{ "hideturtle", kCommandHideTurtle },		/* implemented */
-		{ "showturtle", kCommandShowTurtle },		/* implemented */
-		{ "home", kCommandHome },					/* implemented */
-		{ "clear", kCommandClearGraphics },			/* implemented */
-		{ "talkto", kCommandTalkTo },				/* implemented */
-		{ "cleargraphics", kCommandClearGraphics },
-		{ "clearcommands", kCommandClearCommands },
-		{ "setheading", kCommandSetHeading },		/* implemented */
-		{ "setcolor", kCommandSetColor },
-		{ "setbackground", kCommandSetBackground },
-		{ "floodfill", kCommandFloodFill },
-		{ "setposition", kCommandSetPosition },
-		{ "removeturtle", kCommandRemoveTurtle },	/* implemented */
-		{ "setpensize", kCommandSetPenSize },	/* implemented */
+		{ "back", kCommandBack, { kExpressionTypeNumber, 0 } },									/* implemented */
+		{ "forward", kCommandForward, { kExpressionTypeNumber, 0 } },							/* implemented */
+		{ "left", kCommandLeftTurn, { kExpressionTypeNumber, 0 } },								/* implemented */
+		{ "right", kCommandRightTurn, { kExpressionTypeNumber, 0 } },							/* implemented */
+		{ "pendown", kCommandPenDown, { 0 } },													/* implemented */
+		{ "penerase", kCommandPenErase, { 0 } },												/* implemented */
+		{ "penup", kCommandPenUp, { 0 } },														/* implemented */
+		{ "north", kCommandNorth, { 0 } },														/* implemented */
+		{ "northwest", kCommandNorthWest, { 0 } },												/* implemented */
+		{ "west", kCommandWest, { 0 } },														/* implemented */
+		{ "southwest", kCommandSouthWest, { 0 } },												/* implemented */
+		{ "south", kCommandSouth, { 0 } },														/* implemented */
+		{ "southeast", kCommandSouthEast, { 0 } },												/* implemented */
+		{ "east", kCommandEast, { 0 } },														/* implemented */
+		{ "northeast", kCommandNorthEast, { 0 } },												/* implemented */
+		{ "hideturtle", kCommandHideTurtle, { 0 } },											/* implemented */
+		{ "showturtle", kCommandShowTurtle, { 0 } },											/* implemented */
+		{ "home", kCommandHome, { 0 } },														/* implemented */
+		{ "clear", kCommandClearGraphics, { 0 } },												/* implemented */
+		{ "talkto", kCommandTalkTo, { kExpressionTypeStringOrList, 0 } },						/* implemented */
+		{ "cleargraphics", kCommandClearGraphics, { 0 } },										/* implemented */
+		{ "clearcommands", kCommandClearCommands, { 0 } },
+		{ "setheading", kCommandSetHeading, { kExpressionTypeNumber, 0 } },						/* implemented */
+		{ "setcolor", kCommandSetColor, { kExpressionTypeNumberOrString, 0 } },					/* implemented */
+		{ "setbackground", kCommandSetBackground, { kExpressionTypeNumberOrString, 0 } },		/* implemented */
+		{ "floodfill", kCommandFloodFill, { 0 } },
+		{ "setposition", kCommandSetPosition, { 0 } },
+		{ "removeturtle", kCommandRemoveTurtle, { kExpressionTypeStringOrList, 0 } },			/* implemented */
+		{ "setpensize", kCommandSetPenSize, { kExpressionTypeNumber, 0 } },						/* implemented */
 
 		{ NULL, kCommandUnknown }
 	};
@@ -119,6 +128,7 @@ void InitCommands()
 	{
 		size = sizeof(commandList) / sizeof(*commandList);
 		g_commands = (Command *) malloc(size * sizeof(*g_commands));
+		g_commandCount = size;
 		for(i = 0; i < size; i++)
 		{
 			s = commandList[i].name;
@@ -135,11 +145,21 @@ void InitCommands()
 				*d++ = c;
 			}
 			g_commands[i].commandNumber = commandList[i].commandNumber;
+			strcpy((char *) g_commands[i].matchTemplate, (char *) commandList[i].matchTemplate);	// ugly but short. :)
+#if 0
+			j = 0;
+			c = 1;
+			while(c)
+			{
+				c = commandList[i].matchTemplate[j];
+				g_commands[i].matchTemplate[j++] = c;
+			}
+#endif
 		}
 	}
 }
 
-long LookupCommand(const unichar *aCommand, unsigned long length)
+long LookupCommand(const unichar *aCommand, unsigned long length, const unsigned char **p_template)
 {
 	Command	*p;
 
@@ -157,6 +177,30 @@ long LookupCommand(const unichar *aCommand, unsigned long length)
 		}
 		p++;
 	}
+	if(p_template)
+	{
+		*p_template = p->matchTemplate;
+	}
 	return(p->commandNumber);
 }
 
+const unichar *CommandName(long command)
+{
+	Command	*p;
+
+	p = g_commands;
+	if(!p)
+	{
+		InitCommands();
+		p = g_commands;
+	}
+	while(p->name)
+	{
+		if(command == p->commandNumber)
+		{
+			return(p->name);
+		}
+		p++;
+	}
+	return(NULL);
+}

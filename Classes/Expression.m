@@ -30,7 +30,7 @@
 //
 
 #import "Expression.h"
-
+#include "Utilities.h"
 
 @implementation Expression
 
@@ -40,31 +40,49 @@
 	if(self)
 	{
 		type = 0;
+#if (defined(DEBUGFLAG) && DEBUGFLAG)
+	INC_OBCOUNT("Expression");
+#endif
 	}
 	return(self);
 }
 
-- (void)reset
+- (void)dealloc
 {
-	if(kExpressionKindPointer & type)
-	{
-//		free(value.ptr);	// nope, we're not going to copy strings, it's much faster and better just to point directly to them!
-		type = 0;
-	}
+	[self reset];
+#if (defined(DEBUGFLAG) && DEBUGFLAG)
+	DEC_OBCOUNT("Expression");
+#endif
+	[super dealloc];
 }
 
-- (void)setFloatValue:(float)aFloat
+- (void)reset
+{
+	if((kExpressionKindNumber & type) && ptr)	// Hum, I dislike my own code. Better rewrite this thing some day.
+	{
+		free(ptr);
+	}
+	type = 0;
+	ptr = NULL;
+}
+
+- (unichar *)allocBufferOfSize:(unsigned long)size
+{
+	return((unichar *)malloc(sizeof(unichar) * size));
+}
+
+- (void)setFloatValue:(double)aFloat
 {
 	[self reset];
 	type = kExpressionKindFloatValue;
-	value.number = aFloat;
+	number = aFloat;
 }
 
-- (float)floatValue
+- (double)floatValue
 {
 	if(kExpressionKindNumber & type)
 	{
-		return(value.number);
+		return(number);
 	}
 	return(0.0);
 }
@@ -73,15 +91,28 @@
 {
 	[self reset];
 	type = kExpressionKindStringValue;
-	value.ptr = (void *) aString;
+	ptr = (void *) aString;
 	length = aLength;
 }
 
 - (unichar *)stringValue
 {
+	char	temp[256];
+
 	if(kExpressionKindStringValue == type)
 	{
-		return(value.ptr);
+		return(ptr);
+	}
+	else if(kExpressionKindNumber & type)	// Hum, I dislike my own code. Better rewrite this thing some day.
+	{
+		if(NULL == ptr)		// lazy initializing of a string, only initialized when used, this speeds up our processing. :)
+		{
+			snprintf(temp, 255, "%g", number);
+			temp[255] = '\0';
+			length = strlen(temp);
+			ptr = strdup2unistr(temp);
+		}
+		return(ptr);
 	}
 	return(NULL);
 }
@@ -90,7 +121,7 @@
 {
 	[self reset];
 	type = kExpressionKindListValue;
-	value.ptr = (void *) aList;
+	ptr = (void *) aList;
 	length = aLength;
 }
 
@@ -98,7 +129,7 @@
 {
 	if(kExpressionKindListValue == type)
 	{
-		return(value.ptr);
+		return(ptr);
 	}
 	return(NULL);
 }
@@ -109,18 +140,20 @@
 	{
 		return(length);
 	}
+	else if(kExpressionKindNumber & type)
+	{
+		if(NULL == ptr)
+		{
+			(void) [self stringValue];
+		}
+		return(length);
+	}
 	return(0);
 }
 
 - (long)type
 {
 	return(type);
-}
-
-- (void)dealloc
-{
-	[self reset];
-	[super dealloc];
 }
 
 @end

@@ -1,9 +1,11 @@
 //
 //  NSStringParserExtensions.h
-//  LogoTest
+//  Software: XLogo
 //
 //  Created by Jens Bauer on Wed Jun 25 2003.
-//  Copyright (c) 2003 Faster Software. All rights reserved.
+//
+//  Copyright (c) 2003 Jens Bauer
+//  All rights reserved.
 //
 
 #include "Debugging.h"

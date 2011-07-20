@@ -29,6 +29,8 @@
 //   SUCH DAMAGE.
 //
 
+#include "Debugging.h"
+
 #import <Foundation/Foundation.h>
 
 enum
@@ -43,23 +45,18 @@ enum
 	kExpressionKindFloatValue
 };
 
-typedef union ExpressionValue ExpressionValue;
-union ExpressionValue
-{
-	void	*ptr;
-	float	number;
-};
-
 @interface Expression : NSObject
 {
 	long			type;
 	unsigned long	length;
-	ExpressionValue	value;
+	void			*ptr;
+	double			number;
 }
 - (id)init;
 - (void)dealloc;
-- (void)setFloatValue:(float)aFloat;
-- (float)floatValue;
+- (void)reset;
+- (void)setFloatValue:(double)aFloat;
+- (double)floatValue;
 - (void)setStringValue:(const unichar *)aString ofLength:(unsigned long)aLength;
 - (unichar *)stringValue;
 - (void)setListValue:(const unichar *)aList ofLength:(unsigned long)aLength;

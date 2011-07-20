@@ -31,7 +31,8 @@
 
 #include "Debugging.h"
 
-#import <Foundation/Foundation.h>	// need typedef unsigned short unichar; from NSString.h
+//#import <Foundation/Foundation.h>	// need typedef unsigned short unichar; from NSString.h
+//typedef unsigned short unichar;
 
 #ifndef _Commands_h_
 #define _Commands_h_
@@ -61,8 +62,11 @@ enum
 	kCommandLeftTurn,
 	kCommandRightTurn,
 	kCommandPenDown,
+	kCommandPenErase,
 	kCommandPenUp,
 	kCommandRepeat,
+	kCommandSetTurtleColor,
+	kCommandSetTurtleSize,
 	kCommandTo,
 	kCommandEnd,
 	kCommandIf,
@@ -82,12 +86,31 @@ enum
 	kCommandCount
 };
 
+enum
+{
+	kExpressionTypeNumber				= 0x01,	// must be number
+	kExpressionTypeString				= 0x02,	// can be number or string (YES, this is correct!)
+	kExpressionTypeNumberOrString		= 0x03,	// can be number or string
+	kExpressionTypeNumberOrList			= 0x04,	// can be number or list (not string)
+	kExpressionTypeStringOrList			= 0x05,	// can be number or string or list (YES, this is correct!)
+	kExpressionTypeNumberOrStringOrList	= 0x06,	// can be number or string or list
+	kExpressionTypeList					= 0x07,	// any kind of list
+
+//	kExpressionTypeNumberList			= 0x08,	// list of numbers only
+//	kExpressionTypeStringList			= 0x09,	// list of numbers and strings
+//	kExpressionTypeNumberOrListList		= 0x0a,	// list of numbers and lists
+//	kExpressionTypeListList				= 0x0b,	// list of lists
+	kExpressionTypeAny					= 0xff,	// anything's possible ;)
+
+	kJunkEnum928347e						// dummy (to avoid warnings when compiling)
+};
 
 typedef struct Command Command;
 struct Command
 {
-	unichar		*name;
-	long		commandNumber;
+	unichar			*name;
+	long			commandNumber;
+	unsigned char	matchTemplate[8];
 };
 
 #if 0	// no longer needed
@@ -95,7 +118,8 @@ extern Command	*g_commands;
 #endif
 
 void InitCommands();
-long LookupCommand(const unichar *aCommand, unsigned long length);
+long LookupCommand(const unichar *aCommand, unsigned long length, const unsigned char **p_template);
+const unichar *CommandName(long command);
 
 #ifdef __cplusplus
 }

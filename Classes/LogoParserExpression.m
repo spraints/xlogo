@@ -163,13 +163,26 @@
 //- (BOOL)getNumber:(const unichar **)p_word andLength:(unsigned long *)p_length
 - (BOOL)getFloat:(float *)p_float
 {
+	BOOL	result;
+	double	d;
+
+	result = [self getDouble:&d];
+	if(p_float)
+	{
+		*p_float = d;
+	}
+	return(result);
+}
+
+- (BOOL)getDouble:(double *)p_double
+{
 	BOOL					result;
 	register const unichar	*word;
 	register unsigned long	length;
 	register const unichar	*s;
 	register unichar		c;
-	register float			value;
-	register float			temp;
+	register double			value;
+	register double			temp;
 	register int			sign;
 
 	result = NO;
@@ -193,7 +206,7 @@
 			result = YES;					// it's a number alright!
 			while('0' <= c && '9' >= c)
 			{
-				value = (value * 10.0) + ((float) (c - '0'));
+				value = (value * 10.0) + ((double) (c - '0'));
 				c = *s++;
 			}
 		}
@@ -206,7 +219,7 @@
 				result = YES;
 				while('0' <= c && '9' >= c)
 				{
-					value += temp * ((float) (c - '0'));
+					value += temp * ((double) (c - '0'));
 					temp /= 10.0;
 					c = *s++;
 				}
@@ -229,9 +242,9 @@
 		*p_length = length;
 	}
 #else
-	if(p_float)
+	if(p_double)
 	{
-		*p_float = value;
+		*p_double = value;
 	}
 #endif
 	return(result);
@@ -243,8 +256,9 @@
 	const unichar			*s;
 	register unichar		c;
 	unsigned long			length;
-	float					value;
+	double					value;
 	NSString				*varName;
+	NSString				*funcName;
 	NSString				*name;
 	unsigned				count;
 	unsigned long			i;
@@ -338,10 +352,28 @@
 		break;
 #endif
 	  default:		// probably a number
-		result = [self getFloat:&value];
-		if(result)
+		if(('a' <= c && 'z' >= c) || ('A' <= c && 'Z' >= c))	// first char = a-zA-Z ?
 		{
-			[expression setFloatValue:value];
+			result = [self getWord:&s andLength:&length];
+			funcName = [NSString stringWithCharacters:s length:length];
+			if(NSOrderedSame == [funcName caseInsensitiveCompare:@"random"])
+			{
+				value = JBRandom();
+				[expression setFloatValue:value];
+			}
+			else if(NSOrderedSame == [funcName caseInsensitiveCompare:@"seconds"])
+			{
+				value = FSTime();
+				[expression setFloatValue:value];
+			}
+		}
+		else
+		{
+			result = [self getDouble:&value];
+			if(result)
+			{
+				[expression setFloatValue:value];
+			}
 		}
 	}
 	return(result);
@@ -418,8 +450,8 @@
 	unichar			c;
 	long			type;
 	long			operator;
-	float			val1;
-	float			val2;
+	double			val1;
+	double			val2;
 
 	result = NO;
 	s = programCounter;
@@ -486,6 +518,11 @@
 				}
 			}
 		}
+		if(right)
+		{
+			[right release];
+			right = NULL;
+		}
 	}
 	programCounter = s;
 	return(result);
@@ -499,8 +536,8 @@
 	unichar			c;
 	long			type;
 	long			operator;
-	float			val1;
-	float			val2;
+	double			val1;
+	double			val2;
 
 	result = NO;
 	s = programCounter;
@@ -532,6 +569,7 @@
 			{
 				break;									// Exit. Note: result is YES, which means success (End of expression). We also point to the failing character.
 			}
+			programCounter++;
 			result = [self level5:right];				// Read right-hand expression
 			if(result)									// OK ?
 			{
@@ -561,6 +599,11 @@
 				}
 			}
 		}
+		if(right)
+		{
+			[right release];
+			right = NULL;
+		}
 	}
 	programCounter = s;
 	return(result);
@@ -574,8 +617,8 @@
 	unichar			c;
 	long			type;
 	long			operator;
-	float			val1;
-	float			val2;
+	double			val1;
+	double			val2;
 
 	result = NO;
 	s = programCounter;
@@ -629,13 +672,18 @@
 							val1 = (val1 / val2);
 							break;
 						  case kOperatorModulo:
-							val1 = my_fmod(val1, val2);
+							val1 = my_dmod(val1, val2);
 							break;
 						}
 						[expression setFloatValue:val1];
 					}
 				}
 			}
+		}
+		if(right)
+		{
+			[right release];
+			right = NULL;
 		}
 	}
 	programCounter = s;
@@ -650,8 +698,8 @@
 	unichar			c;
 	long			type;
 	long			operator;
-	float			val1;
-	float			val2;
+	double			val1;
+	double			val2;
 
 	result = NO;
 	s = programCounter;
@@ -707,6 +755,11 @@
 				}
 			}
 		}
+		if(right)
+		{
+			[right release];
+			right = NULL;
+		}
 	}
 	programCounter = s;
 	return(result);
@@ -721,27 +774,31 @@
 	unichar			c1;
 	long			type;
 	long			operator;
-	float			val1;
-	float			val2;
+	double			val1;
+	double			val2;
 
-	right = [[Expression alloc] init];
 	result = NO;
 	s = programCounter;
 	if([self level2:expression])						// Get first expression (left hand)
 	{
 		type = [expression type];						// Get type of this first expression
 
+		right = [[Expression alloc] init];
 		result = YES;
 		while(YES == result)
 		{
 			[self skipWhite];
 			s = programCounter;
 			c = programCounter[0];						// Get operator character.
+			operator = kOperatorNone;
 			if(c)
 			{
 				c1 = programCounter[1];					// Get another operator character in case we need it.
 			}
-			operator = kOperatorNone;
+			else
+			{
+				c1 = 0;
+			}
 			switch((c << 8) | c1)
 			{
 			  case (('<' << 8) | '='):
@@ -836,6 +893,11 @@
 					}
 				}
 			}
+		}
+		if(right)
+		{
+			[right release];
+			right = NULL;
 		}
 	}
 	programCounter = s;

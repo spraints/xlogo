@@ -30,6 +30,7 @@
 //
 
 #import "Controller.h"
+#import "Preferences.h"
 
 @implementation Controller
 
@@ -39,36 +40,26 @@
 //
 - (IBAction)preferences:(id)sender
 {
-    NSUserDefaults *defaults;
-    NSString *lineWidthValue;
-    int maximumTurtlesValue, saveSpeedValue;
+	Preferences	*prefs;
+	NSNumber	*number;
 
-    // Initialze the defaults variable for the program
-    defaults = [NSUserDefaults standardUserDefaults];
+	// Get Preferences object. It will be initialized first time it's accessed.
+	// (That means: It will automatically read the preferences from disk!)
+	prefs = [Preferences sharedInstance];
 
-    // Assign each part of the default to the corresponding string variable
-    lineWidthValue = [defaults objectForKey:@"Line Width"];
-    maximumTurtlesValue = [defaults integerForKey:@"Maximum Turtles"];
-    saveSpeedValue = [defaults integerForKey:@"Turtle Speed Boolean"];
+	// Make the UI reflect various preference values...
+	// Save speed:
+	[saveSpeed setState:[prefs saveTurtleSpeed]];
 
-    // Now we set the parts of the preferences panel GUI to reflect those values
-    if (maximumTurtlesValue)
-	{
-	[maximumTurtles setIntValue:maximumTurtlesValue];
-	}
+	// Max turtles:
+	[maximumTurtles setIntValue:[prefs maxTurtles]];
 
-    if (saveSpeedValue)
-	{
-	[saveSpeed setState:saveSpeedValue];
-	}
+	// Line width:
+	number = [NSNumber numberWithFloat:[prefs lineWidth]];
+	[lineWidth selectItemWithTitle:[number stringValue]];
 
-    if (lineWidthValue)
-	{
-	[lineWidth selectItemWithTitle:lineWidthValue];
-	}
-    
-    // Now show the panel (preferences window) to the user
-    [preferencesPanel makeKeyAndOrderFront:nil];
+	// Now show the panel (preferences window) to the user
+	[preferencesPanel makeKeyAndOrderFront:nil];
 }
 
 
@@ -77,7 +68,7 @@
 //
 - (IBAction)cancelPreferences:(id)sender
 {
-    [preferencesPanel close];
+	[preferencesPanel close];
 }
 
 
@@ -86,22 +77,23 @@
 //
 - (IBAction)savePreferences:(id)sender
 {
-    NSUserDefaults *defaults;
+	Preferences	*prefs;
 
-    // Initialize the defaults for the program
-    defaults = [NSUserDefaults standardUserDefaults];
+	prefs = [Preferences sharedInstance];
 
-    // Store the value for the maximum number of turtles
-    [defaults setInteger:[maximumTurtles intValue] forKey:@"Maximum Turtles"];
+	// Store the value for the maximum number of turtles
+	[prefs setMaxTurtles:[maximumTurtles intValue]];
 
-    // Store the value of the turtle speed boolean
-    [defaults setInteger:[saveSpeed state] forKey:@"Turtle Speed Boolean"];
+	// Store the value of the turtle speed boolean
+	[prefs setSaveTurtleSpeed:[saveSpeed state]];
 
-    // Store the value of the line width
-    [defaults setObject:[[lineWidth selectedItem] title] forKey:@"Line Width"];
-    
-    // Now close the window
-    [preferencesPanel close];
+	// Store the value of the line width
+	[prefs setLineWidth:[[[lineWidth selectedItem] title] floatValue]];
+
+	[Preferences writeToDisk];
+
+	// Now close the window
+	[preferencesPanel close];
 }
 
 @end

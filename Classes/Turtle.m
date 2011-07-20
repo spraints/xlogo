@@ -1,5 +1,5 @@
 //
-//  Turtle.h
+//  Turtle.m
 //  Software: XLogo
 //
 //  Created by Jens Bauer & Jeff Skrysak on Thu Jun 26 2003.
@@ -28,11 +28,13 @@
 //   OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 //   SUCH DAMAGE.
 //
-#include "Utilities.h"
 
 #import "Turtle.h"
 #import "DrawCommand.h"
 #import "TurtleView.h"
+#import "LogoColorTable.h"
+#import "Preferences.h"
+#include "Utilities.h"
 
 const float	defaultTurtleShape[] = {
 	0, 9.8,						// starting distance from drawing point
@@ -68,34 +70,40 @@ const float	defaultTurtleShape[] = {
 //
 - (id)init
 {
-	return([self initWithName:@"Bob" andColor:[NSColor greenColor]]);
+	return([self initWithName:@"Bob" andColor:[LogoColorTable indexByName:@"green"]]);
 }
 
 
 //***********************************************/
 // initWithName - Create a new, named, turtle
 //
-- (id)initWithName:(NSString *)aName andColor:(NSColor *)aColor
+- (id)initWithName:(NSString *)aName andColor:(float)aColor
 {
-    // Create the object data
-    self = [super init];
+	// Create the object data
+	self = [super init];
 
-    // If the creation was successful, then continue with the rest...
-    if(self)
+	// If the creation was successful, then continue with the rest...
+	if(self)
 	{
-	    path = NULL;
-	    [self setTurtleName:aName];
-	    [self setTurtleColor:aColor];
-	    [self setTurtleSize:1.0];
-	    [self setTurtleShape:defaultTurtleShape];
-	    [self home];           //
-	    [self north];          // Put him at (0,0), face him north, show him, and put the pen down
-	    [self show];           //
-	    [self penDown];        //
+		path = NULL;
+		[self setTurtleName:aName];
+		[self setTurtleColor:aColor];
+		[self setTurtleSize:1.0];
+		[self setTurtleShape:defaultTurtleShape];
+		[self setPenColor:[LogoColorTable indexByName:@"black"]];
+		[self setPenSize:[[Preferences sharedInstance] lineWidth]];
+		[self home];			//
+		[self north];			// Put him at (0,0), face him north, show him, and put the pen down
+// implement this:
+//		if([[Preferences sharedInstance] showTurtleUponCreation])
+//		{
+			[self show];			// We're not supposed to show the turte!
+//		}
+		[self penDown];			//
 	}
 
-    // Send the new turtle back to the caller (probably to place it into an array)
-    return(self);
+	// Send the new turtle back to the caller (probably to place it into an array)
+	return(self);
 }
 
 
@@ -104,8 +112,9 @@ const float	defaultTurtleShape[] = {
 //
 - (void)dealloc
 {
+	[self setOutputView:NULL];
+	[self setErrorView:NULL];
 	[self setTurtleName:NULL];
-	[self setTurtleColor:NULL];
 	[super dealloc];
 }
 
@@ -115,36 +124,37 @@ const float	defaultTurtleShape[] = {
 //
 - (void)setTurtleName:(NSString *)aName
 {
-    if(turtleName)
+	if(turtleName)
 	{
-	[turtleName release];
+		[turtleName release];
 	}
-    turtleName = [aName retain];
+	turtleName = [aName retain];
 }
 
 
 // Accessor method
 - (NSString *)turtleName
 {
-    return(turtleName);
+	return(turtleName);
 }
 
 
 //***********************************************/
 // setTurtleColor - Give the turtle a color
 //
-- (void)setTurtleColor:(NSColor *)aColor
+- (BOOL)setTurtleColor:(float)aColor
 {
-	if(turtleColor)
-		{
-		[turtleColor release];
-		}
-    turtleColor = [aColor retain];
+	if(aColor != turtleColor)
+	{
+		turtleColor = aColor;
+		return(visible);
+	}
+	return(NO);
 }
 
 
 // Accessor method
-- (NSColor *)turtleColor
+- (float)turtleColor
 {
 	return(turtleColor);
 }
@@ -153,9 +163,14 @@ const float	defaultTurtleShape[] = {
 //***********************************************/
 // setTurtleSize - Give the turtle a size (1.0 is normal)
 //
-- (void)setTurtleSize:(float)aTurtleSize
+- (BOOL)setTurtleSize:(float)aTurtleSize
 {
-	turtleSize = aTurtleSize;
+	if(aTurtleSize != turtleSize)
+	{
+		turtleSize = aTurtleSize;
+		return(visible);
+	}
+	return(NO);
 }
 
 
@@ -180,8 +195,9 @@ const float	defaultTurtleShape[] = {
 //
 - (void)setOutputView:(id)aOutputView
 {
+	[aOutputView retain];
 	[outputView release];
-	outputView = [aOutputView retain];
+	outputView = aOutputView;
 }
 
 
@@ -197,8 +213,9 @@ const float	defaultTurtleShape[] = {
 //
 - (void)setErrorView:(id)aErrorView
 {
+	[aErrorView retain];
 	[errorView release];
-	errorView = [aErrorView retain];
+	errorView = aErrorView;
 }
 
 
@@ -206,13 +223,6 @@ const float	defaultTurtleShape[] = {
 - errorView
 {
 	return(errorView);
-}
-
-
-// Accessor method
-- (NSPoint)location
-{
-	return(location);
 }
 
 
@@ -232,9 +242,9 @@ const float	defaultTurtleShape[] = {
 
 
 // Accessor method
-- (float)direction
+- (NSPoint)location
 {
-	return(direction);
+	return(location);
 }
 
 
@@ -247,11 +257,33 @@ const float	defaultTurtleShape[] = {
 
 	oldDirection = direction;
 
-	// Catch some nasty value
-	direction = my_fmod(aDirection, 360.0);
+	// make direction in range 0...359.999
+	direction = my_dmod(aDirection, 360.0);
 
 	// If the new direction is equal to the old, return FALSE (NO)
 	return(oldDirection != direction);
+}
+
+
+// Accessor method
+- (float)direction
+{
+	return(direction);
+}
+
+
+//*********************************************************/
+// setVisible - Make the turtle visible on the screen
+//
+- (BOOL)setVisible:(BOOL)aVisible
+{
+	BOOL	oldVisible;
+
+	oldVisible = visible;
+	visible = aVisible;
+
+	// If the new value is equal to the old, return FALSE (NO)
+	return(oldVisible != visible);
 }
 
 
@@ -263,29 +295,26 @@ const float	defaultTurtleShape[] = {
 
 
 //*********************************************************/
-// setVisible - Make the turtle visible on the screen
-//
-- (BOOL)setVisible:(BOOL)aVisible
-{
-    BOOL oldVisible;
-
-    oldVisible = visible;
-    visible = aVisible;
-
-    // If the new value is equal to the old, return FALSE (NO)
-    return(oldVisible != visible);
-}
-
-
-//*********************************************************/
 // setPenColor - Set the drawing color
 //
 - (BOOL)setPenColor:(float)aPenColor
 {
-    penColor = aPenColor;
+#if 1
+	penColor = aPenColor;
 
-    // For now, just return FALSE (v0.3)
-    return(NO);
+	// For now, just return FALSE (v0.3)
+	return(NO);		// There is no change on the paper, only the pen color changes.
+
+#else
+	// From JB: This is the alternative if you want it:
+	// If you want to emulate a real 'robot-turtle', issue a move:0stepsInDirection:0 command, and return the result from this move command
+	if(penColor != aPenColor && kPenDown == pen)
+	{
+		penColor = aPenColor;
+		return([self move:0 stepsInDirection:0]);
+	}
+	return(NO);
+#endif
 }
 
 
@@ -296,85 +325,105 @@ const float	defaultTurtleShape[] = {
 }
 
 
+//*********************************************************************/
+// setPenSize - Set the width of the line in pixels, that the turtle is drawing
+// Accessor method.
+
+- (BOOL)setPenSize:(float)aPenSize
+{
+	penSize = aPenSize;
+	return(NO);
+}
+
+// Accessor method.
+
+- (float)penSize
+{
+	return(penSize);
+}
+
+
 //*********************************************************/
 // initPath - Intialize the turtle's path
 //
 - (void)initPath
 {
-    // Only initialize if the path hasn't been initialized already
-    if(!path)
+	// Only initialize if the path hasn't been initialized already
+	if(!path)
 	{
-	path = [[[NSBezierPath alloc] init] retain];
-	[path setLineWidth:1.0];
-	[path setLineCapStyle:NSRoundLineCapStyle];
-	[path setLineJoinStyle:NSRoundLineJoinStyle];
-	[path setMiterLimit:4.0];
+		path = [[[NSBezierPath alloc] init] retain];
+		[path setLineWidth:1.0];
+		[path setLineCapStyle:NSRoundLineCapStyle];
+		[path setLineJoinStyle:NSRoundLineJoinStyle];
+		[path setMiterLimit:4.0];
 	}
 }
 
 
 //******************************************************************/
 // drawTriangleAt - Draw a triangle at the point and heading given
+// This method should really be thrown away, and replaced by a turtle-table.
+// The only reason I didn't do that, is that I didn't want to spend time calculating
+// the positions of the first corner relative to the center of the triangle.
 //
 - (void)drawTriangleAt:(NSPoint)aPoint heading:(float)aDirection withColor:(NSColor *)aColor
 {
-    NSPoint		pt[3];
-    float		steps;
+	NSPoint		pt[3];
+	float		steps;
 
-    // If the path hasn't be initialized, do so now (rare case)
-    if(!path)
+	// If the path hasn't be initialized, do so now (rare case)
+	if(!path)
 	{
-	[self initPath];
+		[self initPath];
 	}
 
-    
-    steps = 10.0 * turtleSize;
+	steps = 10.0 * turtleSize;
 
-    pt[0] = aPoint;
-    pt[1] = aPoint;
-    pt[2] = aPoint;
+	pt[0] = aPoint;
+	pt[1] = aPoint;
+	pt[2] = aPoint;
 
-    pt[0].x += sin(aDirection * 2.0 * PI / 360.0) * steps;
-    pt[0].y += cos(aDirection * 2.0 * PI / 360.0) * steps;
+	pt[0].x += sin(aDirection * 2.0 * PI / 360.0) * steps;
+	pt[0].y += cos(aDirection * 2.0 * PI / 360.0) * steps;
 
-    aDirection += 120.0;
-    if(aDirection >= 360.0)
+	aDirection += 120.0;
+	if(aDirection >= 360.0)
 	{
-	aDirection -= 360.0;
+		aDirection -= 360.0;
 	}
 
-    pt[1].x += sin(aDirection * 2.0 * PI / 360.0) * steps;
-    pt[1].y += cos(aDirection * 2.0 * PI / 360.0) * steps;
+	pt[1].x += sin(aDirection * 2.0 * PI / 360.0) * steps;
+	pt[1].y += cos(aDirection * 2.0 * PI / 360.0) * steps;
 
-    aDirection += 120.0;
-    if(aDirection >= 360.0)
+	aDirection += 120.0;
+	if(aDirection >= 360.0)
 	{
-	aDirection -= 360.0;
+		aDirection -= 360.0;
 	}
 
-    pt[2].x += sin(aDirection * 2.0 * PI / 360.0) * steps;
-    pt[2].y += cos(aDirection * 2.0 * PI / 360.0) * steps;
+	pt[2].x += sin(aDirection * 2.0 * PI / 360.0) * steps;
+	pt[2].y += cos(aDirection * 2.0 * PI / 360.0) * steps;
 
-    // Set the drawing color
-    [aColor set];
-    
-    // Now we can start the drawing....
-    [path moveToPoint:pt[0]];
-    [path lineToPoint:pt[1]];
-    [path stroke];
-    [path removeAllPoints];
+	// Set the drawing color
+	[aColor set];
 
-    // Side two of the triangle
-    [path moveToPoint:pt[1]];
-    [path lineToPoint:pt[2]];
-    [path stroke];
-    [path removeAllPoints];
+	// Now we can start the drawing....
+	[path moveToPoint:pt[0]];
+	[path lineToPoint:pt[1]];
+	[path stroke];
+	[path removeAllPoints];
 
-    // Side three of the triangle
-    [path moveToPoint:pt[2]];
-    [path lineToPoint:pt[0]];
-    [path stroke];
-    [path removeAllPoints];
+	// Side two of the triangle
+	[path moveToPoint:pt[1]];
+	[path lineToPoint:pt[2]];
+	[path stroke];
+	[path removeAllPoints];
+
+	// Side three of the triangle
+	[path moveToPoint:pt[2]];
+	[path lineToPoint:pt[0]];
+	[path stroke];
+	[path removeAllPoints];
 }
 
 
@@ -391,62 +440,62 @@ const float	defaultTurtleShape[] = {
 //
 - (void)drawTurtleAt:(NSPoint)aPoint heading:(float)aDirection withColor:(NSColor *)aColor
 {
-    NSPoint		pt0;	// first point
-    NSPoint		pt1;	// from
-    NSPoint		pt2;	// to
-    float		d;
-    float		steps;
-    float		dir;
-    const float	*s;
-    BOOL		more;
+	NSPoint		pt0;	// first point
+	NSPoint		pt1;	// from
+	NSPoint		pt2;	// to
+	float		d;
+	float		steps;
+	float		dir;
+	const float	*s;
+	BOOL		more;
 
-    s = turtleShape;
+	s = turtleShape;
 
-    // If the shape is defined, continue...
-    if(s)
+	// If the shape is defined, continue...
+	if(s)
 	{
-	// If there is no path defined, make one.
-	if(!path)
-	    {
-	    [self initPath];
-	    }
-
-	// Set the turtle's color to the current color, for drawing
-	[aColor set];
-
-	d = *s++;
-	steps = *s++ * turtleSize;
-	dir = my_fmod(aDirection + d, 360.0);
-	pt0.x = aPoint.x + sin(dir * 2.0 * PI / 360.0) * steps;
-	pt0.y = aPoint.y + cos(dir * 2.0 * PI / 360.0) * steps;
-
-	pt1 = pt0;
-	more = YES;
-	while(more)
-	    {
-	    d = *s++;
-	    if(d < 360.0)
+		// If there is no path defined, make one.
+		if(!path)
 		{
+			[self initPath];
+		}
+
+		// Set the turtle's color to the current color, for drawing
+		[aColor set];
+
+		d = *s++;
 		steps = *s++ * turtleSize;
-		dir = my_fmod(dir + d, 360.0);
-		pt2.x = pt1.x + sin(dir * 2.0 * PI / 360.0) * steps;
-		pt2.y = pt1.y + cos(dir * 2.0 * PI / 360.0) * steps;
-		}
-	    else
+		dir = my_dmod(aDirection + d, 360.0);
+		pt0.x = aPoint.x + sin(dir * 2.0 * PI / 360.0) * steps;
+		pt0.y = aPoint.y + cos(dir * 2.0 * PI / 360.0) * steps;
+
+		pt1 = pt0;
+		more = YES;
+		while(more)
 		{
-		pt2 = pt0;
-		more = NO;
+			d = *s++;
+			if(d < 360.0)	// direction is always between -360 and +360
+			{
+				steps = *s++ * turtleSize;
+				dir = my_dmod(dir + d, 360.0);
+				pt2.x = pt1.x + sin(dir * 2.0 * PI / 360.0) * steps;
+				pt2.y = pt1.y + cos(dir * 2.0 * PI / 360.0) * steps;
+			}
+			else			// if > +360.0, it's an end-marker
+			{
+				pt2 = pt0;	// set last point = very first point
+				more = NO;	// we only draw this closing line, then we exit the loop
+			}
+
+			// Draw one line (we only draw the turtle 'frame', we don't fill it)
+			[path moveToPoint:pt1];
+			[path lineToPoint:pt2];
+			[path stroke];
+			[path removeAllPoints];
+
+			// Change the starting point to the end of the last side
+			pt1 = pt2;
 		}
-
-	    // Draw the side
-	    [path moveToPoint:pt1];
-	    [path lineToPoint:pt2];
-	    [path stroke];
-	    [path removeAllPoints];
-
-	    // Change the starting point to the end of the last side
-	    pt1 = pt2;
-	    }
 	}
 }
 
@@ -456,11 +505,11 @@ const float	defaultTurtleShape[] = {
 //
 - (void)drawAtOffset:(NSPoint)aPoint
 {
-    if([self visible])
+	if([self visible])
 	{
-	aPoint.x += [self location].x;
-	aPoint.y += [self location].y;
-	[self drawTurtleAt:aPoint heading:[self direction] withColor:[self turtleColor]];
+		aPoint.x += [self location].x;
+		aPoint.y += [self location].y;
+		[self drawTurtleAt:aPoint heading:[self direction] withColor:[LogoColorTable color:[self turtleColor]]];
 	}
 }
 
@@ -470,47 +519,31 @@ const float	defaultTurtleShape[] = {
 //
 - (BOOL)moveTo:(NSPoint)aPoint
 {
-    DrawCommand	*drawCommand;
-    NSPoint	fromPt;
-    NSPoint	toPt;
-    NSColor	*theColor;
+	DrawCommand	*drawCommand;
+	NSPoint		fromPt;
+	NSPoint		toPt;
+	NSColor		*theColor;
 
-    // Colors:             black      blue      red      purple    green   lightblue   yellow     white
-    int		rgb[] = { 0x000000, 0x0000ff, 0xff0000, 0xff00ff, 0x00ff00, 0x00ffff, 0xffff00, 0xffffff };
-    int		col;
+	theColor = [LogoColorTable color:[self penColor]];
 
-    // To store each part of the color RGB spectrum
-    float	r;
-    float	g;
-    float	b;
-
-    // Get the current color and dissect it
-    col = rgb[7 & ((int) [self penColor])];
-    r = (1.0 / 256.0) * ((float) (0xff & (col >> 16)));
-    g = (1.0 / 256.0) * ((float) (0xff & (col >> 8)));
-    b = (1.0 / 256.0) * ((float) (0xff & col));
-
-    // Now turn the color into a Cocoa NSColor
-    theColor = [NSColor colorWithCalibratedRed:r green:g blue:b alpha:1.0];
-
-    // If we are to draw, do so..
-    if(draw)
+	// If we are to draw or erase, do so..
+	if(kPenUp != pen)
 	{
-	fromPt = location;
-	toPt = aPoint;
-	drawCommand = [[DrawCommand alloc] initWithColor:theColor fromPoint:fromPt toPoint:toPt];
-	[outputView addCommand:drawCommand];
+		fromPt = location;
+		toPt = aPoint;
+		drawCommand = [[DrawCommand alloc] initWithColor:theColor andLineWidth:penSize fromPoint:fromPt toPoint:toPt];
+		[outputView addCommand:drawCommand];
+		[drawCommand release];			// release when not allocated using a factory method
 	}
 
-	
-    if([self setLocation:aPoint])	// if location changed
+	if([self setLocation:aPoint])		// if location changed
 	{
-	    if(draw || visible)		// if we're drawing or the turtle is visible
+		if(kPenUp != pen || visible)	// if we're drawing or erasing or the turtle is visible
 		{
-		return(YES);		// then we need to update the display!
+			return(YES);				// then we need to update the display!
 		}
 	}
-    return(NO);				// nothing changed, don't update display
+	return(NO);							// nothing changed, don't update display
 }
 
 
@@ -519,12 +552,12 @@ const float	defaultTurtleShape[] = {
 //
 - (BOOL)move:(float)aSteps stepsInDirection:(float)aDirection
 {
-    NSPoint	pt;
+	NSPoint	pt;
 
-    pt = location;
-    pt.x += sin(aDirection * 2 * PI / 360.0) * aSteps;
-    pt.y += cos(aDirection * 2 * PI / 360.0) * aSteps;
-    return([self moveTo:pt]);
+	pt = location;
+	pt.x += sin(aDirection * 2 * PI / 360.0) * aSteps;
+	pt.y += cos(aDirection * 2 * PI / 360.0) * aSteps;
+	return([self moveTo:pt]);
 }
 
 
@@ -533,7 +566,7 @@ const float	defaultTurtleShape[] = {
 //
 - (BOOL)clearGraphics
 {
-    return([outputView clear]);
+	return([outputView clear]);
 }
 
 
@@ -542,11 +575,11 @@ const float	defaultTurtleShape[] = {
 //
 - (BOOL)home
 {
-    NSPoint	pt;
-    
-    pt.x = 0.0;
-    pt.y = 0.0;
-    return([self moveTo:pt]);
+	NSPoint	pt;
+
+	pt.x = 0.0;
+	pt.y = 0.0;
+	return([self moveTo:pt]);
 }
 
 
@@ -555,61 +588,7 @@ const float	defaultTurtleShape[] = {
 //
 - (BOOL)north
 {
-    return([self setDirection:0.0] && visible);
-}
-
-
-//*********************************************************************/
-// northWest - Face the turtle NorthWest
-//
-- (BOOL)northWest
-{
-    return([self setDirection:45.0] && visible);
-}
-
-
-//*********************************************************************/
-// west - Face the turtle West
-//
-- (BOOL)west
-{
-    return([self setDirection:90.0] && visible);
-}
-
-
-//*********************************************************************/
-// southWest - Face the turtle SouthWest
-//
-- (BOOL)southWest
-{
-    return([self setDirection:135.0] && visible);
-}
-
-
-//*********************************************************************/
-// south - Face the turtle South
-//
-- (BOOL)south
-{
-    return([self setDirection:180.0] && visible);
-}
-
-
-//*********************************************************************/
-// southEast - Face the turtle SouthEast
-//
-- (BOOL)southEast
-{
-    return([self setDirection:225.0] && visible);
-}
-
-
-//*********************************************************************/
-// east - Face the turtle East
-//
-- (BOOL)east
-{
-    return([self setDirection:270.0] && visible);
+	return([self setDirection:0.0] && visible);
 }
 
 
@@ -618,7 +597,61 @@ const float	defaultTurtleShape[] = {
 //
 - (BOOL)northEast
 {
-    return([self setDirection:315.0] && visible);
+	return([self setDirection:45.0] && visible);
+}
+
+
+//*********************************************************************/
+// east - Face the turtle East
+//
+- (BOOL)east
+{
+	return([self setDirection:90.0] && visible);
+}
+
+
+//*********************************************************************/
+// southEast - Face the turtle SouthEast
+//
+- (BOOL)southEast
+{
+	return([self setDirection:135.0] && visible);
+}
+
+
+//*********************************************************************/
+// south - Face the turtle South
+//
+- (BOOL)south
+{
+	return([self setDirection:180.0] && visible);
+}
+
+
+//*********************************************************************/
+// southWest - Face the turtle SouthWest
+//
+- (BOOL)southWest
+{
+	return([self setDirection:225.0] && visible);
+}
+
+
+//*********************************************************************/
+// west - Face the turtle West
+//
+- (BOOL)west
+{
+	return([self setDirection:270.0] && visible);
+}
+
+
+//*********************************************************************/
+// northWest - Face the turtle NorthWest
+//
+- (BOOL)northWest
+{
+	return([self setDirection:315.0] && visible);
 }
 
 
@@ -627,7 +660,7 @@ const float	defaultTurtleShape[] = {
 //
 - (BOOL)back:(float)aSteps
 {
-    return([self move:aSteps stepsInDirection:direction + 180.0]);
+	return([self move:aSteps stepsInDirection:direction + 180.0]);
 }
 
 
@@ -636,7 +669,7 @@ const float	defaultTurtleShape[] = {
 //
 - (BOOL)forward:(float)aSteps
 {
-    return([self move:aSteps stepsInDirection:direction]);
+	return([self move:aSteps stepsInDirection:direction]);
 }
 
 
@@ -645,7 +678,7 @@ const float	defaultTurtleShape[] = {
 //
 - (BOOL)turnLeft:(float)aDegrees
 {
-    return([self setDirection:direction - aDegrees] && visible);
+	return([self setDirection:direction - aDegrees] && visible);
 }
 
 
@@ -654,7 +687,7 @@ const float	defaultTurtleShape[] = {
 //
 - (BOOL)turnRight:(float)aDegrees
 {
-    return([self setDirection:direction + aDegrees] && visible);
+	return([self setDirection:direction + aDegrees] && visible);
 }
 
 
@@ -663,8 +696,8 @@ const float	defaultTurtleShape[] = {
 //
 - (BOOL)penUp
 {
-    draw = NO;
-    return(draw);
+	pen = kPenUp;
+	return(NO);
 }
 
 
@@ -673,29 +706,45 @@ const float	defaultTurtleShape[] = {
 //
 - (BOOL)penDown
 {
-    draw = YES;
-    return(draw);
+	pen = kPenDown;
+	return(YES);
 }
 
 
-// Accessor method
+//*********************************************************************/
+// penErase - Start erasing by setting the pen to erase (on the page)
+//
+- (BOOL)penErase
+{
+	pen = kPenErase;
+	return(YES);
+}
+
+
+//*********************************************************************/
+// (not really an) Accessor method
+// Hide the turtle. When the turtle visibility changes, the turtle is drawn/removed in the update loop.
 - (BOOL)hide
 {
-    return([self setVisible:NO]);
+	return([self setVisible:NO]);
 }
 
 
-// Accessor method
+//*********************************************************************/
+// (not really an) Accessor method
+// Show the turtle. When the turtle visibility changes, the turtle is drawn/removed in the update loop.
 - (BOOL)show
 {
-    return([self setVisible:YES]);
+	return([self setVisible:YES]);
 }
 
 
+//*********************************************************************/
 // Accessor method
+// JB: I really forgot why I wrote this method. It'll probably be good for nothing!
 - (BOOL)repeat:(float)aCount
 {
-    return(NO);
+	return(NO);
 }
 
 @end

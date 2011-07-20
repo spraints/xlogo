@@ -1,12 +1,5 @@
 //
 //  StackObject.m
-//  LogoTest
-//
-//  Created by Jens Bauer on Sat Jun 28 2003.
-//  Copyright (c) 2003 Faster Software. All rights reserved.
-//
-//
-//  Controller.h
 //  Software: XLogo
 //
 //  Created by Jens Bauer on Thu Jun 28 2003.

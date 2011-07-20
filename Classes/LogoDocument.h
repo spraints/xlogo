@@ -35,16 +35,16 @@
 
 @interface LogoDocument : NSDocument
 {
-    IBOutlet id listingView;
-    IBOutlet id outputView;
-    IBOutlet id parser;
-    IBOutlet id speedSlider;
+	IBOutlet id	listingView;
+	IBOutlet id	outputView;
+	IBOutlet id	parser;
+	IBOutlet id	speedSlider;
 
-    float		frequency;
-    NSTimer		*timer;
+	float		frequency;
+	NSTimer		*timer;
 
     // File data holder
-    NSData *dataFromFile;
+    NSData		*dataFromFile;
 }
 
 // GUI Action methods

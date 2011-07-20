@@ -38,28 +38,33 @@
 #import "StackObject.h"
 #import "LogoParserExpression.h"
 #import "Variable.h"
+//#import "LogoStringExtensions.h"
+#import "Preferences.h"
+#import "LogoColorTable.h"
 
 #include "Commands.h"
 
 @implementation LogoParser
 
+- (void)forgetAll
+{
+	[self setListing:NULL];		// also clears programCounter and empties stack
+	[variables removeAllObjects];
+	[turtles removeAllObjects];
+	[listeningTurtles removeAllObjects];
+}
+
 - (void)reset
 {
 	Turtle	*turtle;
 
-	listing = NULL;
-	[variables release];
-	variables = [[NSMutableArray array] retain];
-	[turtles release];
-	turtles = [[NSMutableArray array] retain];
-	[listeningTurtles release];
-	listeningTurtles = [[NSMutableArray array] retain];
-	[stack release];
-	stack = [[NSMutableArray array] retain];
-	stackIndex = 0;
+	[self forgetAll];
 
 	// Clear the drawing area (TurtleView, subclass of NSView)
 	[outputView clear];
+
+	// Clear the Error TextView
+	[errorView clearAllText];
 
 	// Create the turtle
 	turtle = [[Turtle alloc] init];
@@ -68,11 +73,38 @@
 	[turtle setOutputView:[self outputView]];
 	[turtle setErrorView:[self errorView]];
 
-	// Clear the Error TextView
-	[errorView clearAllText];
-	
+	// Add the turtle to list of available turtles:
 	[self addTurtle:turtle];
+
+	// Activate it, so it's ready to use:
 	[self activateTurtle:turtle];
+
+	// Release it, we don't own it anymore; the turtle list and the active list now own it:
+	[turtle release];
+}
+
+- (void)setup
+{
+		listing = NULL;
+		programCounter = NULL;
+		stackIndex = 0;
+		stack = [[NSMutableArray array] retain];
+		variables = [[NSMutableArray array] retain];
+		turtles = [[NSMutableArray array] retain];
+		listeningTurtles = [[NSMutableArray array] retain];
+		outputView = NULL;
+		errorView = NULL;
+}
+
+- (id)init
+{
+	self = [super init];
+	if(self)
+	{
+		[self setup];
+		[self reset];
+	}
+	return(self);
 }
 
 - (id)initWithOutputView:(id)aOutputView errorView:(id)aErrorView
@@ -80,9 +112,7 @@
 	self = [super init];
 	if(self)
 	{
-		turtles = NULL;
-		listeningTurtles = NULL;
-		stack = NULL;
+		[self setup];
 		[self setOutputView:aOutputView];
 		[self setErrorView:aErrorView];
 		[self reset];
@@ -92,17 +122,19 @@
 
 - (void)dealloc
 {
+	[self forgetAll];			// deallocate objects contained in arrays
+
+	[self setListing:NULL];		// also clears programCounter and empties stack
 	[stack release];
 	stack = NULL;
+	[variables release];
+	variables = NULL;
 	[turtles release];
 	turtles = NULL;
 	[listeningTurtles release];
 	turtles = NULL;
-	[variables release];
-	variables = NULL;
 	[self setOutputView:NULL];
 	[self setErrorView:NULL];
-	[self setListing:NULL];
 	[super dealloc];
 }
 
@@ -145,8 +177,9 @@
 
 - (void)setOutputView:(id)aOutputView
 {
+	[aOutputView retain];
 	[outputView release];
-	outputView = [aOutputView retain];
+	outputView = aOutputView;
 }
 
 - outputView
@@ -156,8 +189,9 @@
 
 - (void)setErrorView:(id)aErrorView
 {
+	[aErrorView retain];
 	[errorView release];
-	errorView = [aErrorView retain];
+	errorView = aErrorView;
 }
 
 - errorView
@@ -165,37 +199,65 @@
 	return(errorView);
 }
 
+- (void)getCurrentLine:(unsigned long *)p_line andColumn:(unsigned long *)p_column
+{
+	unsigned long			lineCount;
+	unsigned long			column;
+	register const unichar	*s;
+	register unichar		c;
+	unsigned long			l;
+
+	column = 1;
+	lineCount = 1;
+	s = listing;
+	l = programCounter - s;
+
+	while(l--)
+	{
+		c = *s++;
+		if(10 == c && 13 == s[0])			// incorrect line ending style (LF/CR)
+		{
+			column = 1;
+			lineCount++;
+			s++;
+		}
+		else if(13 == c && 10 == s[0])		// DOS style line endings (CR/LF)
+		{
+			column = 1;
+			lineCount++;
+			s++;
+		}
+		else if(10 == c || 13 == c)			// Unix, Linux (LF) or Mac OS (CR) style line endings
+		{
+			column = 1;
+			lineCount++;
+		}
+		else
+		{
+			column++;
+		}
+	}
+	if(p_line)
+	{
+		*p_line = lineCount;
+	}
+	if(p_column)
+	{
+		*p_column = column;
+	}
+}
+
+- (unsigned long)currentLine
+{
+	unsigned long	lineCount;
+
+	[self getCurrentLine:&lineCount andColumn:NULL];
+	return(lineCount);
+}
+
 - (void)errorMessage:(NSString *)aMessage
 {
-    unsigned long			lineCount;
-    register const unichar	*s;
-    register unichar		c;
-    unsigned long			l;
-
-    lineCount = 1;
-    s = listing;
-    l = programCounter - s;
-
-    while(l--)
-	{
-	c = *s++;
-	if(10 == c && 13 == s[0])			// incorrect line ending style (LF/CR)
-	    {
-	    lineCount++;
-	    s++;
-	    }
-	else if(13 == c && 10 == s[0])		// DOS style line endings (CR/LF)
-	    {
-	    lineCount++;
-	    s++;
-	    }
-	else if(10 == c || 13 == c)			// Unix, Linux (LF) or Mac OS (CR) style line endings
-	    {
-	    lineCount++;
-	    }
-	}
-
-    [errorView appendLine:[NSString stringWithFormat:@"Error in line %d:\n%@", lineCount, aMessage] ofColor:[NSColor redColor]];
+	[errorView appendLine:[NSString stringWithFormat:@"Error in line %d:\n%@", [self currentLine], aMessage] ofColor:[NSColor redColor]];
 }
 
 - (void)setListing:(NSString *)aListing
@@ -209,6 +271,7 @@
 		listing = NULL;
 	}
 	[stack removeAllObjects];
+	stackIndex = 0;
 	programCounter = NULL;
 	if(aListing)
 	{
@@ -328,568 +391,548 @@
 	programCounter = s;
 }
 
+#if 0	// a test-thing!
+- (const unichar *)firstWhiteOf:(const unichar *)programPtr
+{
+	register const unichar	*l;
+	register const unichar	*s;
+	register unichar		c;
+
+	l = listing;
+	s = programPtr;
+	if(s > l)
+	{
+		c = ' ';
+		while(s > l && (' ' == c || (9 <= c && 13 >= c)))
+		{
+			c = *--s;
+		}
+		return(s + 1);
+	}
+	return(s);
+}
+#endif
+
+// New doCommand should be able to 'visit' self; eg. not invoke, but using the stack,
+// it should push 'return-values', so that commands would place their
+// result-of-execution on the stack.
+// This will enable us to implement functions like 'color' and 'colorunder',
+// that will pass their results back to other commands/functions.
+
+//- (long)dispatchCommand:(long)command withTemplate:(const unsigned char *)aMatchTemplate
 - (long)doCommand
 {
-	BOOL			refresh;
-	const unichar	*unitemp;
-	const unichar	*command;
-	unsigned long	length;
-	unsigned long	l;
-	NSColor			*col;
-	NSString		*temp;
-	Expression		*expression;
-	unsigned long	i;
-	unsigned long	count;
-	Turtle			*turtle;
-	NSString		*name;
-	Variable		*variable;
-	BOOL			found;
-	NSPoint			pt;
+	long				result;
+	BOOL				refresh;
+	const unichar		*s;
+	Expression			*expression[8];		// currently max 8 expressions are supported. (Only 2 or 3 is actually used). Can be extended if needed!
+	unsigned long		count;
+	double				condition;
+	unsigned long		i;
+	unsigned long		expressions;
+	const char			*expressionTypes;
+	char				t;
+	unichar				c;
+	BOOL				success;
+	NSString			*type;
+	Turtle				*turtle;
+	const unichar		*unitemp;
+	unsigned long		length;
+	unsigned long		l;
+	NSString			*temp;
+	NSString			*name;
+	Variable			*variable;
+	BOOL				found;
+	long				cmd;
+	const unichar		*command;
+	const unsigned char	*matchTemplate;
+	unsigned long		startingLine;
+	unsigned long		startingColumn;
+	unsigned long		endingLine;
+	unsigned long		endingColumn;
+#if 0	// a test-thing!
+	unsigned long		selectionStart;
+	unsigned long		selectionEnd;
+#endif
 
+	result = kParserStop;
+	// Assume we won't refresh...
 	refresh = NO;
 
 	[self skipWhite];
-#if 1
-	if(']' == *programCounter)
+//DEBUGMSG("line:%d\n", [self currentLine]);
+#if 0
+	selectionStart = programCounter - listing;
+	selectionEnd = selectionStart;
+#endif
+	[self getCurrentLine:&startingLine andColumn:&startingColumn];
+	c = *programCounter;
+	if(']' == c)
 	{
 		programCounter++;
 		[self pop];
-		return(kParserContinue);
+		result = kParserContinue;
 	}
-	else if('[' == *programCounter)
+	else if('[' == c)
 	{
 		programCounter++;
+//		selectionEnd = programCounter - listing;
 		[self pushProgramCounter:programCounter withRepeat:0];
-		return(kParserContinue);
+		result = kParserContinue;
 	}
-	else
-#endif
-	if([self getWord:&command andLength:&length])
+	else if('#' == c || ';' == c)		// the rest of the line is a comment
 	{
-		expression = [[Expression alloc] init];
-		[self skipWhite];
-		count = [listeningTurtles count];
-#if 0
-		int pap = LookupCommand(command, length);
-DEBUGMSG("pap=%d\n", pap);
-		switch(pap)
-#else
-		switch(LookupCommand(command, length))
-#endif
+		s = programCounter + 1;
+		c = *s++;
+		while(c && 10 != c && 13 != c)	// until we meet the end of the line
 		{
-		  case kCommandSetHeading:
-			if([self getExpression:expression])
+			c = *s++;
+		}
+		if(!c)							// zero-termination (end-of-buffer) ?
+		{
+			s--;						// step back, so we'll always stay inside the buffer
+		}
+		programCounter = s;				// now point to the next interesting character
+//		selectionEnd = programCounter - listing;
+		result = kParserContinue;
+	}
+	else if([self getWord:&command andLength:&length])
+	{
+		cmd = LookupCommand(command, length, &matchTemplate);
+//		selectionEnd = programCounter - listing;
+		if(kCommandUnknown == cmd)
+		{
+			unitemp = programCounter;
+			programCounter = command;	// set programCounter to point to the command, so that the correct line/column will be reported!
+			[self errorMessage:[NSString stringWithFormat:@"I don't know how to %@", [NSString stringWithCharacters:command length:length]]];
+			programCounter = unitemp;
+			result = kParserStop;
+		}
+		else
+		{
+			expressionTypes = matchTemplate;
+			// Check if expressions match the expression template for the command
+			expressions = 0;
+			success = YES;
+			t = *expressionTypes++;
+			while(success && t)
 			{
-				if(kExpressionKindNumber & [expression type])
+				expression[expressions] = [[Expression alloc] init];
+				c = programCounter[0];
+				if('#' == c)
 				{
-					for(i = 0; i < count; i++)
+					s = programCounter + 1;
+					c = *s++;
+					while(c && 10 != c && 13 != c)
 					{
-						refresh |= [[listeningTurtles objectAtIndex:i] setDirection:[expression floatValue]];
+						c = *s++;
 					}
+					programCounter = s;
+				}
+				success = [self getExpression:expression[expressions]];
+				switch(t)
+				{
+				  case kExpressionTypeNumber:
+					type = @"Nummeric expression";
+					success = success ? 0 != (kExpressionKindNumber & [expression[expressions] type]) : NO;
+					break;
+				  case kExpressionTypeString:		// Note: Numbers *ARE* allowed, because numbers are names (strings) too! -A string is expected, though. ;)
+					type = @"String expression";
+					success = success ? 0 != ((kExpressionKindNumber & [expression[expressions] type]) || (kExpressionKindStringValue == [expression[expressions] type])) : NO;
+					break;
+				  case kExpressionTypeNumberOrString:
+					type = @"Nummeric or string expression";
+					success = success ? 0 != ((kExpressionKindNumber & [expression[expressions] type]) || (kExpressionKindStringValue == [expression[expressions] type])) : NO;
+					break;
+				  case kExpressionTypeNumberOrList:
+					type = @"Number or list expression";
+					success = success ? 0 != ((kExpressionKindNumber & [expression[expressions] type]) || (kExpressionKindListValue == [expression[expressions] type])) : NO;
+					break;
+				  case kExpressionTypeStringOrList:
+					type = @"String or list expression";
+					success = success ? 0 != ((kExpressionKindNumber & [expression[expressions] type]) || (kExpressionKindStringValue == [expression[expressions] type]) || (kExpressionKindListValue == [expression[expressions] type])) : NO;
+					break;
+				  case kExpressionTypeNumberOrStringOrList:
+					type = @"Number or string or list expression";
+					success = success ? 0 != ((kExpressionKindNumber & [expression[expressions] type]) || (kExpressionKindStringValue == [expression[expressions] type]) || (kExpressionKindListValue == [expression[expressions] type])) : NO;
+					break;
+				  case kExpressionTypeList:
+					type = @"List expression";
+					success = success ? 0 != (kExpressionKindListValue == [expression[expressions] type]) : NO;
+					break;
+				  case kExpressionTypeAny:
+					type = @"Expression";
+					// 'success' remains unchanged, as we allow anything!
+					break;
+				  default:
+					type = @"[Internal error] :) I guess, that an expression is not";
+					break;
+				}
+				if(success)
+				{
+					expressions++;
 				}
 				else
 				{
-					[self errorMessage:@"SetHeading: numeric expression expected"];
+					[self errorMessage:[NSString stringWithFormat:@"%@: %@ expected (arg %d)", [NSString stringWithCharacters:command length:length], type, 1 + expressions]];
+#if 0
+DEBUGMSG("expression[0] type:%08x\n", [expression[0] type]);
+if(expressions)
+{
+DEBUGMSG("expression[1] type:%08x\n", [expression[1] type]);
+}
+#endif
 				}
+				t = *expressionTypes++;
 			}
-			break;
-		  case kCommandPenUp:
-			for(i = 0; i < count; i++)
-			{
-				refresh |= [[listeningTurtles objectAtIndex:i] penUp];
-			}
-			break;
-		  case kCommandPenDown:
-			for(i = 0; i < count; i++)
-			{
-				refresh |= [[listeningTurtles objectAtIndex:i] penDown];
-			}
-			break;
-		  case kCommandHideTurtle:
-			for(i = 0; i < count; i++)
-			{
-				refresh |= [[listeningTurtles objectAtIndex:i] hide];
-			}
-			break;
-		  case kCommandShowTurtle:
-			for(i = 0; i < count; i++)
-			{
-				refresh |= [[listeningTurtles objectAtIndex:i] show];
-			}
-			break;
-		  case kCommandSetPenSize:
-			  if([self getExpression:expression])
-				  {
-				  if(kExpressionKindNumber & [expression type])
-					  {
-					  for(i = 0; i < count; i++)
-						  {
-						  [outputView setPenSize:[expression floatValue]];
-						  }
-					  }
-				  }
-			  break;
-		  case kCommandSetColor:
-			if([self getExpression:expression])
-			{
-				if(kExpressionKindNumber & [expression type])
-				{
-					for(i = 0; i < count; i++)
-					{
-						refresh |= [[listeningTurtles objectAtIndex:i] setPenColor:[expression floatValue]];
-					}
-				}
-			}
-			break;
-		  case kCommandSetBackground:
-			if([self getExpression:expression])
-			{
-				if(kExpressionKindNumber & [expression type])
-				{
-//					for(i = 0; i < count; i++)
-//					{
-//						refresh |= [[listeningTurtles objectAtIndex:i] setPaperColor:[expression floatValue]];
-//					}
-					refresh |= [outputView setPaperColor:[expression floatValue]];
-				}
-			}
-			break;
-		  case kCommandForward:
-			if([self getExpression:expression])
-			{
-				if(kExpressionKindNumber & [expression type])
-				{
-					for(i = 0; i < count; i++)
-					{
-						refresh |= [[listeningTurtles objectAtIndex:i] forward:[expression floatValue]];
-					}
-				}
-				else
-				{
-					[self errorMessage:@"Forward: numeric expression expected"];
-				}
-			}
-			break;
-		  case kCommandBack:
-			if([self getExpression:expression])
-			{
-				if(kExpressionKindNumber & [expression type])
-				{
-					for(i = 0; i < count; i++)
-					{
-						refresh |= [[listeningTurtles objectAtIndex:i] back:[expression floatValue]];
-					}
-				}
-				else
-				{
-					[self errorMessage:@"Back: numeric expression expected"];
-				}
-			}
-			break;
-		  case kCommandLeftTurn:
-			if([self getExpression:expression])
-			{
-				if(kExpressionKindNumber & [expression type])
-				{
-					for(i = 0; i < count; i++)
-					{
-						refresh |= [[listeningTurtles objectAtIndex:i] turnLeft:[expression floatValue]];
-					}
-				}
-				else
-				{
-					[self errorMessage:@"LeftTurn: numeric expression expected"];
-				}
-			}
-			break;
-		  case kCommandRightTurn:
-			if([self getExpression:expression])
-			{
-				if(kExpressionKindNumber & [expression type])
-				{
-					for(i = 0; i < count; i++)
-					{
-						refresh |= [[listeningTurtles objectAtIndex:i] turnRight:[expression floatValue]];
-					}
-				}
-				else
-				{
-					[self errorMessage:@"RightTurn: numeric expression expected"];
-				}
-			}
-			break;
-		  case kCommandSetXY:	// may be incorrect. setpos [x y] is supported more often
-			if([self getExpression:expression])
-			{
-				if(kExpressionKindNumber & [expression type])
-				{
-					pt.x = [expression floatValue];
-					if([self getExpression:expression])
-					{
-						if(kExpressionKindNumber & [expression type])
-						{
-							pt.y = [expression floatValue];
-							for(i = 0; i < count; i++)
-							{
-//								refresh |= [[listeningTurtles objectAtIndex:i] moveTo:pt];
-								refresh |= [[listeningTurtles objectAtIndex:i] setLocation:pt];
-							}
-						}
-						else
-						{
-							[self errorMessage:@"SetXY: numeric expression expected (y argument)"];
-						}
-					}
-				}
-				else
-				{
-					[self errorMessage:@"SetXY: numeric expression expected (x argument)"];
-				}
-			}
-			break;
-		  case kCommandHome:
-			for(i = 0; i < count; i++)
-			{
-				refresh |= [[listeningTurtles objectAtIndex:i] home];
-			}
-			break;
-		  case kCommandNorth:
-			for(i = 0; i < count; i++)
-			{
-				refresh |= [[listeningTurtles objectAtIndex:i] north];
-			}
-			break;
-		  case kCommandNorthWest:
-			for(i = 0; i < count; i++)
-			{
-				refresh |= [[listeningTurtles objectAtIndex:i] northWest];
-			}
-			break;
-		  case kCommandWest:
-			for(i = 0; i < count; i++)
-			{
-				refresh |= [[listeningTurtles objectAtIndex:i] west];
-			}
-			break;
-		  case kCommandSouthWest:
-			for(i = 0; i < count; i++)
-			{
-				refresh |= [[listeningTurtles objectAtIndex:i] southWest];
-			}
-			break;
-		  case kCommandSouth:
-			for(i = 0; i < count; i++)
-			{
-				refresh |= [[listeningTurtles objectAtIndex:i] south];
-			}
-			break;
-		  case kCommandSouthEast:
-			for(i = 0; i < count; i++)
-			{
-				refresh |= [[listeningTurtles objectAtIndex:i] southEast];
-			}
-			break;
-		  case kCommandEast:
-			for(i = 0; i < count; i++)
-			{
-				refresh |= [[listeningTurtles objectAtIndex:i] east];
-			}
-			break;
-		  case kCommandNorthEast:
-			for(i = 0; i < count; i++)
-			{
-				refresh |= [[listeningTurtles objectAtIndex:i] northEast];
-			}
-			break;
 
-		  case kCommandNewTurtle:
-			if([self getExpression:expression])
+			if(success)
 			{
-				switch([expression type])
+//				selectionEnd = programCounter - listing;
+				switch(cmd)
 				{
-				  case kExpressionKindListValue:
-				  case kExpressionKindStringValue:
-					if(kExpressionKindListValue == [expression type])
+					// Commands that are not repeated for each turtle...
+				  case kCommandClearGraphics:
+					refresh |= [outputView clear];
+					break;
+				  case kCommandSetBackground:
+					if(kExpressionKindNumber & [expression[0] type])
 					{
-						unitemp = [expression listValue];
+						refresh |= [outputView setPaperColor:[expression[0] floatValue]];
 					}
 					else
 					{
-						unitemp = [expression stringValue];
+						refresh |= [outputView setPaperColor:[LogoColorTable indexByName:[NSString stringWithCharacters:[expression[0] stringValue] length:[expression[0] length]]]];
 					}
-					l = [expression length];
-					while(l)
-					{
-						length = [self getListElementSize:unitemp length:l];
-						if(length)
-						{
-							temp = [NSString stringWithCharacters:unitemp length:length];
-							count = [turtles count];
-							found = NO;
-							for(i = 0; i < count; i++)
-							{
-								turtle = [turtles objectAtIndex:i];
-								if([[turtle turtleName] isEqualToString:temp])
-								{
-									found = YES;
-									break;
-								}
-							}
-							if(found)
-							{
-								[self errorMessage:[NSString stringWithFormat:@"Already got a turtle named %@!", temp]];
-							}
-							else
-							{
-								NSUserDefaults *defaults;
+					break;
 
-								// Initialize the defaults variable for the program
-								defaults = [NSUserDefaults standardUserDefaults];
-								int maxturtles = [defaults integerForKey:@"Maximum Turtles"];
-								if(![defaults integerForKey:@"Maximum Turtles"])
-								{
-									maxturtles = 99;
-								}
-
-								if(count <= maxturtles)
-								{
-									col = [NSColor brownColor];
-									turtle = [[Turtle alloc] initWithName:temp andColor:col];
-									[turtle setOutputView:[self outputView]];
-									[turtle setErrorView:[self errorView]];
-									[self addTurtle:turtle];
-								}
-								else
-								{
-									[self errorMessage:[NSString stringWithFormat:@"Maximum number of turtles reached, cannot create %@", temp]];
-								}
-							}
-							l -= length;
-							unitemp += length;
-							l -= [self skipWhiteIn:&unitemp length:l];
-						}
-					}
-				}
-			}
-			break;
-		  case kCommandRemoveTurtle:
-			if([self getExpression:expression])
-			{
-				switch([expression type])
-				{
-				  case kExpressionKindListValue:
-				  case kExpressionKindStringValue:
-					if(kExpressionKindListValue == [expression type])
-					{
-						unitemp = [expression listValue];
-					}
-					else
-					{
-						unitemp = [expression stringValue];
-					}
-					l = [expression length];
-					while(l)
-					{
-						length = [self getListElementSize:unitemp length:l];
-						if(length)
-						{
-							temp = [NSString stringWithCharacters:unitemp length:length];
-							count = [turtles count];
-							found = NO;
-							for(i = 0; i < count; i++)
-							{
-								turtle = [turtles objectAtIndex:i];
-								if([[turtle turtleName] isEqualToString:temp])
-								{
-									[self deactivateTurtle:turtle];
-									[self removeTurtle:turtle];
-									found = YES;
-									break;
-								}
-							}
-							if(!found)
-							{
-								[self errorMessage:[NSString stringWithFormat:@"%@ does not exist", temp]];
-							}
-							l -= length;
-							unitemp += length;
-							l -= [self skipWhiteIn:&unitemp length:l];
-						}
-					}
-				}
-			}
-			break;
-		  case kCommandTalkTo:
-			if([self getExpression:expression])
-			{
-				switch([expression type])
-				{
-				  case kExpressionKindListValue:
-				  case kExpressionKindStringValue:
-					if(kExpressionKindListValue == [expression type])
-					{
-						unitemp = [expression listValue];
-					}
-					else
-					{
-						unitemp = [expression stringValue];
-					}
-					l = [expression length];
+					// Commands that take a list/string only or a list/string plus another parameter.
+				  case kCommandTalkTo:			// string or list
 					[self deactivateAllTurtles];
+				  case kCommandNewTurtle:		// string or list
+				  case kCommandRemoveTurtle:	// string or list
+				  case kCommandMake:			// string or list and any parameter.
+					if(kExpressionKindListValue == [expression[0] type])
+					{
+						unitemp = [expression[0] listValue];
+					}
+					else
+					{
+						unitemp = [expression[0] stringValue];
+					}
+					l = [expression[0] length];
 					while(l)
 					{
 						length = [self getListElementSize:unitemp length:l];
 						if(length)
 						{
 							temp = [NSString stringWithCharacters:unitemp length:length];
-							count = [turtles count];
-							found = NO;
-							for(i = 0; i < count; i++)
-							{
-								turtle = [turtles objectAtIndex:i];
-								if([[turtle turtleName] isEqualToString:temp])
-								{
-									[self activateTurtle:turtle];
-									found = YES;
-								}
-							}
-							if(!found)
-							{
-								[self errorMessage:[NSString stringWithFormat:@"%@ does not exist", temp]];
-							}
-							l -= length;
-							unitemp += length;
-							l -= [self skipWhiteIn:&unitemp length:l];
-						}
-					}
-				}
-			}
-			break;
-
-		  case kCommandMake:	// create a new variable
-			// parameter: name-or-list name-or-list-or-value
-			// If a list, each name in this list will be assigned the value that follows
-			if([self getExpression:expression])
-			{
-				switch([expression type])
-				{
-				  case kExpressionKindListValue:
-				  case kExpressionKindStringValue:
-					if(kExpressionKindListValue == [expression type])
-					{
-						unitemp = [expression listValue];
-					}
-					else
-					{
-						unitemp = [expression stringValue];
-					}
-					l = [expression length];
-					while(l)
-					{
-						length = [self getListElementSize:unitemp length:l];
-						if(length)
-						{
-							temp = [NSString stringWithCharacters:[expression stringValue] length:[expression length]];
-							[self skipWhite];
-							if([self getExpression:expression])
+							if(kCommandMake == cmd)
 							{
 								count = [variables count];
 								i = 0;
-								while(i < count)	/* note: this is not a recommended way of programming. I do it only because I (think I) know what I'm doing. ;) */
+								while(i < count)	/* sensitive code, please be aware of this. */
 								{
 									variable = [variables objectAtIndex:i];
 									name = [variable name];
 									if(NSOrderedSame == [temp caseInsensitiveCompare:name])
 									{
 										[variables removeObject:variable];
-										count--;	/* this is the dirty part */
+										count--;	/* this is the dirty part, note that i must stay the same! */
 									}
 									else
 									{
 										i++;
 									}
 								}
-								[variables addObject:[[Variable alloc] initWithName:temp andExpression:expression]];
+								[variables addObject:[[Variable alloc] initWithName:temp andExpression:expression[1]]];
+							}
+							else
+							{
+								found = NO;
+								count = [turtles count];
+								for(i = 0; i < count; i++)
+								{
+									turtle = [turtles objectAtIndex:i];
+									if([[turtle turtleName] isEqualToString:temp])
+									{
+										switch(cmd)
+										{
+										  case kCommandRemoveTurtle:
+											[self deactivateTurtle:turtle];
+											[self removeTurtle:turtle];
+											break;
+										  case kCommandTalkTo:
+											[self activateTurtle:turtle];
+											break;
+										}
+										found = YES;
+									}
+								}
+								switch(cmd)
+								{
+								  case kCommandTalkTo:
+								  case kCommandRemoveTurtle:
+									if(!found)
+									{
+										[self errorMessage:[NSString stringWithFormat:@"%@ does not exist", temp]];
+									}
+									break;
+								  case kCommandNewTurtle:
+									if(found)
+									{
+										[self errorMessage:[NSString stringWithFormat:@"Already got a turtle named %@!", temp]];
+									}
+									else
+									{
+										if(count < [[Preferences sharedInstance] maxTurtles])
+										{
+											turtle = [[Turtle alloc] initWithName:temp andColor:[LogoColorTable indexByName:@"brown"]];
+											[turtle setOutputView:[self outputView]];
+											[turtle setErrorView:[self errorView]];
+											[self addTurtle:turtle];
+										}
+										else
+										{
+											[self errorMessage:[NSString stringWithFormat:@"Maximum number of turtles reached, cannot create %@", temp]];
+										}
+									}
+									break;
+								}
 							}
 							l -= length;
 							unitemp += length;
 							l -= [self skipWhiteIn:&unitemp length:l];
 						}
 					}
-				}
-			}
-			break;
-
-			// program flow control...
-		  case kCommandRepeat:
-			if([self getExpression:expression])
-			{
-				if(kExpressionKindNumber & [expression type])
-				{
-					count = (long) [expression floatValue];
-					[self skipWhite];
-					if([self getExpression:expression])
+					break;
+				  case kCommandIf:
+					condition = [expression[0] floatValue];
+					if(condition)
 					{
-						if(kExpressionKindListValue == [expression type])
+						if(kExpressionKindListValue == [expression[1] type])
 						{
-							unitemp = [expression listValue];
-							length = [expression length];
-							[self pushProgramCounter:unitemp withRepeat:count];
+							unitemp = [expression[1] listValue];
+							length = [expression[1] length];
+							[self pushProgramCounter:unitemp withRepeat:1];
 							[self pop];
 						}
-					}
-				}
-			}
-			break;
-
-			// display commands...
-		  case kCommandClearGraphics:
-			refresh |= [outputView clear];
-			break;
-		  case kCommandUnknown:
-			temp = [NSString stringWithCharacters:command length:length];
-			unitemp = programCounter;
-			programCounter = command;
-			[self errorMessage:[NSString stringWithFormat:@"I don't know how to %@", temp]];
-			programCounter = unitemp;
-			break;
-		  default:
-			break;
-		}
-		return(refresh ? kParserUpdateDisplay : kParserContinue);
-	}
-
-#if 0
-	if(currentLine < [lines count])
-	{
-				switch([self commandNumberFromString:parameter[0]])
-				{
-				  case kCommandSetXY:	// may be incorrect. setpos [x y] is supported more often
-					if([parameter[1] getFloat:&number[1]])
-					{
-						if([parameter[2] getFloat:&number[2]])
+						else
 						{
-							pt.x = number[1];
-							pt.y = number[2];
-//							[turtle setLocation:pt];
-							refresh = [turtle moveTo:pt];		// this is better, it allows for absolute-point-drawing. :) (remember that penUp and penDown are still in effect!)
+							[self errorMessage:[NSString stringWithFormat:@"If - list expected!"]];
+							// stop parser!
 						}
 					}
-				    else
+					break;
+				  case kCommandIfElse:
+					[self errorMessage:[NSString stringWithFormat:@"IfElse - sorry, this command is not yet supported. Will be soon, though. Please use 2 IFs instead for now..."]];
+#if 0	// I think it's better that I migrate to the new parser, before continuing the IfElse work!
+					condition = [expression[0] floatValue];
+					if(condition)
 					{
-					[self errorMessage:[NSString stringWithFormat:@"Setxy incomplete", temp]];
+						if(kExpressionKindListValue == [expression[1] type])
+						{
+							if(kExpressionKindListValue == [expression[2] type])
+							{
+								if(condition)
+								{
+									unitemp = [expression[2] listValue];
+									length = [expression[2] length];
+									[self pushProgramCounter:unitemp withRepeat:0];	// don't execute expression2
+									// uhm, this approach won't work!
+									unitemp = [expression[1] listValue];
+									length = [expression[1] length];
+									[self pushProgramCounter:unitemp withRepeat:1];
+								}
+								else
+								{
+									unitemp = [expression[2] listValue];
+									length = [expression[2] length];
+									[self pushProgramCounter:unitemp withRepeat:1];
+								}
+								[self pop];
+
+#if 0
+								i = condition ? 1 : 2;
+								unitemp = [expression[i] listValue];
+								length = [expression[i] length];
+								[self pushProgramCounter:programCounter withRepeat:1];
+								[self pushProgramCounter:unitemp withRepeat:1];
+								[self pop];
+#endif
+							}
+							else
+							{
+								[self errorMessage:[NSString stringWithFormat:@"IfElse - list expected (argument 3)!"]];
+								// stop parser!
+							}
+						}
+						else
+						{
+							[self errorMessage:[NSString stringWithFormat:@"IfElse - list expected (argument 2)!"]];
+							// stop parser!
+						}
 					}
+#endif
 					break;
 				  case kCommandRepeat:
+					count = [expression[0] floatValue];
+					if(kExpressionKindListValue == [expression[1] type])
+					{
+						unitemp = [expression[1] listValue];
+						length = [expression[1] length];
+//[self errorMessage:[NSString stringWithFormat:@"Repeat's list: %@", [NSString stringWithCharacters:unitemp length:length]]];
+//perhaps:				selectionEnd = unitemp - listing;
+						[self pushProgramCounter:unitemp withRepeat:count];
+						[self pop];
+					}
+					else
+					{
+						[self errorMessage:[NSString stringWithFormat:@"Repeat - list expected!"]];
+						// stop parser!
+					}
 					break;
-				  case kCommandNone:
-					[errorView appendLine:[NSString stringWithFormat:@"I don't know how to %@", parameter[0]] ofColor:[NSColor redColor]];
-					break;
+				  default:
+					// Commands that are repeated for each turtle
+					count = [listeningTurtles count];
+					for(i = 0; i < count; i++)
+					{
+						turtle = [listeningTurtles objectAtIndex:i];
+						switch(cmd)
+						{
+							// Commands that takes no parameters:
+						  case kCommandPenDown:
+							refresh |= [turtle penDown];
+							break;
+						  case kCommandPenErase:
+							refresh |= [turtle penErase];
+							break;
+						  case kCommandPenUp:
+							refresh |= [turtle penUp];
+							break;
+						  case kCommandHideTurtle:
+							refresh |= [turtle hide];
+							break;
+						  case kCommandShowTurtle:
+							refresh |= [turtle show];
+							break;
+						  case kCommandHome:
+							refresh |= [turtle home];
+							break;
+						  case kCommandNorth:
+							refresh |= [turtle north];
+							break;
+						  case kCommandNorthWest:
+							refresh |= [turtle northWest];
+							break;
+						  case kCommandWest:
+							refresh |= [turtle west];
+							break;
+						  case kCommandSouthWest:
+							refresh |= [turtle southWest];
+							break;
+						  case kCommandSouth:
+							refresh |= [turtle south];
+							break;
+						  case kCommandSouthEast:
+							refresh |= [turtle southEast];
+							break;
+						  case kCommandEast:
+							refresh |= [turtle east];
+							break;
+						  case kCommandNorthEast:
+							refresh |= [turtle northEast];
+							break;
+
+							// Commands that takes one parameter:
+						  case kCommandSetHeading:
+							refresh |= [turtle setDirection:[expression[0] floatValue]];
+							break;
+						  case kCommandForward:
+							refresh |= [turtle forward:[expression[0] floatValue]];
+							break;
+						  case kCommandBack:
+							refresh |= [turtle back:[expression[0] floatValue]];
+							break;
+						  case kCommandLeftTurn:
+							refresh |= [turtle turnLeft:[expression[0] floatValue]];
+							break;
+						  case kCommandRightTurn:
+							refresh |= [turtle turnRight:[expression[0] floatValue]];
+							break;
+						  case kCommandSetColor:
+							if(kExpressionKindNumber & [expression[0] type])
+							{
+								refresh |= [turtle setPenColor:[expression[0] floatValue]];
+							}
+							else
+							{
+								refresh |= [turtle setPenColor:[LogoColorTable indexByName:[NSString stringWithCharacters:[expression[0] stringValue] length:[expression[0] length]]]];
+							}
+							break;
+						  case kCommandSetTurtleColor:
+							if(kExpressionKindNumber & [expression[0] type])
+							{
+								refresh |= [turtle setTurtleColor:[expression[0] floatValue]];
+							}
+							else
+							{
+								refresh |= [turtle setTurtleColor:[LogoColorTable indexByName:[NSString stringWithCharacters:[expression[0] stringValue] length:[expression[0] length]]]];
+							}
+							break;
+						  case kCommandSetTurtleSize:
+							if(kExpressionKindNumber & [expression[0] type])
+							{
+								refresh |= [turtle setTurtleSize:[expression[0] floatValue]];
+							}
+							else
+							{
+								// check if '"normal' or '"default'
+//								refresh |= [turtle setTurtleSize:[LogoColorTable indexByName:[NSString stringWithCharacters:[expression[0] stringValue] length:[expression[0] length]]]];
+							}
+							break;
+						  case kCommandSetPenSize:
+							refresh |= [turtle setPenSize:[expression[0] floatValue]];
+							break;
+
+							// Commands that takes two parameters:
+						  case kCommandSetXY:	// may be incorrect. setpos [x y] is supported more often
+							refresh |= [turtle setLocation:NSMakePoint([expression[0] floatValue], [expression[1] floatValue])];
+							break;
+						  default:
+							DEBUGMSG("Command not implemented: %ld\n", cmd);
+							break;
+						}
+					}
 				}
-		return(refresh ? kParserUpdateDisplay : kParserContinue);
+				result = refresh ? kParserUpdateDisplay : kParserContinue;
+			}
+			while(expressions--)
+			{
+				[expression[expressions] release];
+				expression[expressions] = NULL;
+			}
+		}
+	}
+//	selectionEnd = [self firstWhiteOf:selectionEnd + listing] - listing;
+//	[editorView setSelectedRange:NSMakeRange(selectionStart, selectionEnd - selectionStart)];
+
+#if 0	// JB-version includes a view that shows the current line... Did this to test if it was a good idea
+	[self getCurrentLine:&endingLine andColumn:&endingColumn];
+	if(startingLine == endingLine)
+	{
+		[positionView setStringValue:[NSString stringWithFormat:@"line % 3d:%d-%d", startingLine, startingColumn, endingColumn]];
+	}
+	else if(1 == startingColumn && 1 == endingColumn)
+	{
+		[positionView setStringValue:[NSString stringWithFormat:@"line % 3d-%d", startingLine, startingColumn, endingLine, endingColumn]];
+	}
+	else
+	{
+		[positionView setStringValue:[NSString stringWithFormat:@"line % 3d:%d-%d:%d", startingLine, startingColumn, endingLine, endingColumn]];
 	}
 #endif
-	return(kParserStop);
+	return(result);
 }
 
 @end

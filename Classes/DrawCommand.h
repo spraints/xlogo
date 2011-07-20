@@ -36,14 +36,18 @@
 
 @interface DrawCommand : NSObject
 {
+	float	lineWidth;
 	NSColor	*color;
 	NSPoint	fromPoint;
 	NSPoint	toPoint;
 }
-+ (id)drawCommandWithColor:(NSColor *)aColor fromPoint:(NSPoint)aFromPoint toPoint:(NSPoint)aToPoint;
+//+ (id)drawCommandWithColor:(NSColor *)aColor fromPoint:(NSPoint)aFromPoint toPoint:(NSPoint)aToPoint;
++ (id)drawCommandWithColor:(NSColor *)aColor andLineWidth:(float)aLineWidth fromPoint:(NSPoint)aFromPoint toPoint:(NSPoint)aToPoint;
 - (id)init;
-- (id)initWithColor:(NSColor *)aColor fromPoint:(NSPoint)aFromPoint toPoint:(NSPoint)aToPoint;
+//- (id)initWithColor:(NSColor *)aColor fromPoint:(NSPoint)aFromPoint toPoint:(NSPoint)aToPoint;
+- (id)initWithColor:(NSColor *)aColor andLineWidth:(float)aLineWidth fromPoint:(NSPoint)aFromPoint toPoint:(NSPoint)aToPoint;
 - (void)dealloc;
+- (float)lineWidth;
 - (NSColor *)color;
 - (NSPoint)fromPoint;
 - (NSPoint)toPoint;

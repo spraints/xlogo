@@ -33,6 +33,7 @@
 #import "LogoParser.h"
 #import "NSTextViewOutputExtensions.h"
 #import "Turtle.h"
+#import "Preferences.h"
 
 #define XLogoDocumentType	@"XLogoDocument"
 
@@ -49,36 +50,36 @@
 
 
 //***********************************************************/
+// speedToFrequency - a shared method for converting the speed to frequency
+// (so we only need to change the converter-code in one place)
+- (float)speedToFrequency:(float)aSpeed
+{
+#warning "implement better solution for turtle speed"
+	// Invert value (in one of my sources, I have a better solution)
+	aSpeed = 1.000001 - aSpeed;
+
+	// Catch a zero value, so we don't divide by zero later on
+	if(0 == aSpeed)
+	{
+		aSpeed = 0.000001;
+	}
+	return(aSpeed);
+}
+
+//***********************************************************/
 // setSpeed - Set the speed of the turtle's drawing
 //
 - (IBAction)setSpeed:(id)sender
 {
 	float			speed;
-	NSUserDefaults	*defaults;
 
 	// Get the speed value from the GUI
 	speed = [sender floatValue];
 
-	// Initialize user preferences in casethe user wants to save the speed as a preference
-	defaults = [NSUserDefaults standardUserDefaults];
-
-	// Store the speed preference (if the user so desires)
-	if([defaults integerForKey:@"Turtle Speed Boolean"])
-	{
-		[defaults setFloat:speed forKey:@"Turtle Speed"];
-	}
-
-	// Catch values above 1
-	speed = 1.000001 - speed;
-
-	// Catch a zero value
-	if(0 == speed)
-	{
-		speed = 0.000001;
-	}
+	[[Preferences sharedInstance] setTurtleSpeed:speed];
 
 	// Tell the timer the new speed
-	[self setFrequency:speed];
+	[self setFrequency:[self speedToFrequency:speed]];
 }
 
 
@@ -87,22 +88,8 @@
 //
 - (void)awakeFromNib
 {
-	// Get the user preferences
-	NSUserDefaults	*defaults;
-	defaults = [NSUserDefaults standardUserDefaults];
-
-	// Set the speed preference, show it in the GUI
-	if([defaults integerForKey:@"Turtle Speed Boolean"])
-	{
-		frequency = 1.000001 - [defaults floatForKey:@"Turtle Speed"];
-		[speedSlider setFloatValue: [defaults floatForKey:@"Turtle Speed"]];
-	}
-	else
-	{
-		frequency = 0.013;
-	}
+	frequency = [self speedToFrequency:[[Preferences sharedInstance] turtleSpeed]];
 }
-
 
 //***************************************************************/
 // init - Standard cocoa method. Run when object begins its life
@@ -117,6 +104,14 @@
 	return(self);
 }
 
+//***************************************************************/
+// windowWillClose - Standard cocoa method. Run when window started closing
+//
+- (void)windowWillClose:(NSNotification *)aNotification
+{
+	[self timerStop];
+	[[NSNotificationCenter defaultCenter] removeObserver:self];
+}
 
 //***************************************************************/
 // dealloc - Standard cocoa method. Run when object ends its life
@@ -125,9 +120,6 @@
 {
 	[dataFromFile release];
 	dataFromFile = NULL;
-	[[NSNotificationCenter defaultCenter] removeObserver:self];
-	
-	[self timerStop];
 	[super dealloc];
 }
 
@@ -242,7 +234,6 @@
 {
 	if(timer)
 	{
-		[[NSNotificationCenter defaultCenter] removeObserver:self];
 		[timer invalidate];
 		[timer release];
 		timer = NULL;
@@ -276,15 +267,8 @@
 	long		count;
 	BOOL		refresh;
 
-#ifdef SEMAPHORE
-	static BOOL	semaphore = 1;
-
-	if(semaphore)
-	{
-		semaphore = 0;
-#endif
-
 	count = 6;					// we're cheating here. :)
+	refresh = NO;				// per default, don't refresh!
 	while(count--)
 	{
 		stat = [parser doCommand];
@@ -304,15 +288,6 @@
 	{
 		[outputView setNeedsDisplay:YES];
 	}
-
-#ifdef SEMAPHORE
-		semaphore = 1;
-	}
-	else
-	{
-DEBUGMSG("Yeh, yeh, I'm already at work!!\n");
-	}
-#endif
 
 #if 0
 	switch([parser doCommand])
@@ -335,9 +310,11 @@ DEBUGMSG("Yeh, yeh, I'm already at work!!\n");
 - (void)run
 {
 	[self timerStop];				// stop processing commands, so that variables are not changed after re-initializing them
+#if (defined(DEBUGFLAG) && DEBUGFLAG)
+//	DUMP_OBCOUNT();
+#endif
 	[parser reset];					// re-initialize variables
 	[parser setListing:[[listingView textStorage] string]];
-//	[parser setLines:[self linesFromString:[[listingView textStorage] string]]];
 	[self timerStart];				// start processing
 }
 
@@ -348,6 +325,10 @@ DEBUGMSG("Yeh, yeh, I'm already at work!!\n");
 - (void)stop
 {
 	[self timerStop];	// stop processing commands
+#if (defined(DEBUGFLAG) && DEBUGFLAG)
+//	[parser forgetAll];	// clear memory used by parser (for debugging only, as the user should be able to print the output, AND if we need to redraw, we won't have the drawing commands, if we use forgetAll!)
+//	DUMP_OBCOUNT();
+#endif
 }
 
 
