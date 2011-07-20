@@ -1,0 +1,938 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 42;
+	objects = {
+
+/* Begin PBXApplicationTarget section */
+		2A37F4C6FDCFA73011CA2CEA /* XLogo */ = {
+			isa = PBXApplicationTarget;
+			buildConfigurationList = 4C66DBAD0B5B136D00EC045B /* Build configuration list for PBXApplicationTarget "XLogo" */;
+			buildPhases = (
+				2A37F4C7FDCFA73011CA2CEA /* Headers */,
+				2A37F4C9FDCFA73011CA2CEA /* Resources */,
+				2A37F4CEFDCFA73011CA2CEA /* Sources */,
+				2A37F4D1FDCFA73011CA2CEA /* Frameworks */,
+			);
+			dependencies = (
+			);
+			name = XLogo;
+			productInstallPath = "$(HOME)/Applications";
+			productName = LogoTest;
+			productReference = 1758732AFF379DA111CA2CBB /* XLogo.app */;
+			productSettingsXML = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>
+<!DOCTYPE plist PUBLIC \"-//Apple Computer//DTD PLIST 1.0//EN\" \"http://www.apple.com/DTDs/PropertyList-1.0.dtd\">
+<plist version=\"1.0\">
+<dict>
+	<key>CFBundleDevelopmentRegion</key>
+	<string>English</string>
+	<key>CFBundleDocumentTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleTypeExtensions</key>
+			<array>
+				<string>xlogo</string>
+			</array>
+			<key>CFBundleTypeIconFile</key>
+			<string>doc</string>
+			<key>CFBundleTypeName</key>
+			<string>XLogoDocument</string>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>NSDocumentClass</key>
+			<string>LogoDocument</string>
+		</dict>
+	</array>
+	<key>CFBundleExecutable</key>
+	<string>XLogo</string>
+	<key>CFBundleGetInfoString</key>
+	<string>XLogo version 0.3.5 © 2003 Jeff Skrysak</string>
+	<key>CFBundleHelpBookFolder</key>
+	<string>xlogo help</string>
+	<key>CFBundleHelpBookName</key>
+	<string>XLogo Help</string>
+	<key>CFBundleIconFile</key>
+	<string>xlogo</string>
+	<key>CFBundleIdentifier</key>
+	<string>com.JeffSkrysak.XLogo</string>
+	<key>CFBundleInfoDictionaryVersion</key>
+	<string>6.0</string>
+	<key>CFBundleName</key>
+	<string>XLogo</string>
+	<key>CFBundlePackageType</key>
+	<string>APPL</string>
+	<key>CFBundleShortVersionString</key>
+	<string>0.3.5</string>
+	<key>CFBundleSignature</key>
+	<string>????</string>
+	<key>CFBundleVersion</key>
+	<string>0.3.5</string>
+	<key>NSMainNibFile</key>
+	<string>MainMenu</string>
+	<key>NSPrincipalClass</key>
+	<string>NSApplication</string>
+</dict>
+</plist>
+";
+		};
+/* End PBXApplicationTarget section */
+
+/* Begin PBXBuildFile section */
+		080E96D9FE201CDB7F000001 /* Credits.rtf in Resources */ = {isa = PBXBuildFile; fileRef = 2A37F4B9FDCFA73011CA2CEA /* Credits.rtf */; };
+		080E96DAFE201CDB7F000001 /* MainMenu.nib in Resources */ = {isa = PBXBuildFile; fileRef = 2A37F4B6FDCFA73011CA2CEA /* MainMenu.nib */; };
+		089C1661FE840EACC02AAC07 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C165FFE840EACC02AAC07 /* InfoPlist.strings */; };
+		1058C7A9FEA54F5311CA2CBB /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A7FEA54F5311CA2CBB /* Cocoa.framework */; };
+		1F01AF0204BC60DD005A17E1 /* title.png in Resources */ = {isa = PBXBuildFile; fileRef = 1F01AF0104BC60DD005A17E1 /* title.png */; };
+		1F05108404D1F35700FEFB36 /* pare.png in Resources */ = {isa = PBXBuildFile; fileRef = 1F05108304D1F35700FEFB36 /* pare.png */; };
+		1F05108604D1F73F00FEFB36 /* partir.png in Resources */ = {isa = PBXBuildFile; fileRef = 1F05108504D1F73F00FEFB36 /* partir.png */; };
+		1F59A39304D2084300FEFB36 /* xlogo help in Resources */ = {isa = PBXBuildFile; fileRef = 1FEB6EE504B7332200B7EED8 /* xlogo help */; };
+		1F672CFC04D42F9000AB81D1 /* depart.png in Resources */ = {isa = PBXBuildFile; fileRef = 1F672CFB04D42F9000AB81D1 /* depart.png */; };
+		1F7F37F904B9DE2700B14428 /* doc.icns in Resources */ = {isa = PBXBuildFile; fileRef = 1F7F37F804B9DE2700B14428 /* doc.icns */; };
+		1FEB6E8304B72E9700B7EED8 /* go.png in Resources */ = {isa = PBXBuildFile; fileRef = 1FEB6E7C04B72E9700B7EED8 /* go.png */; };
+		1FEB6E8404B72E9700B7EED8 /* load.png in Resources */ = {isa = PBXBuildFile; fileRef = 1FEB6E7D04B72E9700B7EED8 /* load.png */; };
+		1FEB6E8504B72E9700B7EED8 /* logo.png in Resources */ = {isa = PBXBuildFile; fileRef = 1FEB6E7E04B72E9700B7EED8 /* logo.png */; };
+		1FEB6E8604B72E9700B7EED8 /* printer.png in Resources */ = {isa = PBXBuildFile; fileRef = 1FEB6E7F04B72E9700B7EED8 /* printer.png */; };
+		1FEB6E8704B72E9700B7EED8 /* save.png in Resources */ = {isa = PBXBuildFile; fileRef = 1FEB6E8004B72E9700B7EED8 /* save.png */; };
+		1FEB6E8804B72E9700B7EED8 /* xlogo.icns in Resources */ = {isa = PBXBuildFile; fileRef = 1FEB6E8104B72E9700B7EED8 /* xlogo.icns */; };
+		1FED70F904D2EC9300FEFB36 /* tomare.png in Resources */ = {isa = PBXBuildFile; fileRef = 1FED70F804D2EC9300FEFB36 /* tomare.png */; };
+		1FED70FB04D2ED4900FEFB36 /* go_japanese.png in Resources */ = {isa = PBXBuildFile; fileRef = 1FED70FA04D2ED4900FEFB36 /* go_japanese.png */; };
+		1FF15BBB04D49F5F0053C108 /* inizia.png in Resources */ = {isa = PBXBuildFile; fileRef = 1FF15BBA04D49F5F0053C108 /* inizia.png */; };
+		1FFB4E9704B73F8400A4A4CF /* stop.png in Resources */ = {isa = PBXBuildFile; fileRef = 1FFB4E9604B73F8400A4A4CF /* stop.png */; };
+		2A37F4D0FDCFA73011CA2CEA /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 2A37F4B0FDCFA73011CA2CEA /* main.m */; settings = {ATTRIBUTES = (); }; };
+		4C66DBE40B5B193600EC045B /* Controller.h in Headers */ = {isa = PBXBuildFile; fileRef = F5CA271204AA158D01A8017D /* Controller.h */; };
+		4C66DBE50B5B193600EC045B /* LogoDocument.h in Headers */ = {isa = PBXBuildFile; fileRef = F5CA271904AA175E01A8017D /* LogoDocument.h */; };
+		4C66DBE60B5B193600EC045B /* Debugging.h in Headers */ = {isa = PBXBuildFile; fileRef = F5CA281704AA3F4901A8017D /* Debugging.h */; };
+		4C66DBE70B5B193600EC045B /* NSTextViewOutputExtensions.h in Headers */ = {isa = PBXBuildFile; fileRef = F5CA281904AA420601A8017D /* NSTextViewOutputExtensions.h */; };
+		4C66DBE80B5B193600EC045B /* Turtle.h in Headers */ = {isa = PBXBuildFile; fileRef = F5CA282304AA556701A8017D /* Turtle.h */; };
+		4C66DBE90B5B193600EC045B /* Utilities.h in Headers */ = {isa = PBXBuildFile; fileRef = F5CA282F04AA60BE01A8017D /* Utilities.h */; };
+		4C66DBEA0B5B193600EC045B /* DrawCommand.h in Headers */ = {isa = PBXBuildFile; fileRef = F5CA284704AA907101A8017D /* DrawCommand.h */; };
+		4C66DBEB0B5B193600EC045B /* TurtleView.h in Headers */ = {isa = PBXBuildFile; fileRef = F5CA284F04AA9B0F01A8017D /* TurtleView.h */; };
+		4C66DBEC0B5B193600EC045B /* Commands.h in Headers */ = {isa = PBXBuildFile; fileRef = F5CAB9F404ABB96301A8017D /* Commands.h */; };
+		4C66DBED0B5B193600EC045B /* LogoParser.h in Headers */ = {isa = PBXBuildFile; fileRef = F5CA272004AA230C01A8017D /* LogoParser.h */; };
+		4C66DBEE0B5B193600EC045B /* Expression.h in Headers */ = {isa = PBXBuildFile; fileRef = F5CABA0F04ABCA9801A8017D /* Expression.h */; };
+		4C66DBEF0B5B193600EC045B /* StackObject.h in Headers */ = {isa = PBXBuildFile; fileRef = F5B0C25D04ACFC4C01A8017D /* StackObject.h */; };
+		4C66DBF00B5B193600EC045B /* LogoParserExpression.h in Headers */ = {isa = PBXBuildFile; fileRef = F52BE4AB04AFAF6201A8017D /* LogoParserExpression.h */; };
+		4C66DBF10B5B193600EC045B /* Variable.h in Headers */ = {isa = PBXBuildFile; fileRef = F5C921CF04B08C2601A8017D /* Variable.h */; };
+		4C66DBF20B5B193600EC045B /* LogoColorTable.h in Headers */ = {isa = PBXBuildFile; fileRef = B4614059051EB8C100A8017D /* LogoColorTable.h */; };
+		4C66DBF30B5B193600EC045B /* Preferences.h in Headers */ = {isa = PBXBuildFile; fileRef = B4D6E4B5056CBCED00A8017D /* Preferences.h */; };
+		4C66DBF50B5B193600EC045B /* Credits.rtf in Resources */ = {isa = PBXBuildFile; fileRef = 2A37F4B9FDCFA73011CA2CEA /* Credits.rtf */; };
+		4C66DBF60B5B193600EC045B /* MainMenu.nib in Resources */ = {isa = PBXBuildFile; fileRef = 2A37F4B6FDCFA73011CA2CEA /* MainMenu.nib */; };
+		4C66DBF70B5B193600EC045B /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C165FFE840EACC02AAC07 /* InfoPlist.strings */; };
+		4C66DBF80B5B193600EC045B /* XLogoDocument.nib in Resources */ = {isa = PBXBuildFile; fileRef = F5CA271604AA175201A8017D /* XLogoDocument.nib */; };
+		4C66DBF90B5B193600EC045B /* go.png in Resources */ = {isa = PBXBuildFile; fileRef = 1FEB6E7C04B72E9700B7EED8 /* go.png */; };
+		4C66DBFA0B5B193600EC045B /* load.png in Resources */ = {isa = PBXBuildFile; fileRef = 1FEB6E7D04B72E9700B7EED8 /* load.png */; };
+		4C66DBFB0B5B193600EC045B /* logo.png in Resources */ = {isa = PBXBuildFile; fileRef = 1FEB6E7E04B72E9700B7EED8 /* logo.png */; };
+		4C66DBFC0B5B193600EC045B /* printer.png in Resources */ = {isa = PBXBuildFile; fileRef = 1FEB6E7F04B72E9700B7EED8 /* printer.png */; };
+		4C66DBFD0B5B193600EC045B /* save.png in Resources */ = {isa = PBXBuildFile; fileRef = 1FEB6E8004B72E9700B7EED8 /* save.png */; };
+		4C66DBFE0B5B193600EC045B /* xlogo.icns in Resources */ = {isa = PBXBuildFile; fileRef = 1FEB6E8104B72E9700B7EED8 /* xlogo.icns */; };
+		4C66DBFF0B5B193600EC045B /* stop.png in Resources */ = {isa = PBXBuildFile; fileRef = 1FFB4E9604B73F8400A4A4CF /* stop.png */; };
+		4C66DC000B5B193600EC045B /* doc.icns in Resources */ = {isa = PBXBuildFile; fileRef = 1F7F37F804B9DE2700B14428 /* doc.icns */; };
+		4C66DC010B5B193600EC045B /* title.png in Resources */ = {isa = PBXBuildFile; fileRef = 1F01AF0104BC60DD005A17E1 /* title.png */; };
+		4C66DC020B5B193600EC045B /* pare.png in Resources */ = {isa = PBXBuildFile; fileRef = 1F05108304D1F35700FEFB36 /* pare.png */; };
+		4C66DC030B5B193600EC045B /* partir.png in Resources */ = {isa = PBXBuildFile; fileRef = 1F05108504D1F73F00FEFB36 /* partir.png */; };
+		4C66DC040B5B193600EC045B /* xlogo help in Resources */ = {isa = PBXBuildFile; fileRef = 1FEB6EE504B7332200B7EED8 /* xlogo help */; };
+		4C66DC050B5B193600EC045B /* tomare.png in Resources */ = {isa = PBXBuildFile; fileRef = 1FED70F804D2EC9300FEFB36 /* tomare.png */; };
+		4C66DC060B5B193600EC045B /* go_japanese.png in Resources */ = {isa = PBXBuildFile; fileRef = 1FED70FA04D2ED4900FEFB36 /* go_japanese.png */; };
+		4C66DC070B5B193600EC045B /* depart.png in Resources */ = {isa = PBXBuildFile; fileRef = 1F672CFB04D42F9000AB81D1 /* depart.png */; };
+		4C66DC080B5B193600EC045B /* inizia.png in Resources */ = {isa = PBXBuildFile; fileRef = 1FF15BBA04D49F5F0053C108 /* inizia.png */; };
+		4C66DC090B5B193600EC045B /* kor.png in Resources */ = {isa = PBXBuildFile; fileRef = B41F377405541FF000A8017D /* kor.png */; };
+		4C66DC0B0B5B193600EC045B /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 2A37F4B0FDCFA73011CA2CEA /* main.m */; settings = {ATTRIBUTES = (); }; };
+		4C66DC0C0B5B193600EC045B /* Controller.m in Sources */ = {isa = PBXBuildFile; fileRef = F5CA271304AA158D01A8017D /* Controller.m */; };
+		4C66DC0D0B5B193600EC045B /* LogoDocument.m in Sources */ = {isa = PBXBuildFile; fileRef = F5CA271A04AA175E01A8017D /* LogoDocument.m */; };
+		4C66DC0E0B5B193600EC045B /* NSTextViewOutputExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = F5CA281A04AA420601A8017D /* NSTextViewOutputExtensions.m */; };
+		4C66DC0F0B5B193600EC045B /* Turtle.m in Sources */ = {isa = PBXBuildFile; fileRef = F5CA282404AA556701A8017D /* Turtle.m */; };
+		4C66DC100B5B193600EC045B /* Utilities.c in Sources */ = {isa = PBXBuildFile; fileRef = F5CA283004AA60BE01A8017D /* Utilities.c */; };
+		4C66DC110B5B193600EC045B /* DrawCommand.m in Sources */ = {isa = PBXBuildFile; fileRef = F5CA284804AA907101A8017D /* DrawCommand.m */; };
+		4C66DC120B5B193600EC045B /* TurtleView.m in Sources */ = {isa = PBXBuildFile; fileRef = F5CA285004AA9B0F01A8017D /* TurtleView.m */; };
+		4C66DC130B5B193600EC045B /* Commands.c in Sources */ = {isa = PBXBuildFile; fileRef = F5CAB9F504ABB96301A8017D /* Commands.c */; };
+		4C66DC140B5B193600EC045B /* LogoParser.m in Sources */ = {isa = PBXBuildFile; fileRef = F5CA272104AA230C01A8017D /* LogoParser.m */; };
+		4C66DC150B5B193600EC045B /* Expression.m in Sources */ = {isa = PBXBuildFile; fileRef = F5CABA1004ABCA9801A8017D /* Expression.m */; };
+		4C66DC160B5B193600EC045B /* StackObject.m in Sources */ = {isa = PBXBuildFile; fileRef = F5B0C25E04ACFC4C01A8017D /* StackObject.m */; };
+		4C66DC170B5B193600EC045B /* LogoParserExpression.m in Sources */ = {isa = PBXBuildFile; fileRef = F52BE4AC04AFAF6201A8017D /* LogoParserExpression.m */; };
+		4C66DC180B5B193600EC045B /* Variable.m in Sources */ = {isa = PBXBuildFile; fileRef = F5C921D004B08C2601A8017D /* Variable.m */; };
+		4C66DC190B5B193600EC045B /* LogoColorTable.m in Sources */ = {isa = PBXBuildFile; fileRef = B461405A051EB8C100A8017D /* LogoColorTable.m */; };
+		4C66DC1A0B5B193600EC045B /* Preferences.m in Sources */ = {isa = PBXBuildFile; fileRef = B4D6E4B6056CBCED00A8017D /* Preferences.m */; };
+		4C66DC1B0B5B193600EC045B /* Debugging.c in Sources */ = {isa = PBXBuildFile; fileRef = B4571CD7056EBE8600A8017D /* Debugging.c */; };
+		4C66DC1D0B5B193600EC045B /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A7FEA54F5311CA2CBB /* Cocoa.framework */; };
+		B41F377505541FF000A8017D /* kor.png in Resources */ = {isa = PBXBuildFile; fileRef = B41F377405541FF000A8017D /* kor.png */; };
+		B4571CD8056EBE8600A8017D /* Debugging.c in Sources */ = {isa = PBXBuildFile; fileRef = B4571CD7056EBE8600A8017D /* Debugging.c */; };
+		B461405B051EB8C100A8017D /* LogoColorTable.h in Headers */ = {isa = PBXBuildFile; fileRef = B4614059051EB8C100A8017D /* LogoColorTable.h */; };
+		B461405C051EB8C100A8017D /* LogoColorTable.m in Sources */ = {isa = PBXBuildFile; fileRef = B461405A051EB8C100A8017D /* LogoColorTable.m */; };
+		B4D6E4B7056CBCED00A8017D /* Preferences.h in Headers */ = {isa = PBXBuildFile; fileRef = B4D6E4B5056CBCED00A8017D /* Preferences.h */; };
+		B4D6E4B8056CBCED00A8017D /* Preferences.m in Sources */ = {isa = PBXBuildFile; fileRef = B4D6E4B6056CBCED00A8017D /* Preferences.m */; };
+		F52BE4AD04AFAF6201A8017D /* LogoParserExpression.h in Headers */ = {isa = PBXBuildFile; fileRef = F52BE4AB04AFAF6201A8017D /* LogoParserExpression.h */; };
+		F52BE4AE04AFAF6201A8017D /* LogoParserExpression.m in Sources */ = {isa = PBXBuildFile; fileRef = F52BE4AC04AFAF6201A8017D /* LogoParserExpression.m */; };
+		F5B0C25F04ACFC4C01A8017D /* StackObject.h in Headers */ = {isa = PBXBuildFile; fileRef = F5B0C25D04ACFC4C01A8017D /* StackObject.h */; };
+		F5B0C26004ACFC4C01A8017D /* StackObject.m in Sources */ = {isa = PBXBuildFile; fileRef = F5B0C25E04ACFC4C01A8017D /* StackObject.m */; };
+		F5C921D104B08C2601A8017D /* Variable.h in Headers */ = {isa = PBXBuildFile; fileRef = F5C921CF04B08C2601A8017D /* Variable.h */; };
+		F5C921D204B08C2601A8017D /* Variable.m in Sources */ = {isa = PBXBuildFile; fileRef = F5C921D004B08C2601A8017D /* Variable.m */; };
+		F5CA271404AA158D01A8017D /* Controller.h in Headers */ = {isa = PBXBuildFile; fileRef = F5CA271204AA158D01A8017D /* Controller.h */; };
+		F5CA271504AA158D01A8017D /* Controller.m in Sources */ = {isa = PBXBuildFile; fileRef = F5CA271304AA158D01A8017D /* Controller.m */; };
+		F5CA271804AA175201A8017D /* XLogoDocument.nib in Resources */ = {isa = PBXBuildFile; fileRef = F5CA271604AA175201A8017D /* XLogoDocument.nib */; };
+		F5CA271B04AA175E01A8017D /* LogoDocument.h in Headers */ = {isa = PBXBuildFile; fileRef = F5CA271904AA175E01A8017D /* LogoDocument.h */; };
+		F5CA271C04AA175E01A8017D /* LogoDocument.m in Sources */ = {isa = PBXBuildFile; fileRef = F5CA271A04AA175E01A8017D /* LogoDocument.m */; };
+		F5CA281804AA3F4901A8017D /* Debugging.h in Headers */ = {isa = PBXBuildFile; fileRef = F5CA281704AA3F4901A8017D /* Debugging.h */; };
+		F5CA282104AA4C4001A8017D /* NSTextViewOutputExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = F5CA281A04AA420601A8017D /* NSTextViewOutputExtensions.m */; };
+		F5CA282204AA4C4101A8017D /* NSTextViewOutputExtensions.h in Headers */ = {isa = PBXBuildFile; fileRef = F5CA281904AA420601A8017D /* NSTextViewOutputExtensions.h */; };
+		F5CA282504AA556701A8017D /* Turtle.h in Headers */ = {isa = PBXBuildFile; fileRef = F5CA282304AA556701A8017D /* Turtle.h */; };
+		F5CA282604AA556701A8017D /* Turtle.m in Sources */ = {isa = PBXBuildFile; fileRef = F5CA282404AA556701A8017D /* Turtle.m */; };
+		F5CA283104AA60BE01A8017D /* Utilities.h in Headers */ = {isa = PBXBuildFile; fileRef = F5CA282F04AA60BE01A8017D /* Utilities.h */; };
+		F5CA283204AA60BE01A8017D /* Utilities.c in Sources */ = {isa = PBXBuildFile; fileRef = F5CA283004AA60BE01A8017D /* Utilities.c */; };
+		F5CA284904AA907101A8017D /* DrawCommand.h in Headers */ = {isa = PBXBuildFile; fileRef = F5CA284704AA907101A8017D /* DrawCommand.h */; };
+		F5CA284A04AA907101A8017D /* DrawCommand.m in Sources */ = {isa = PBXBuildFile; fileRef = F5CA284804AA907101A8017D /* DrawCommand.m */; };
+		F5CA285104AA9B0F01A8017D /* TurtleView.h in Headers */ = {isa = PBXBuildFile; fileRef = F5CA284F04AA9B0F01A8017D /* TurtleView.h */; };
+		F5CA285204AA9B0F01A8017D /* TurtleView.m in Sources */ = {isa = PBXBuildFile; fileRef = F5CA285004AA9B0F01A8017D /* TurtleView.m */; };
+		F5CAB9F604ABB96301A8017D /* Commands.h in Headers */ = {isa = PBXBuildFile; fileRef = F5CAB9F404ABB96301A8017D /* Commands.h */; };
+		F5CAB9F704ABB96301A8017D /* Commands.c in Sources */ = {isa = PBXBuildFile; fileRef = F5CAB9F504ABB96301A8017D /* Commands.c */; };
+		F5CAB9F804ABBA7401A8017D /* LogoParser.h in Headers */ = {isa = PBXBuildFile; fileRef = F5CA272004AA230C01A8017D /* LogoParser.h */; };
+		F5CABA0804ABBFD701A8017D /* LogoParser.m in Sources */ = {isa = PBXBuildFile; fileRef = F5CA272104AA230C01A8017D /* LogoParser.m */; };
+		F5CABA1104ABCA9801A8017D /* Expression.h in Headers */ = {isa = PBXBuildFile; fileRef = F5CABA0F04ABCA9801A8017D /* Expression.h */; };
+		F5CABA1204ABCA9801A8017D /* Expression.m in Sources */ = {isa = PBXBuildFile; fileRef = F5CABA1004ABCA9801A8017D /* Expression.m */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		089C1660FE840EACC02AAC07 /* English */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = English; path = Resources/English.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		1058C7A7FEA54F5311CA2CBB /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = /System/Library/Frameworks/Cocoa.framework; sourceTree = "<absolute>"; };
+		1758732AFF379DA111CA2CBB /* XLogo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; path = XLogo.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		1F01AF0104BC60DD005A17E1 /* title.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = title.png; sourceTree = "<group>"; };
+		1F05108104D1ED7A00FEFB36 /* Spanish */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = Spanish; path = Resources/Spanish.lproj/MainMenu.nib; sourceTree = "<group>"; };
+		1F05108204D1F2E700FEFB36 /* Spanish */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = Spanish; path = Resources/Spanish.lproj/XLogoDocument.nib; sourceTree = "<group>"; };
+		1F05108304D1F35700FEFB36 /* pare.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = pare.png; sourceTree = "<group>"; };
+		1F05108504D1F73F00FEFB36 /* partir.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = partir.png; sourceTree = "<group>"; };
+		1F672CFA04D42E9100AB81D1 /* French */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = French; path = Resources/French.lproj/XLogoDocument.nib; sourceTree = "<group>"; };
+		1F672CFB04D42F9000AB81D1 /* depart.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = depart.png; sourceTree = "<group>"; };
+		1F7F37F804B9DE2700B14428 /* doc.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; name = doc.icns; path = images/doc.icns; sourceTree = SOURCE_ROOT; };
+		1FA5D51704B9E45B0095F9A4 /* Readme.rtf */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; path = Readme.rtf; sourceTree = "<group>"; };
+		1FA5D51904B9E4690095F9A4 /* Version Control.rtf */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; path = "Version Control.rtf"; sourceTree = "<group>"; };
+		1FE2FB7004D0C42D00F42F44 /* French */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = French; path = Resources/French.lproj/MainMenu.nib; sourceTree = "<group>"; };
+		1FEB6E7C04B72E9700B7EED8 /* go.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = go.png; sourceTree = "<group>"; };
+		1FEB6E7D04B72E9700B7EED8 /* load.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = load.png; sourceTree = "<group>"; };
+		1FEB6E7E04B72E9700B7EED8 /* logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = logo.png; sourceTree = "<group>"; };
+		1FEB6E7F04B72E9700B7EED8 /* printer.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = printer.png; sourceTree = "<group>"; };
+		1FEB6E8004B72E9700B7EED8 /* save.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = save.png; sourceTree = "<group>"; };
+		1FEB6E8104B72E9700B7EED8 /* xlogo.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = xlogo.icns; sourceTree = "<group>"; };
+		1FEB6EE504B7332200B7EED8 /* xlogo help */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = folder; path = "xlogo help"; sourceTree = SOURCE_ROOT; };
+		1FED70F604D2EAC000FEFB36 /* Japanese */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = Japanese; path = Resources/Japanese.lproj/MainMenu.nib; sourceTree = "<group>"; };
+		1FED70F704D2EBFE00FEFB36 /* Japanese */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = Japanese; path = Resources/Japanese.lproj/XLogoDocument.nib; sourceTree = "<group>"; };
+		1FED70F804D2EC9300FEFB36 /* tomare.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = tomare.png; sourceTree = "<group>"; };
+		1FED70FA04D2ED4900FEFB36 /* go_japanese.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = go_japanese.png; sourceTree = "<group>"; };
+		1FF15BB804D49C680053C108 /* Italian */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = Italian; path = Resources/Italian.lproj/MainMenu.nib; sourceTree = "<group>"; };
+		1FF15BB904D49DCB0053C108 /* Italian */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = Italian; path = Resources/Italian.lproj/XLogoDocument.nib; sourceTree = "<group>"; };
+		1FF15BBA04D49F5F0053C108 /* inizia.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = inizia.png; sourceTree = "<group>"; };
+		1FFB4E9604B73F8400A4A4CF /* stop.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = stop.png; sourceTree = "<group>"; };
+		2A37F4B0FDCFA73011CA2CEA /* main.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		2A37F4B7FDCFA73011CA2CEA /* English */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = English; path = Resources/English.lproj/MainMenu.nib; sourceTree = "<group>"; };
+		2A37F4BAFDCFA73011CA2CEA /* English */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; name = English; path = Resources/English.lproj/Credits.rtf; sourceTree = "<group>"; };
+		2A37F4C4FDCFA73011CA2CEA /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = /System/Library/Frameworks/AppKit.framework; sourceTree = "<absolute>"; };
+		2A37F4C5FDCFA73011CA2CEA /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
+		4C66DC220B5B193600EC045B /* Info-XLogo__Upgraded_.plist */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = "Info-XLogo__Upgraded_.plist"; sourceTree = "<group>"; };
+		4C66DC230B5B193600EC045B /* XLogo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = XLogo.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		B41F37370554198300A8017D /* German */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = German; path = Resources/German.lproj/MainMenu.nib; sourceTree = "<group>"; };
+		B41F37380554198800A8017D /* German */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = German; path = Resources/German.lproj/XLogoDocument.nib; sourceTree = "<group>"; };
+		B41F373905541F9C00A8017D /* Danish */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = Danish; path = Resources/Danish.lproj/MainMenu.nib; sourceTree = "<group>"; };
+		B41F373A05541FA200A8017D /* Danish */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = Danish; path = Resources/Danish.lproj/XLogoDocument.nib; sourceTree = "<group>"; };
+		B41F377405541FF000A8017D /* kor.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = kor.png; sourceTree = "<group>"; };
+		B4571CD7056EBE8600A8017D /* Debugging.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = Debugging.c; sourceTree = "<group>"; };
+		B4614059051EB8C100A8017D /* LogoColorTable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LogoColorTable.h; sourceTree = "<group>"; };
+		B461405A051EB8C100A8017D /* LogoColorTable.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LogoColorTable.m; sourceTree = "<group>"; };
+		B498350C056CE2D200A8017D /* BrainStorm sheet.rtfd */ = {isa = PBXFileReference; lastKnownFileType = wrapper.rtfd; name = "BrainStorm sheet.rtfd"; path = "Text files/BrainStorm sheet.rtfd"; sourceTree = "<group>"; };
+		B498350E056CE2DA00A8017D /* SampleCode.rtf */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; name = SampleCode.rtf; path = "Text files/SampleCode.rtf"; sourceTree = "<group>"; };
+		B4D6E4B5056CBCED00A8017D /* Preferences.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Preferences.h; sourceTree = "<group>"; };
+		B4D6E4B6056CBCED00A8017D /* Preferences.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Preferences.m; sourceTree = "<group>"; };
+		F52BE4AB04AFAF6201A8017D /* LogoParserExpression.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = LogoParserExpression.h; sourceTree = "<group>"; };
+		F52BE4AC04AFAF6201A8017D /* LogoParserExpression.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = LogoParserExpression.m; sourceTree = "<group>"; };
+		F5B0C25D04ACFC4C01A8017D /* StackObject.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = StackObject.h; sourceTree = "<group>"; };
+		F5B0C25E04ACFC4C01A8017D /* StackObject.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = StackObject.m; sourceTree = "<group>"; };
+		F5C921CF04B08C2601A8017D /* Variable.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = Variable.h; sourceTree = "<group>"; };
+		F5C921D004B08C2601A8017D /* Variable.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = Variable.m; sourceTree = "<group>"; };
+		F5C9AEE904B28FDC01A8017D /* Writing a parser.rtf */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; path = "Writing a parser.rtf"; sourceTree = "<group>"; };
+		F5CA271204AA158D01A8017D /* Controller.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = Controller.h; sourceTree = "<group>"; };
+		F5CA271304AA158D01A8017D /* Controller.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = Controller.m; sourceTree = "<group>"; };
+		F5CA271704AA175201A8017D /* XLogoDocument.nib */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = XLogoDocument.nib; path = Resources/English.lproj/XLogoDocument.nib; sourceTree = "<group>"; };
+		F5CA271904AA175E01A8017D /* LogoDocument.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = LogoDocument.h; sourceTree = "<group>"; };
+		F5CA271A04AA175E01A8017D /* LogoDocument.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = LogoDocument.m; sourceTree = "<group>"; };
+		F5CA272004AA230C01A8017D /* LogoParser.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = LogoParser.h; sourceTree = "<group>"; };
+		F5CA272104AA230C01A8017D /* LogoParser.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = LogoParser.m; sourceTree = "<group>"; };
+		F5CA281704AA3F4901A8017D /* Debugging.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = Debugging.h; sourceTree = "<group>"; };
+		F5CA281904AA420601A8017D /* NSTextViewOutputExtensions.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = NSTextViewOutputExtensions.h; sourceTree = "<group>"; };
+		F5CA281A04AA420601A8017D /* NSTextViewOutputExtensions.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = NSTextViewOutputExtensions.m; sourceTree = "<group>"; };
+		F5CA281D04AA427101A8017D /* NSStringParserExtensions.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = NSStringParserExtensions.h; sourceTree = "<group>"; };
+		F5CA281E04AA427101A8017D /* NSStringParserExtensions.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = NSStringParserExtensions.m; sourceTree = "<group>"; };
+		F5CA282304AA556701A8017D /* Turtle.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = Turtle.h; sourceTree = "<group>"; };
+		F5CA282404AA556701A8017D /* Turtle.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = Turtle.m; sourceTree = "<group>"; };
+		F5CA282F04AA60BE01A8017D /* Utilities.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = Utilities.h; path = Utilities/Utilities.h; sourceTree = "<group>"; };
+		F5CA283004AA60BE01A8017D /* Utilities.c */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.c; name = Utilities.c; path = Utilities/Utilities.c; sourceTree = "<group>"; };
+		F5CA283C04AA71D601A8017D /* Logo Commands.rtf */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; path = "Logo Commands.rtf"; sourceTree = "<group>"; };
+		F5CA284704AA907101A8017D /* DrawCommand.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = DrawCommand.h; sourceTree = "<group>"; };
+		F5CA284804AA907101A8017D /* DrawCommand.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = DrawCommand.m; sourceTree = "<group>"; };
+		F5CA284F04AA9B0F01A8017D /* TurtleView.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = TurtleView.h; sourceTree = "<group>"; };
+		F5CA285004AA9B0F01A8017D /* TurtleView.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = TurtleView.m; sourceTree = "<group>"; };
+		F5CAB9F404ABB96301A8017D /* Commands.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = Commands.h; sourceTree = "<group>"; };
+		F5CAB9F504ABB96301A8017D /* Commands.c */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.c; path = Commands.c; sourceTree = "<group>"; };
+		F5CABA0F04ABCA9801A8017D /* Expression.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = Expression.h; sourceTree = "<group>"; };
+		F5CABA1004ABCA9801A8017D /* Expression.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = Expression.m; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		2A37F4D1FDCFA73011CA2CEA /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				1058C7A9FEA54F5311CA2CBB /* Cocoa.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		4C66DC1C0B5B193600EC045B /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				4C66DC1D0B5B193600EC045B /* Cocoa.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		1058C7A6FEA54F5311CA2CBB /* Linked Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				1058C7A7FEA54F5311CA2CBB /* Cocoa.framework */,
+			);
+			name = "Linked Frameworks";
+			sourceTree = "<group>";
+		};
+		1058C7A8FEA54F5311CA2CBB /* Other Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				2A37F4C5FDCFA73011CA2CEA /* Foundation.framework */,
+				2A37F4C4FDCFA73011CA2CEA /* AppKit.framework */,
+			);
+			name = "Other Frameworks";
+			sourceTree = "<group>";
+		};
+		19C28FB0FE9D524F11CA2CBB /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				1758732AFF379DA111CA2CBB /* XLogo.app */,
+				4C66DC230B5B193600EC045B /* XLogo.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		1FEB6E7A04B72E9700B7EED8 /* images */ = {
+			isa = PBXGroup;
+			children = (
+				1FEB6E7C04B72E9700B7EED8 /* go.png */,
+				B41F377405541FF000A8017D /* kor.png */,
+				1FEB6E7D04B72E9700B7EED8 /* load.png */,
+				1FEB6E7E04B72E9700B7EED8 /* logo.png */,
+				1FEB6E7F04B72E9700B7EED8 /* printer.png */,
+				1FEB6E8004B72E9700B7EED8 /* save.png */,
+				1FEB6E8104B72E9700B7EED8 /* xlogo.icns */,
+				1FFB4E9604B73F8400A4A4CF /* stop.png */,
+				1F7F37F804B9DE2700B14428 /* doc.icns */,
+				1F01AF0104BC60DD005A17E1 /* title.png */,
+				1F05108304D1F35700FEFB36 /* pare.png */,
+				1F05108504D1F73F00FEFB36 /* partir.png */,
+				1FED70F804D2EC9300FEFB36 /* tomare.png */,
+				1FED70FA04D2ED4900FEFB36 /* go_japanese.png */,
+				1F672CFB04D42F9000AB81D1 /* depart.png */,
+				1FF15BBA04D49F5F0053C108 /* inizia.png */,
+			);
+			path = images;
+			sourceTree = "<group>";
+		};
+		2A37F4AAFDCFA73011CA2CEA /* LogoTest */ = {
+			isa = PBXGroup;
+			children = (
+				1FA5D51704B9E45B0095F9A4 /* Readme.rtf */,
+				1FA5D51904B9E4690095F9A4 /* Version Control.rtf */,
+				F5CA283C04AA71D601A8017D /* Logo Commands.rtf */,
+				B498350C056CE2D200A8017D /* BrainStorm sheet.rtfd */,
+				B498350E056CE2DA00A8017D /* SampleCode.rtf */,
+				F5C9AEE904B28FDC01A8017D /* Writing a parser.rtf */,
+				F5CA281704AA3F4901A8017D /* Debugging.h */,
+				B4571CD7056EBE8600A8017D /* Debugging.c */,
+				F5CAB9F304ABB95201A8017D /* Globals */,
+				F5CA282E04AA607C01A8017D /* Utilities */,
+				2A37F4ABFDCFA73011CA2CEA /* Classes */,
+				2A37F4AFFDCFA73011CA2CEA /* Other Sources */,
+				2A37F4B8FDCFA73011CA2CEA /* Resources */,
+				2A37F4C3FDCFA73011CA2CEA /* Frameworks */,
+				19C28FB0FE9D524F11CA2CBB /* Products */,
+				4C66DC220B5B193600EC045B /* Info-XLogo__Upgraded_.plist */,
+			);
+			name = LogoTest;
+			sourceTree = "<group>";
+		};
+		2A37F4ABFDCFA73011CA2CEA /* Classes */ = {
+			isa = PBXGroup;
+			children = (
+				F5CA271204AA158D01A8017D /* Controller.h */,
+				F5CA271304AA158D01A8017D /* Controller.m */,
+				F5B0C26104ACFD2001A8017D /* Standalone objects */,
+				F5CA282304AA556701A8017D /* Turtle.h */,
+				F5CA282404AA556701A8017D /* Turtle.m */,
+				F5CA284F04AA9B0F01A8017D /* TurtleView.h */,
+				F5CA285004AA9B0F01A8017D /* TurtleView.m */,
+				B4D6E4B5056CBCED00A8017D /* Preferences.h */,
+				B4D6E4B6056CBCED00A8017D /* Preferences.m */,
+				F5CA271904AA175E01A8017D /* LogoDocument.h */,
+				F5CA271A04AA175E01A8017D /* LogoDocument.m */,
+				F5CA272004AA230C01A8017D /* LogoParser.h */,
+				F5CA272104AA230C01A8017D /* LogoParser.m */,
+				F5CA281904AA420601A8017D /* NSTextViewOutputExtensions.h */,
+				F5CA281A04AA420601A8017D /* NSTextViewOutputExtensions.m */,
+				F5CDB66804AC7A2401A8017D /* Old unused stuff */,
+				F52BE4AB04AFAF6201A8017D /* LogoParserExpression.h */,
+				F52BE4AC04AFAF6201A8017D /* LogoParserExpression.m */,
+			);
+			name = Classes;
+			path = Classes/;
+			sourceTree = "<group>";
+		};
+		2A37F4AFFDCFA73011CA2CEA /* Other Sources */ = {
+			isa = PBXGroup;
+			children = (
+				2A37F4B0FDCFA73011CA2CEA /* main.m */,
+			);
+			name = "Other Sources";
+			sourceTree = "<group>";
+		};
+		2A37F4B8FDCFA73011CA2CEA /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				2A37F4B9FDCFA73011CA2CEA /* Credits.rtf */,
+				2A37F4B6FDCFA73011CA2CEA /* MainMenu.nib */,
+				F5CA271604AA175201A8017D /* XLogoDocument.nib */,
+				089C165FFE840EACC02AAC07 /* InfoPlist.strings */,
+				1FEB6E7A04B72E9700B7EED8 /* images */,
+				1FEB6EE504B7332200B7EED8 /* xlogo help */,
+			);
+			name = Resources;
+			sourceTree = "<group>";
+		};
+		2A37F4C3FDCFA73011CA2CEA /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				1058C7A6FEA54F5311CA2CBB /* Linked Frameworks */,
+				1058C7A8FEA54F5311CA2CBB /* Other Frameworks */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		F5B0C26104ACFD2001A8017D /* Standalone objects */ = {
+			isa = PBXGroup;
+			children = (
+				F5CA284704AA907101A8017D /* DrawCommand.h */,
+				F5CA284804AA907101A8017D /* DrawCommand.m */,
+				F5CABA0F04ABCA9801A8017D /* Expression.h */,
+				F5CABA1004ABCA9801A8017D /* Expression.m */,
+				F5B0C25D04ACFC4C01A8017D /* StackObject.h */,
+				F5B0C25E04ACFC4C01A8017D /* StackObject.m */,
+				F5C921CF04B08C2601A8017D /* Variable.h */,
+				F5C921D004B08C2601A8017D /* Variable.m */,
+				B4614059051EB8C100A8017D /* LogoColorTable.h */,
+				B461405A051EB8C100A8017D /* LogoColorTable.m */,
+			);
+			name = "Standalone objects";
+			sourceTree = "<group>";
+		};
+		F5CA282E04AA607C01A8017D /* Utilities */ = {
+			isa = PBXGroup;
+			children = (
+				F5CA282F04AA60BE01A8017D /* Utilities.h */,
+				F5CA283004AA60BE01A8017D /* Utilities.c */,
+			);
+			name = Utilities;
+			sourceTree = "<group>";
+		};
+		F5CAB9F304ABB95201A8017D /* Globals */ = {
+			isa = PBXGroup;
+			children = (
+				F5CAB9F404ABB96301A8017D /* Commands.h */,
+				F5CAB9F504ABB96301A8017D /* Commands.c */,
+			);
+			path = Globals;
+			sourceTree = "<group>";
+		};
+		F5CDB66804AC7A2401A8017D /* Old unused stuff */ = {
+			isa = PBXGroup;
+			children = (
+				F5CA281D04AA427101A8017D /* NSStringParserExtensions.h */,
+				F5CA281E04AA427101A8017D /* NSStringParserExtensions.m */,
+			);
+			name = "Old unused stuff";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXHeadersBuildPhase section */
+		2A37F4C7FDCFA73011CA2CEA /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F5CA271404AA158D01A8017D /* Controller.h in Headers */,
+				F5CA271B04AA175E01A8017D /* LogoDocument.h in Headers */,
+				F5CA281804AA3F4901A8017D /* Debugging.h in Headers */,
+				F5CA282204AA4C4101A8017D /* NSTextViewOutputExtensions.h in Headers */,
+				F5CA282504AA556701A8017D /* Turtle.h in Headers */,
+				F5CA283104AA60BE01A8017D /* Utilities.h in Headers */,
+				F5CA284904AA907101A8017D /* DrawCommand.h in Headers */,
+				F5CA285104AA9B0F01A8017D /* TurtleView.h in Headers */,
+				F5CAB9F604ABB96301A8017D /* Commands.h in Headers */,
+				F5CAB9F804ABBA7401A8017D /* LogoParser.h in Headers */,
+				F5CABA1104ABCA9801A8017D /* Expression.h in Headers */,
+				F5B0C25F04ACFC4C01A8017D /* StackObject.h in Headers */,
+				F52BE4AD04AFAF6201A8017D /* LogoParserExpression.h in Headers */,
+				F5C921D104B08C2601A8017D /* Variable.h in Headers */,
+				B461405B051EB8C100A8017D /* LogoColorTable.h in Headers */,
+				B4D6E4B7056CBCED00A8017D /* Preferences.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		4C66DBE30B5B193600EC045B /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				4C66DBE40B5B193600EC045B /* Controller.h in Headers */,
+				4C66DBE50B5B193600EC045B /* LogoDocument.h in Headers */,
+				4C66DBE60B5B193600EC045B /* Debugging.h in Headers */,
+				4C66DBE70B5B193600EC045B /* NSTextViewOutputExtensions.h in Headers */,
+				4C66DBE80B5B193600EC045B /* Turtle.h in Headers */,
+				4C66DBE90B5B193600EC045B /* Utilities.h in Headers */,
+				4C66DBEA0B5B193600EC045B /* DrawCommand.h in Headers */,
+				4C66DBEB0B5B193600EC045B /* TurtleView.h in Headers */,
+				4C66DBEC0B5B193600EC045B /* Commands.h in Headers */,
+				4C66DBED0B5B193600EC045B /* LogoParser.h in Headers */,
+				4C66DBEE0B5B193600EC045B /* Expression.h in Headers */,
+				4C66DBEF0B5B193600EC045B /* StackObject.h in Headers */,
+				4C66DBF00B5B193600EC045B /* LogoParserExpression.h in Headers */,
+				4C66DBF10B5B193600EC045B /* Variable.h in Headers */,
+				4C66DBF20B5B193600EC045B /* LogoColorTable.h in Headers */,
+				4C66DBF30B5B193600EC045B /* Preferences.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
+/* Begin PBXNativeTarget section */
+		4C66DBE20B5B193600EC045B /* XLogo (Upgraded) */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 4C66DC1E0B5B193600EC045B /* Build configuration list for PBXNativeTarget "XLogo (Upgraded)" */;
+			buildPhases = (
+				4C66DBE30B5B193600EC045B /* Headers */,
+				4C66DBF40B5B193600EC045B /* Resources */,
+				4C66DC0A0B5B193600EC045B /* Sources */,
+				4C66DC1C0B5B193600EC045B /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "XLogo (Upgraded)";
+			productInstallPath = "$(HOME)/Applications";
+			productName = LogoTest;
+			productReference = 4C66DC230B5B193600EC045B /* XLogo.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		2A37F4A9FDCFA73011CA2CEA /* Project object */ = {
+			isa = PBXProject;
+			buildConfigurationList = 4C66DBB10B5B136D00EC045B /* Build configuration list for PBXProject "xlogo" */;
+			hasScannedForEncodings = 1;
+			knownRegions = (
+				English,
+				Japanese,
+				French,
+				German,
+				Spanish,
+				Italian,
+				Danish,
+			);
+			mainGroup = 2A37F4AAFDCFA73011CA2CEA /* LogoTest */;
+			projectDirPath = "";
+			targets = (
+				4C66DBE20B5B193600EC045B /* XLogo (Upgraded) */,
+				2A37F4C6FDCFA73011CA2CEA /* XLogo */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		2A37F4C9FDCFA73011CA2CEA /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				080E96D9FE201CDB7F000001 /* Credits.rtf in Resources */,
+				080E96DAFE201CDB7F000001 /* MainMenu.nib in Resources */,
+				089C1661FE840EACC02AAC07 /* InfoPlist.strings in Resources */,
+				F5CA271804AA175201A8017D /* XLogoDocument.nib in Resources */,
+				1FEB6E8304B72E9700B7EED8 /* go.png in Resources */,
+				1FEB6E8404B72E9700B7EED8 /* load.png in Resources */,
+				1FEB6E8504B72E9700B7EED8 /* logo.png in Resources */,
+				1FEB6E8604B72E9700B7EED8 /* printer.png in Resources */,
+				1FEB6E8704B72E9700B7EED8 /* save.png in Resources */,
+				1FEB6E8804B72E9700B7EED8 /* xlogo.icns in Resources */,
+				1FFB4E9704B73F8400A4A4CF /* stop.png in Resources */,
+				1F7F37F904B9DE2700B14428 /* doc.icns in Resources */,
+				1F01AF0204BC60DD005A17E1 /* title.png in Resources */,
+				1F05108404D1F35700FEFB36 /* pare.png in Resources */,
+				1F05108604D1F73F00FEFB36 /* partir.png in Resources */,
+				1F59A39304D2084300FEFB36 /* xlogo help in Resources */,
+				1FED70F904D2EC9300FEFB36 /* tomare.png in Resources */,
+				1FED70FB04D2ED4900FEFB36 /* go_japanese.png in Resources */,
+				1F672CFC04D42F9000AB81D1 /* depart.png in Resources */,
+				1FF15BBB04D49F5F0053C108 /* inizia.png in Resources */,
+				B41F377505541FF000A8017D /* kor.png in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		4C66DBF40B5B193600EC045B /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				4C66DBF50B5B193600EC045B /* Credits.rtf in Resources */,
+				4C66DBF60B5B193600EC045B /* MainMenu.nib in Resources */,
+				4C66DBF70B5B193600EC045B /* InfoPlist.strings in Resources */,
+				4C66DBF80B5B193600EC045B /* XLogoDocument.nib in Resources */,
+				4C66DBF90B5B193600EC045B /* go.png in Resources */,
+				4C66DBFA0B5B193600EC045B /* load.png in Resources */,
+				4C66DBFB0B5B193600EC045B /* logo.png in Resources */,
+				4C66DBFC0B5B193600EC045B /* printer.png in Resources */,
+				4C66DBFD0B5B193600EC045B /* save.png in Resources */,
+				4C66DBFE0B5B193600EC045B /* xlogo.icns in Resources */,
+				4C66DBFF0B5B193600EC045B /* stop.png in Resources */,
+				4C66DC000B5B193600EC045B /* doc.icns in Resources */,
+				4C66DC010B5B193600EC045B /* title.png in Resources */,
+				4C66DC020B5B193600EC045B /* pare.png in Resources */,
+				4C66DC030B5B193600EC045B /* partir.png in Resources */,
+				4C66DC040B5B193600EC045B /* xlogo help in Resources */,
+				4C66DC050B5B193600EC045B /* tomare.png in Resources */,
+				4C66DC060B5B193600EC045B /* go_japanese.png in Resources */,
+				4C66DC070B5B193600EC045B /* depart.png in Resources */,
+				4C66DC080B5B193600EC045B /* inizia.png in Resources */,
+				4C66DC090B5B193600EC045B /* kor.png in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		2A37F4CEFDCFA73011CA2CEA /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2A37F4D0FDCFA73011CA2CEA /* main.m in Sources */,
+				F5CA271504AA158D01A8017D /* Controller.m in Sources */,
+				F5CA271C04AA175E01A8017D /* LogoDocument.m in Sources */,
+				F5CA282104AA4C4001A8017D /* NSTextViewOutputExtensions.m in Sources */,
+				F5CA282604AA556701A8017D /* Turtle.m in Sources */,
+				F5CA283204AA60BE01A8017D /* Utilities.c in Sources */,
+				F5CA284A04AA907101A8017D /* DrawCommand.m in Sources */,
+				F5CA285204AA9B0F01A8017D /* TurtleView.m in Sources */,
+				F5CAB9F704ABB96301A8017D /* Commands.c in Sources */,
+				F5CABA0804ABBFD701A8017D /* LogoParser.m in Sources */,
+				F5CABA1204ABCA9801A8017D /* Expression.m in Sources */,
+				F5B0C26004ACFC4C01A8017D /* StackObject.m in Sources */,
+				F52BE4AE04AFAF6201A8017D /* LogoParserExpression.m in Sources */,
+				F5C921D204B08C2601A8017D /* Variable.m in Sources */,
+				B461405C051EB8C100A8017D /* LogoColorTable.m in Sources */,
+				B4D6E4B8056CBCED00A8017D /* Preferences.m in Sources */,
+				B4571CD8056EBE8600A8017D /* Debugging.c in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		4C66DC0A0B5B193600EC045B /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				4C66DC0B0B5B193600EC045B /* main.m in Sources */,
+				4C66DC0C0B5B193600EC045B /* Controller.m in Sources */,
+				4C66DC0D0B5B193600EC045B /* LogoDocument.m in Sources */,
+				4C66DC0E0B5B193600EC045B /* NSTextViewOutputExtensions.m in Sources */,
+				4C66DC0F0B5B193600EC045B /* Turtle.m in Sources */,
+				4C66DC100B5B193600EC045B /* Utilities.c in Sources */,
+				4C66DC110B5B193600EC045B /* DrawCommand.m in Sources */,
+				4C66DC120B5B193600EC045B /* TurtleView.m in Sources */,
+				4C66DC130B5B193600EC045B /* Commands.c in Sources */,
+				4C66DC140B5B193600EC045B /* LogoParser.m in Sources */,
+				4C66DC150B5B193600EC045B /* Expression.m in Sources */,
+				4C66DC160B5B193600EC045B /* StackObject.m in Sources */,
+				4C66DC170B5B193600EC045B /* LogoParserExpression.m in Sources */,
+				4C66DC180B5B193600EC045B /* Variable.m in Sources */,
+				4C66DC190B5B193600EC045B /* LogoColorTable.m in Sources */,
+				4C66DC1A0B5B193600EC045B /* Preferences.m in Sources */,
+				4C66DC1B0B5B193600EC045B /* Debugging.c in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		089C165FFE840EACC02AAC07 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				089C1660FE840EACC02AAC07 /* English */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		2A37F4B6FDCFA73011CA2CEA /* MainMenu.nib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				2A37F4B7FDCFA73011CA2CEA /* English */,
+				1FE2FB7004D0C42D00F42F44 /* French */,
+				1F05108104D1ED7A00FEFB36 /* Spanish */,
+				1FED70F604D2EAC000FEFB36 /* Japanese */,
+				1FF15BB804D49C680053C108 /* Italian */,
+				B41F37370554198300A8017D /* German */,
+				B41F373905541F9C00A8017D /* Danish */,
+			);
+			name = MainMenu.nib;
+			sourceTree = "<group>";
+		};
+		2A37F4B9FDCFA73011CA2CEA /* Credits.rtf */ = {
+			isa = PBXVariantGroup;
+			children = (
+				2A37F4BAFDCFA73011CA2CEA /* English */,
+			);
+			name = Credits.rtf;
+			sourceTree = "<group>";
+		};
+		F5CA271604AA175201A8017D /* XLogoDocument.nib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				F5CA271704AA175201A8017D /* XLogoDocument.nib */,
+				1F672CFA04D42E9100AB81D1 /* French */,
+				1F05108204D1F2E700FEFB36 /* Spanish */,
+				1FED70F704D2EBFE00FEFB36 /* Japanese */,
+				1FF15BB904D49DCB0053C108 /* Italian */,
+				B41F37380554198800A8017D /* German */,
+				B41F373A05541FA200A8017D /* Danish */,
+			);
+			name = XLogoDocument.nib;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		4C66DBAE0B5B136D00EC045B /* Development */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = NO;
+				FRAMEWORK_SEARCH_PATHS = "";
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_FIX_AND_CONTINUE = YES;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				HEADER_SEARCH_PATHS = "";
+				INSTALL_PATH = "$(HOME)/Applications";
+				LIBRARY_SEARCH_PATHS = "";
+				OPTIMIZATION_CFLAGS = "-O0 -DDEBUGFLAG=1";
+				OTHER_CFLAGS = "";
+				OTHER_LDFLAGS = "";
+				PRODUCT_NAME = XLogo;
+				SECTORDER_FLAGS = "";
+				WARNING_CFLAGS = (
+					"-Wmost",
+					"-Wno-four-char-constants",
+					"-Wno-unknown-pragmas",
+				);
+				WRAPPER_EXTENSION = app;
+				ZERO_LINK = YES;
+			};
+			name = Development;
+		};
+		4C66DBAF0B5B136D00EC045B /* Deployment */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = YES;
+				FRAMEWORK_SEARCH_PATHS = "";
+				GCC_ENABLE_FIX_AND_CONTINUE = NO;
+				HEADER_SEARCH_PATHS = "";
+				INSTALL_PATH = "$(HOME)/Applications";
+				LIBRARY_SEARCH_PATHS = "";
+				OTHER_CFLAGS = "";
+				OTHER_LDFLAGS = "";
+				PRODUCT_NAME = XLogo;
+				SECTORDER_FLAGS = "";
+				WARNING_CFLAGS = (
+					"-Wmost",
+					"-Wno-four-char-constants",
+					"-Wno-unknown-pragmas",
+				);
+				WRAPPER_EXTENSION = app;
+				ZERO_LINK = NO;
+			};
+			name = Deployment;
+		};
+		4C66DBB00B5B136D00EC045B /* Default */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				FRAMEWORK_SEARCH_PATHS = "";
+				HEADER_SEARCH_PATHS = "";
+				INSTALL_PATH = "$(HOME)/Applications";
+				LIBRARY_SEARCH_PATHS = "";
+				OTHER_CFLAGS = "";
+				OTHER_LDFLAGS = "";
+				PRODUCT_NAME = XLogo;
+				SECTORDER_FLAGS = "";
+				WARNING_CFLAGS = (
+					"-Wmost",
+					"-Wno-four-char-constants",
+					"-Wno-unknown-pragmas",
+				);
+				WRAPPER_EXTENSION = app;
+			};
+			name = Default;
+		};
+		4C66DBB20B5B136D00EC045B /* Development */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = (
+					ppc,
+					i386,
+				);
+				SDKROOT = /Developer/SDKs/MacOSX10.4u.sdk;
+			};
+			name = Development;
+		};
+		4C66DBB30B5B136D00EC045B /* Deployment */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				SDKROOT = /Developer/SDKs/MacOSX10.4u.sdk;
+			};
+			name = Deployment;
+		};
+		4C66DBB40B5B136D00EC045B /* Default */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				SDKROOT = /Developer/SDKs/MacOSX10.4u.sdk;
+			};
+			name = Default;
+		};
+		4C66DC1F0B5B193600EC045B /* Development */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = NO;
+				FRAMEWORK_SEARCH_PATHS = "";
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_FIX_AND_CONTINUE = YES;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				HEADER_SEARCH_PATHS = "";
+				INFOPLIST_FILE = "Info-XLogo__Upgraded_.plist";
+				INSTALL_PATH = "$(HOME)/Applications";
+				LIBRARY_SEARCH_PATHS = "";
+				OTHER_CFLAGS = "";
+				OTHER_LDFLAGS = "";
+				PRODUCT_NAME = XLogo;
+				SECTORDER_FLAGS = "";
+				WARNING_CFLAGS = (
+					"-Wmost",
+					"-Wno-four-char-constants",
+					"-Wno-unknown-pragmas",
+				);
+				WRAPPER_EXTENSION = app;
+				ZERO_LINK = YES;
+			};
+			name = Development;
+		};
+		4C66DC200B5B193600EC045B /* Deployment */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = (
+					ppc,
+					i386,
+				);
+				COPY_PHASE_STRIP = YES;
+				FRAMEWORK_SEARCH_PATHS = "";
+				GCC_ENABLE_FIX_AND_CONTINUE = NO;
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				HEADER_SEARCH_PATHS = "";
+				INFOPLIST_FILE = "Info-XLogo__Upgraded_.plist";
+				INSTALL_PATH = "$(HOME)/Applications";
+				LIBRARY_SEARCH_PATHS = "";
+				OTHER_CFLAGS = "";
+				OTHER_LDFLAGS = "";
+				PRODUCT_NAME = XLogo;
+				SECTORDER_FLAGS = "";
+				WARNING_CFLAGS = (
+					"-Wmost",
+					"-Wno-four-char-constants",
+					"-Wno-unknown-pragmas",
+				);
+				WRAPPER_EXTENSION = app;
+				ZERO_LINK = NO;
+			};
+			name = Deployment;
+		};
+		4C66DC210B5B193600EC045B /* Default */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = (
+					ppc,
+					i386,
+				);
+				FRAMEWORK_SEARCH_PATHS = "";
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				HEADER_SEARCH_PATHS = "";
+				INFOPLIST_FILE = "Info-XLogo__Upgraded_.plist";
+				INSTALL_PATH = "$(HOME)/Applications";
+				LIBRARY_SEARCH_PATHS = "";
+				OTHER_CFLAGS = "";
+				OTHER_LDFLAGS = "";
+				PRODUCT_NAME = XLogo;
+				SECTORDER_FLAGS = "";
+				WARNING_CFLAGS = (
+					"-Wmost",
+					"-Wno-four-char-constants",
+					"-Wno-unknown-pragmas",
+				);
+				WRAPPER_EXTENSION = app;
+			};
+			name = Default;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		4C66DBAD0B5B136D00EC045B /* Build configuration list for PBXApplicationTarget "XLogo" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				4C66DBAE0B5B136D00EC045B /* Development */,
+				4C66DBAF0B5B136D00EC045B /* Deployment */,
+				4C66DBB00B5B136D00EC045B /* Default */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Default;
+		};
+		4C66DBB10B5B136D00EC045B /* Build configuration list for PBXProject "xlogo" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				4C66DBB20B5B136D00EC045B /* Development */,
+				4C66DBB30B5B136D00EC045B /* Deployment */,
+				4C66DBB40B5B136D00EC045B /* Default */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Default;
+		};
+		4C66DC1E0B5B193600EC045B /* Build configuration list for PBXNativeTarget "XLogo (Upgraded)" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				4C66DC1F0B5B193600EC045B /* Development */,
+				4C66DC200B5B193600EC045B /* Deployment */,
+				4C66DC210B5B193600EC045B /* Default */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Default;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 2A37F4A9FDCFA73011CA2CEA /* Project object */;
+}

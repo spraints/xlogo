@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CFBundleDevelopmentRegion</key>
+	<string>English</string>
+	<key>CFBundleDocumentTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleTypeExtensions</key>
+			<array>
+				<string>xlogo</string>
+			</array>
+			<key>CFBundleTypeIconFile</key>
+			<string>doc</string>
+			<key>CFBundleTypeName</key>
+			<string>XLogoDocument</string>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>NSDocumentClass</key>
+			<string>LogoDocument</string>
+		</dict>
+	</array>
+	<key>CFBundleExecutable</key>
+	<string>XLogo</string>
+	<key>CFBundleGetInfoString</key>
+	<string>XLogo version 0.3.5 © 2003 Jeff Skrysak</string>
+	<key>CFBundleHelpBookFolder</key>
+	<string>xlogo help</string>
+	<key>CFBundleHelpBookName</key>
+	<string>XLogo Help</string>
+	<key>CFBundleIconFile</key>
+	<string>xlogo</string>
+	<key>CFBundleIdentifier</key>
+	<string>com.JeffSkrysak.XLogo</string>
+	<key>CFBundleInfoDictionaryVersion</key>
+	<string>6.0</string>
+	<key>CFBundleName</key>
+	<string>XLogo</string>
+	<key>CFBundlePackageType</key>
+	<string>APPL</string>
+	<key>CFBundleShortVersionString</key>
+	<string>0.3.5</string>
+	<key>CFBundleSignature</key>
+	<string>????</string>
+	<key>CFBundleVersion</key>
+	<string>0.3.5</string>
+	<key>NSMainNibFile</key>
+	<string>MainMenu</string>
+	<key>NSPrincipalClass</key>
+	<string>NSApplication</string>
+</dict>
+</plist>

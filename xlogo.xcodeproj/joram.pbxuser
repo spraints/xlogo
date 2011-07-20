@@ -1,0 +1,174 @@
+// !$*UTF8*$!
+{
+	089C1660FE840EACC02AAC07 /* English */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {711, 429}}";
+			sepNavSelRange = "{165, 0}";
+			sepNavVisRect = "{{0, 0}, {711, 429}}";
+			sepNavWindowFrame = "{{84, 120}, {750, 558}}";
+		};
+	};
+	1FA5D51904B9E4690095F9A4 /* Version Control.rtf */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {711, 648}}";
+			sepNavSelRange = "{1718, 0}";
+			sepNavVisRect = "{{0, 204}, {711, 444}}";
+			sepNavWindowFrame = "{{38, 162}, {750, 558}}";
+		};
+	};
+	2A37F4A9FDCFA73011CA2CEA /* Project object */ = {
+		activeBuildConfigurationName = Default;
+		activeExecutable = 4C66DC240B5B193600EC045B /* XLogo (Upgraded) */;
+		activeTarget = 4C66DBE20B5B193600EC045B /* XLogo (Upgraded) */;
+		codeSenseManager = 4C66DBB60B5B136D00EC045B /* Code sense */;
+		executables = (
+			4C66DB8F0B5B135100EC045B /* XLogo */,
+			4C66DC240B5B193600EC045B /* XLogo (Upgraded) */,
+		);
+		perUserDictionary = {
+			PBXConfiguration.PBXFileTableDataSource3.PBXFileTableDataSource = {
+				PBXFileTableDataSourceColumnSortingDirectionKey = "-1";
+				PBXFileTableDataSourceColumnSortingKey = PBXFileDataSource_Filename_ColumnID;
+				PBXFileTableDataSourceColumnWidthsKey = (
+					20,
+					243,
+					20,
+					48,
+					43,
+					43,
+					20,
+				);
+				PBXFileTableDataSourceColumnsKey = (
+					PBXFileDataSource_FiletypeID,
+					PBXFileDataSource_Filename_ColumnID,
+					PBXFileDataSource_Built_ColumnID,
+					PBXFileDataSource_ObjectSize_ColumnID,
+					PBXFileDataSource_Errors_ColumnID,
+					PBXFileDataSource_Warnings_ColumnID,
+					PBXFileDataSource_Target_ColumnID,
+				);
+			};
+			PBXConfiguration.PBXTargetDataSource.PBXTargetDataSource = {
+				PBXFileTableDataSourceColumnSortingDirectionKey = "-1";
+				PBXFileTableDataSourceColumnSortingKey = PBXFileDataSource_Filename_ColumnID;
+				PBXFileTableDataSourceColumnWidthsKey = (
+					20,
+					200,
+					63,
+					20,
+					48,
+					43,
+					43,
+				);
+				PBXFileTableDataSourceColumnsKey = (
+					PBXFileDataSource_FiletypeID,
+					PBXFileDataSource_Filename_ColumnID,
+					PBXTargetDataSource_PrimaryAttribute,
+					PBXFileDataSource_Built_ColumnID,
+					PBXFileDataSource_ObjectSize_ColumnID,
+					PBXFileDataSource_Errors_ColumnID,
+					PBXFileDataSource_Warnings_ColumnID,
+				);
+			};
+			PBXPerProjectTemplateStateSaveDate = 190518097;
+			PBXWorkspaceStateSaveDate = 190518097;
+		};
+		sourceControlManager = 4C66DBB50B5B136D00EC045B /* Source Control */;
+		userBuildSettings = {
+		};
+	};
+	2A37F4BAFDCFA73011CA2CEA /* English */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {711, 630}}";
+			sepNavSelRange = "{582, 0}";
+			sepNavVisRect = "{{0, 186}, {711, 444}}";
+			sepNavWindowFrame = "{{61, 141}, {750, 558}}";
+		};
+	};
+	2A37F4C6FDCFA73011CA2CEA /* XLogo */ = {
+		activeExec = 0;
+		executables = (
+			4C66DB8F0B5B135100EC045B /* XLogo */,
+		);
+	};
+	4C66DB8F0B5B135100EC045B /* XLogo */ = {
+		isa = PBXExecutable;
+		activeArgIndex = 2147483647;
+		activeArgIndices = (
+		);
+		argumentStrings = (
+		);
+		autoAttachOnCrash = 1;
+		configStateDict = {
+		};
+		customDataFormattersEnabled = 1;
+		debuggerPlugin = GDBDebugging;
+		disassemblyDisplayState = 0;
+		dylibVariantSuffix = "";
+		enableDebugStr = 1;
+		environmentEntries = (
+		);
+		executableSystemSymbolLevel = 0;
+		executableUserSymbolLevel = 0;
+		libgmallocEnabled = 0;
+		name = XLogo;
+		sourceDirectories = (
+		);
+	};
+	4C66DBB50B5B136D00EC045B /* Source Control */ = {
+		isa = PBXSourceControlManager;
+		fallbackIsa = XCSourceControlManager;
+		isSCMEnabled = 0;
+		scmConfiguration = {
+		};
+		scmType = "";
+	};
+	4C66DBB60B5B136D00EC045B /* Code sense */ = {
+		isa = PBXCodeSenseManager;
+		indexTemplatePath = "";
+	};
+	4C66DBE20B5B193600EC045B /* XLogo (Upgraded) */ = {
+		activeExec = 0;
+		executables = (
+			4C66DC240B5B193600EC045B /* XLogo (Upgraded) */,
+		);
+	};
+	4C66DC240B5B193600EC045B /* XLogo (Upgraded) */ = {
+		isa = PBXExecutable;
+		activeArgIndex = 2147483647;
+		activeArgIndices = (
+		);
+		argumentStrings = (
+		);
+		autoAttachOnCrash = 1;
+		configStateDict = {
+		};
+		customDataFormattersEnabled = 1;
+		debuggerPlugin = GDBDebugging;
+		disassemblyDisplayState = 0;
+		dylibVariantSuffix = "";
+		enableDebugStr = 1;
+		environmentEntries = (
+		);
+		executableSystemSymbolLevel = 0;
+		executableUserSymbolLevel = 0;
+		libgmallocEnabled = 0;
+		name = "XLogo (Upgraded)";
+		sourceDirectories = (
+		);
+	};
+	F5CA271A04AA175E01A8017D /* LogoDocument.m */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {1262, 4872}}";
+			sepNavSelRange = "{2158, 54}";
+			sepNavVisRect = "{{0, 698}, {459, 186}}";
+		};
+	};
+	F5CAB9F504ABB96301A8017D /* Commands.c */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {794, 2898}}";
+			sepNavSelRange = "{1881, 82}";
+			sepNavVisRect = "{{0, 628}, {459, 186}}";
+		};
+	};
+}
