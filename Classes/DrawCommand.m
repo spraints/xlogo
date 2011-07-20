@@ -1,9 +1,10 @@
 //
-//  main.m
+//  DrawCommand.m
 //  Software: XLogo
 //
-//  Created by Jeff Skrysak on Thu Jun 12 2003.
-//  Copyright (c) 2003 Jeff Skrysak & Jens Bauer.
+//  Created by Jens Bauer on Thu Jun 26 2003.
+//
+//  Copyright (c) 2003 Jens Bauer
 //  All rights reserved.
 //
 //  Redistribution and use in source and binary forms, with or without
@@ -28,9 +29,61 @@
 //   SUCH DAMAGE.
 //
 
-#import <Cocoa/Cocoa.h>
+#import "DrawCommand.h"
 
-int main(int argc, const char *argv[])
+
+@implementation DrawCommand
+
++ (id)drawCommandWithColor:(NSColor *)aColor fromPoint:(NSPoint)aFromPoint toPoint:(NSPoint)aToPoint
 {
-    return NSApplicationMain(argc, argv);
+	return([[DrawCommand alloc] initWithColor:aColor fromPoint:aFromPoint toPoint:aToPoint]);
 }
+
+- (id)initWithColor:(NSColor *)aColor fromPoint:(NSPoint)aFromPoint toPoint:(NSPoint)aToPoint
+{
+	self = [super init];
+	if(self)
+	{
+		color = [aColor retain];
+		fromPoint = aFromPoint;
+		toPoint = aToPoint;
+	}
+	return(self);
+}
+
+- (id)init
+{
+	self = [super init];
+	if(self)
+	{
+		color = [[NSColor blackColor] retain];
+		fromPoint.x = 0;
+		fromPoint.y = 0;
+		toPoint.x = 0;
+		toPoint.y = 0;
+	}
+	return(self);
+}
+
+- (void)dealloc
+{
+	[color release];
+	[super dealloc];
+}
+
+- (NSColor *)color
+{
+	return(color);
+}
+
+- (NSPoint)fromPoint
+{
+	return(fromPoint);
+}
+
+- (NSPoint)toPoint
+{
+	return(toPoint);
+}
+
+@end

@@ -1,9 +1,10 @@
 //
-//  main.m
+//  TurtleView.h
 //  Software: XLogo
 //
-//  Created by Jeff Skrysak on Thu Jun 12 2003.
-//  Copyright (c) 2003 Jeff Skrysak & Jens Bauer.
+//  Created by Jens Bauer & Jeff Skrysak on Thu Jun 26 2003.
+//
+//  Copyright (c) 2003 Jens Bauer & Jeff Skrysak
 //  All rights reserved.
 //
 //  Redistribution and use in source and binary forms, with or without
@@ -28,9 +29,27 @@
 //   SUCH DAMAGE.
 //
 
+#include "Debugging.h"
+
 #import <Cocoa/Cocoa.h>
 
-int main(int argc, const char *argv[])
+#define PI	(3.141592654)
+
+@class DrawCommand;
+@interface TurtleView : NSView
 {
-    return NSApplicationMain(argc, argv);
+        IBOutlet id parser;
+	NSMutableArray	*drawCommands;
+	NSBezierPath	*path;
+	float			paperColor;
+	BOOL			initializeFlag;
 }
+
+- (id)init;
+- (void)dealloc;
+- (void)drawRect:(NSRect)rect;
+- (void)addCommand:(DrawCommand *)drawCommand;
+- (BOOL)clear;
+- (BOOL)setPaperColor:(float)aPaperColor;
+- (float)paperColor;
+@end

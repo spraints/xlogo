@@ -1,0 +1,285 @@
+{\rtf1\mac\ansicpg10000\cocoartf102
+{\fonttbl\f0\froman\fcharset77 Palatino-Roman;\f1\froman\fcharset77 Palatino-Bold;}
+{\colortbl;\red255\green255\blue255;\red255\green0\blue0;}
+\paperw11904\paperh16835\margl1440\margr1440\vieww12020\viewh9900\viewkind0
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\tx9360\tx10080\tx10800\tx11520\tx12240\tx12960\tx13680\tx14400\tx15120\tx15840\tx16560\tx17280\tx18000\ql\qnatural
+
+\f0\fs40 \cf0 Creating a parser
+\fs20 \
+\
+This document was written to explain what's going on in a standard parser and the elements hereof.\
+(This document is still not finished, but explains a bit already.)\
+\
+\
+Evaluating 
+\f1\b expressions
+\f0\b0 \
+Storing 
+\f1\b variables
+\f0\b0 \
+\
+\
+A simple parser...\
+\
+enum\
+\{\
+	kCommandUnknown	= 0,\
+	kCommandLet,\
+	kCommandQuit,\
+\
+	kCommands		/* number of commands */\
+\};\
+\
+typedef struct Expression Expression;\
+struct Expression\
+\{\
+	long		type;		/* in case we want to support other kinds of expressions than just float values */\
+	float		value;\
+\};\
+\
+typedef struct Variable Variable;\
+struct Variable\
+\{\
+	const char	*name;\
+	Expression	expression;\
+\};\
+\
+void parse(const char **p_text)		/* parse a single command, leaving the pointer where the command ends */\
+\{\
+	/* This is only a simple demonstration. You should definitely allocate enough space for both the line and the command buffers */\
+	char		word[256];		/* A copy of a token (command, variable or other name) */\
+	int		cmd;\
+	Expression	expr;\
+#if defined(PARSER_IS_LINE_BASED)\
+	char		line[1024];		/* A copy of the line (optional) */\
+	const char	**p_line;\
+#endif\
+\
+#if defined(PARSER_IS_LINE_BASED)\
+	copy_line(p_text, line);\
+	p_text = p_line;\
+	*p_line = &line;\
+#endif\
+	if(p_text)\
+	\{\
+		skip_white(p_text);\
+		if(get_word(p_text, word))\
+		\{\
+			cmd = lookup_command(word);\
+			if(kCommandUnknown != cmd)\
+			\{\
+				skip_white(p_text);\
+				switch(cmd)\
+				\{\
+				  case kCommandLet:\
+					if(get_word(p_text, word))	/* get the name */\
+					\{\
+						skip_white(p_text);\
+						if(*p_text && '=' == **p_text)	/* check if next character is '=' */\
+						\{\
+							skip_white(p_text);\
+							if(get_expression(p_text, &expr))\
+							\{\
+								add_variable(word, expr);\
+							\}\
+							else\
+							\{\
+								/* error message: "Let: expression expected!" */\
+							\}\
+						\}\
+						else\
+						\{\
+							/* error message: "Let: '=' expected!" */\
+						\}\
+					\}\
+					else\
+					\{\
+						/* error message: "Let: variable name expected!" */\
+					\}\
+					break;\
+				  case kCommandQuit:\
+					gQuit = true;		/* stop parsing */\
+					break;\
+				\}\
+			\}\
+			else\
+			\{\
+				/* error message: "Unknown command :%s", word */\
+			\}\
+		\}\
+	\}\
+\}\
+\
+int lookup_command(const char *keyword)\
+\{\
+	int		result;\
+\
+	result = kCommandNone;		/* assume not found */\
+\
+	if(0 == stricmp("let", keyword))		/* a very simple example. I recommend using a table for this */\
+	\{\
+		result = kCommandLet;\
+	\}\
+	else if(0 == stricmp("quit", keyword))\
+	\{\
+		result = kCommandQuit;\
+	\}\
+	return(result);\
+\}\
+\
+void skip_white(const char **p_text)	/* skip over any whitespace (TAB, SPACE, CR, LF, FF, etc) */\
+\{\
+	register const char	*s;\
+	register char		c;\
+\
+	if(p_text)\
+	\{\
+		s = *p_text;\
+		c = *s++;\
+		while(32 == c || (9 <= c && 13 >= c))\
+		\{\
+			c = *s++;\
+		\}\
+		*p_text = s - 1;\
+	\}\
+\}\
+\
+void get_word(const char **p_text, char *word)	/* read an alphanummeric word which starts with a letter */\
+\{\
+	register const char	*s;\
+	register char		*d;\
+	register char		c;\
+\
+	d = word;\
+	if(d)\
+	\{\
+		if(p_text)\
+		\{\
+			s = *p_text;\
+			if(s)\
+			\{\
+				c = *s++;\
+				if(('a' <= c && 'z' >= c) || ('A' <= c && 'Z' >= c) || '_' == c)\
+				\{\
+					*d++ = c;\
+					c = *s++;\
+					while(('a' <= c && 'z' >= c) || ('A' <= c && 'Z' >= c) || ('0' <= c && '9' >= c) || '_' == c)\
+					\{\
+						*d++ = c;\
+						c = *s++;\
+					\}\
+					*p_text = s - 1;\
+				\}\
+			\}\
+		\}\
+		*d = '\\0';\
+	\}\
+\}\
+\
+void copy_line(const char **p_text, char *line)\
+\{\
+	register char		c;\
+	register const char	*s\
+	register char		*d;\
+\
+	d = line;\
+	if(d)\
+	\{\
+		if(p_text)\
+		\{\
+			s = *p_text;\
+			if(s)\
+			\{\
+				c = *s++;\
+				while(c)\
+				\{\
+					if(13 == c && 10 == s[0])	// CR/LF: standard DOS line ending style\
+					\{\
+						s++;\
+						break;\
+					\}\
+					else if(10 == c && 13 == s[0])	// LF/CR: incorrect line ending style\
+					\{\
+						s++;\
+						break;\
+					\}\
+					else if(10 == c || 13 == c)	// LF: Unix, Linux or CR: Mac OS line ending style\
+					\{\
+						break;\
+					\}\
+					*d++ = c;\
+					c = *s++;\
+				\}\
+				*p_text = s;\
+			\}\
+		\}\
+		*d = '\\0';\
+	\}\
+\}\
+\
+\cf2 /* in progress\
+\
+\
+int level7(const char **p_text, Expression *expr)	/* get value, variable or function */\
+\{\
+\}\
+\
+int level6(const char **p_text, Expression *expr)	/* sign */\
+\{\
+	// sign differs from levels 1..5, because there is only one value. level7 is called once only, when there are no more sign letters.\
+	// call level7\
+\}\
+\
+int level5(const char **p_text, Expression *expr)	/* shift left, shift right */\
+\{\
+	// call level6\
+\}\
+\
+int level4(const char **p_text, Expression *expr)	/* and, or, xor */\
+\{\
+	// call level5\
+\}\
+\
+int level3(const char **p_text, Expression *expr)	/* multiplication, division */\
+\{\
+	// call level4\
+\}\
+\
+int level2(const char **p_text, Expression *expr)	/* addition, subtraction */\
+\{\
+	// call level3\
+\}\
+\
+int level1(const char **p_text, Expression *expr)	/* compare */\
+\{\
+	const char	*s;\
+	char		c;\
+	char		c1;\
+\
+	if(p_text)\
+	\{\
+		if(level2(p_text, expr))\
+		\{\
+			skip_white(p_text);\
+			s = *p_text;\
+			c = *s++;\
+			c1 = '\\0';\
+			if(c)\
+			\{\
+				c1 = s[0];\
+			\}\
+			*p_text = s;\
+			return(1);\
+		\}\
+	\}\
+	return(0);\
+\}\
+*/\cf0 \
+\
+int get_expression(const char **p_text, Expression *expr)\
+\{\
+	expr->type = 0;\
+	expr->value = 0.0;\
+	return(level1(p_text, expr));\
+\}\
+}

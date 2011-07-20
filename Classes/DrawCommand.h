@@ -1,9 +1,10 @@
 //
-//  main.m
+//  DrawCommand.h
 //  Software: XLogo
 //
-//  Created by Jeff Skrysak on Thu Jun 12 2003.
-//  Copyright (c) 2003 Jeff Skrysak & Jens Bauer.
+//  Created by Jens Bauer on Thu Jun 26 2003.
+//
+//  Copyright (c) 2003 Jens Bauer
 //  All rights reserved.
 //
 //  Redistribution and use in source and binary forms, with or without
@@ -28,9 +29,22 @@
 //   SUCH DAMAGE.
 //
 
+#include "Debugging.h"
+
 #import <Cocoa/Cocoa.h>
 
-int main(int argc, const char *argv[])
+
+@interface DrawCommand : NSObject
 {
-    return NSApplicationMain(argc, argv);
+	NSColor	*color;
+	NSPoint	fromPoint;
+	NSPoint	toPoint;
 }
++ (id)drawCommandWithColor:(NSColor *)aColor fromPoint:(NSPoint)aFromPoint toPoint:(NSPoint)aToPoint;
+- (id)init;
+- (id)initWithColor:(NSColor *)aColor fromPoint:(NSPoint)aFromPoint toPoint:(NSPoint)aToPoint;
+- (void)dealloc;
+- (NSColor *)color;
+- (NSPoint)fromPoint;
+- (NSPoint)toPoint;
+@end

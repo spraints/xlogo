@@ -1,9 +1,10 @@
 //
-//  main.m
+//  Utilities.h
 //  Software: XLogo
 //
-//  Created by Jeff Skrysak on Thu Jun 12 2003.
-//  Copyright (c) 2003 Jeff Skrysak & Jens Bauer.
+//  Created by Jens Bauer on Thu Jun 26 2003.
+//
+//  Copyright (c) 2003 Jens Bauer
 //  All rights reserved.
 //
 //  Redistribution and use in source and binary forms, with or without
@@ -28,9 +29,22 @@
 //   SUCH DAMAGE.
 //
 
-#import <Cocoa/Cocoa.h>
+#include "Debugging.h"
 
-int main(int argc, const char *argv[])
-{
-    return NSApplicationMain(argc, argv);
+#import <Foundation/Foundation.h>	// need typedef unsigned short unichar; from NSString.h
+
+#ifndef _Utilities_h_
+#define _Utilities_h_
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+float my_fmod(float value, float maxvalue);
+int unimatchin(const unichar *string1, const unichar *string2, unsigned long length);
+
+#ifdef __cplusplus
 }
+#endif
+
+#endif	/* _Utilities_h_ */

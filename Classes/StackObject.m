@@ -1,9 +1,17 @@
 //
-//  main.m
+//  StackObject.m
+//  LogoTest
+//
+//  Created by Jens Bauer on Sat Jun 28 2003.
+//  Copyright (c) 2003 Faster Software. All rights reserved.
+//
+//
+//  Controller.h
 //  Software: XLogo
 //
-//  Created by Jeff Skrysak on Thu Jun 12 2003.
-//  Copyright (c) 2003 Jeff Skrysak & Jens Bauer.
+//  Created by Jens Bauer on Thu Jun 28 2003.
+//
+//  Copyright (c) 2003 Jens Bauer
 //  All rights reserved.
 //
 //  Redistribution and use in source and binary forms, with or without
@@ -28,9 +36,35 @@
 //   SUCH DAMAGE.
 //
 
-#import <Cocoa/Cocoa.h>
+#import "StackObject.h"
 
-int main(int argc, const char *argv[])
+
+@implementation StackObject
+
+- (id)initWithProgramCounter:(const unichar *)aProgramCounter andRepeat:(unsigned long)aRepeatCount
 {
-    return NSApplicationMain(argc, argv);
+	self = [super init];
+	if(self)
+	{
+		count = aRepeatCount;
+		programCounter = aProgramCounter;
+	}
+	return(self);
 }
+
+- (const unichar *)programCounter
+{
+	return(programCounter);
+}
+
+- (unsigned long)count
+{
+	return(count);
+}
+
+- (void)decCount
+{
+	count--;
+}
+
+@end

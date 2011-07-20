@@ -1,0 +1,104 @@
+//
+//  Turtle.h
+//  Software: XLogo
+//
+//  Created by Jens Bauer & Jeff Skrysak on Thu Jun 26 2003.
+//
+//  Copyright (c) 2003 Jens Bauer & Jeff Skrysak
+//  All rights reserved.
+//
+//  Redistribution and use in source and binary forms, with or without
+//  modification, are permitted provided that the following conditions
+//  are met:
+//  1. Redistributions of source code must retain the above copyright
+//     notice, this list of conditions and the following disclaimer.
+//  2. Redistributions in binary form must reproduce the above copyright
+//     notice, this list of conditions and the following disclaimer in the
+//     documentation and/or other materials provided with the distribution.
+//
+//   THIS SOFTWARE IS PROVIDED BY THE AUTHOR AND CONTRIBUTORS ``AS IS'' AND
+//   ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+//   IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+//   ARE DISCLAIMED.  IN NO EVENT SHALL THE AUTHOR OR CONTRIBUTORS BE LIABLE
+//   FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+//   DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS
+//   OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+//   HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
+//   LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY
+//   OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
+//   SUCH DAMAGE.
+//
+
+#include "Debugging.h"
+
+#import <Cocoa/Cocoa.h>
+
+@interface Turtle : NSObject
+{
+    IBOutlet id errorView;
+    IBOutlet id outputView;
+
+	NSString		*turtleName;
+	NSColor			*turtleColor;
+	float			turtleSize;
+	const float		*turtleShape;
+	NSBezierPath	*path;
+
+	NSPoint			location;
+	float			direction;
+	float			penColor;
+	BOOL			draw;
+	BOOL			visible;
+}
+- (id)initWithName:(NSString *)aName andColor:(NSColor *)aColor;
+- (void)dealloc;
+
+// Accessor methods
+- (void)setTurtleName:(NSString *)aName;
+- (NSString *)turtleName;
+- (void)setTurtleColor:(NSColor *)aColor;
+- (NSColor *)turtleColor;
+- (void)setTurtleSize:(float)aTurtleSize;
+- (float)turtleSize;
+- (void)setTurtleShape:(const float *)aShape;	// { first point direction, first point steps, [direction, steps, ...], 360.0 (end marker) }
+- (void)setOutputView:(id)aOutputView;
+- outputView;
+- (void)setErrorView:(id)aErrorView;
+- errorView;
+- (NSPoint)location;
+- (BOOL)setLocation:(NSPoint)aLocation;
+- (float)direction;
+- (BOOL)setDirection:(float)aDirection;
+- (BOOL)visible;
+- (BOOL)setVisible:(BOOL)aVisible;
+- (BOOL)setPenColor:(float)aPenColor;
+- (float)penColor;
+
+// Draw Commands
+- (void)drawTriangleAt:(NSPoint)aPoint heading:(float)aDirection withColor:(NSColor *)aColor;
+- (void)drawSquareAt:(NSPoint)aPoint heading:(float)aDirection withColor:(NSColor *)aColor length:(float)sideLength;
+- (void)drawTurtleAt:(NSPoint)aPoint heading:(float)aDirection withColor:(NSColor *)aColor;
+- (void)drawAtOffset:(NSPoint)aPoint;
+
+- (BOOL)moveTo:(NSPoint)aPoint;
+- (BOOL)move:(float)aSteps stepsInDirection:(float)aDirection;
+- (BOOL)clearGraphics;
+- (BOOL)home;
+- (BOOL)north;
+- (BOOL)northWest;
+- (BOOL)west;
+- (BOOL)southWest;
+- (BOOL)south;
+- (BOOL)southEast;
+- (BOOL)east;
+- (BOOL)northEast;
+- (BOOL)back:(float)aSteps;
+- (BOOL)forward:(float)aSteps;
+- (BOOL)turnLeft:(float)aDegrees;
+- (BOOL)turnRight:(float)aDegrees;
+- (BOOL)penUp;
+- (BOOL)penDown;
+- (BOOL)hide;
+- (BOOL)show;
+
+@end

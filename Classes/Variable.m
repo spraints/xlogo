@@ -1,9 +1,10 @@
 //
-//  main.m
+//  Variable.m
 //  Software: XLogo
 //
-//  Created by Jeff Skrysak on Thu Jun 12 2003.
-//  Copyright (c) 2003 Jeff Skrysak & Jens Bauer.
+//  Created by Jens Bauer on Thu Jun 30 2003.
+//
+//  Copyright (c) 2003 Jens Bauer
 //  All rights reserved.
 //
 //  Redistribution and use in source and binary forms, with or without
@@ -28,9 +29,43 @@
 //   SUCH DAMAGE.
 //
 
-#import <Cocoa/Cocoa.h>
+#import "Variable.h"
+#import "Expression.h"
 
-int main(int argc, const char *argv[])
+
+@implementation Variable
+
+- (id)init
 {
-    return NSApplicationMain(argc, argv);
+	return([self initWithName:NULL andExpression:NULL]);
 }
+
+- (id)initWithName:(NSString *)aName andExpression:(Expression *)aExpression
+{
+	self = [super init];
+	if(self)
+	{
+		name = [aName retain];
+		expression = [aExpression retain];
+	}
+	return(self);
+}
+
+- (void)dealloc
+{
+	[expression release];
+	[name release];
+	[super dealloc];
+}
+
+- (NSString *)name
+{
+	return(name);
+}
+
+- (Expression *)expression
+{
+	return(expression);
+}
+
+@end

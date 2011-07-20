@@ -1,9 +1,10 @@
 //
-//  main.m
+//  Commands.h
 //  Software: XLogo
 //
-//  Created by Jeff Skrysak on Thu Jun 12 2003.
-//  Copyright (c) 2003 Jeff Skrysak & Jens Bauer.
+//  Created by Jens Bauer on Fri Jun 27 2003.
+//
+//  Copyright (c) 2003 Jens Bauer
 //  All rights reserved.
 //
 //  Redistribution and use in source and binary forms, with or without
@@ -28,9 +29,75 @@
 //   SUCH DAMAGE.
 //
 
-#import <Cocoa/Cocoa.h>
+#include "Debugging.h"
 
-int main(int argc, const char *argv[])
+#import <Foundation/Foundation.h>	// need typedef unsigned short unichar; from NSString.h
+
+#ifndef _Commands_h_
+#define _Commands_h_
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+enum
 {
-    return NSApplicationMain(argc, argv);
+	kCommandUnknown		= 0,
+	kCommandHome,
+	kCommandNorth,
+	kCommandNorthWest,
+	kCommandWest,
+	kCommandSouthWest,
+	kCommandSouth,
+	kCommandSouthEast,
+	kCommandEast,
+	kCommandNorthEast,
+	kCommandHideTurtle,
+	kCommandShowTurtle,
+	kCommandClearGraphics,
+	kCommandClearCommands,
+	kCommandBack,
+	kCommandForward,
+	kCommandLeftTurn,
+	kCommandRightTurn,
+	kCommandPenDown,
+	kCommandPenUp,
+	kCommandRepeat,
+	kCommandTo,
+	kCommandEnd,
+	kCommandIf,
+	kCommandIfElse,
+	kCommandSetHeading,
+	kCommandNewTurtle,
+	kCommandRemoveTurtle,
+	kCommandSetColor,
+	kCommandSetBackground,
+	kCommandFloodFill,
+	kCommandSetPosition,
+	kCommandSetXY,
+	kCommandTalkTo,
+	kCommandMake,
+
+	kCommandCount
+};
+
+
+typedef struct Command Command;
+struct Command
+{
+	unichar		*name;
+	long		commandNumber;
+};
+
+#if 0	// no longer needed
+extern Command	*g_commands;
+#endif
+
+void InitCommands();
+long LookupCommand(const unichar *aCommand, unsigned long length);
+
+#ifdef __cplusplus
 }
+#endif
+
+#endif	/* _Commands_h_ */

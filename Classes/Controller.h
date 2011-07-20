@@ -1,9 +1,10 @@
 //
-//  main.m
+//  Controller.h
 //  Software: XLogo
 //
-//  Created by Jeff Skrysak on Thu Jun 12 2003.
-//  Copyright (c) 2003 Jeff Skrysak & Jens Bauer.
+//  Created by Jens Bauer on Thu Jun 26 2003.
+//
+//  Copyright (c) 2003 Jens Bauer
 //  All rights reserved.
 //
 //  Redistribution and use in source and binary forms, with or without
@@ -28,9 +29,12 @@
 //   SUCH DAMAGE.
 //
 
+#include "Debugging.h"
+
 #import <Cocoa/Cocoa.h>
 
-int main(int argc, const char *argv[])
+@interface Controller : NSObject
 {
-    return NSApplicationMain(argc, argv);
 }
+- (IBAction)preferences:(id)sender;
+@end

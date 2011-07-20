@@ -1,9 +1,10 @@
 //
-//  main.m
+//  NSTextViewOutputExtensions.h
 //  Software: XLogo
 //
-//  Created by Jeff Skrysak on Thu Jun 12 2003.
-//  Copyright (c) 2003 Jeff Skrysak & Jens Bauer.
+//  Created by Jens Bauer on Wed Jun 25 2003.
+//
+//  Copyright (c) 2003 Jens Bauer
 //  All rights reserved.
 //
 //  Redistribution and use in source and binary forms, with or without
@@ -28,9 +29,13 @@
 //   SUCH DAMAGE.
 //
 
+#include "Debugging.h"
+
 #import <Cocoa/Cocoa.h>
 
-int main(int argc, const char *argv[])
-{
-    return NSApplicationMain(argc, argv);
-}
+
+@interface NSTextView (NSTextViewOutputExtensions)
+- (void)appendString:(NSString *)aString ofColor:(NSColor *)textColor;
+- (void)appendLine:(NSString *)aString ofColor:(NSColor *)textColor;
+- (void)clearAllText;
+@end

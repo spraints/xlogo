@@ -1,9 +1,10 @@
 //
-//  main.m
+//  Expression.h
 //  Software: XLogo
 //
-//  Created by Jeff Skrysak on Thu Jun 12 2003.
-//  Copyright (c) 2003 Jeff Skrysak & Jens Bauer.
+//  Created by Jens Bauer on Thu Jun 26 2003.
+//
+//  Copyright (c) 2003 Jens Bauer
 //  All rights reserved.
 //
 //  Redistribution and use in source and binary forms, with or without
@@ -28,9 +29,41 @@
 //   SUCH DAMAGE.
 //
 
-#import <Cocoa/Cocoa.h>
+#import <Foundation/Foundation.h>
 
-int main(int argc, const char *argv[])
+enum
 {
-    return NSApplicationMain(argc, argv);
+	kExpressionKindEmpty		= 0,
+
+	kExpressionKindPointer		= 0x00010000,
+	kExpressionKindStringValue,
+	kExpressionKindListValue,
+
+	kExpressionKindNumber		= 0x00020000,
+	kExpressionKindFloatValue
+};
+
+typedef union ExpressionValue ExpressionValue;
+union ExpressionValue
+{
+	void	*ptr;
+	float	number;
+};
+
+@interface Expression : NSObject
+{
+	long			type;
+	unsigned long	length;
+	ExpressionValue	value;
 }
+- (id)init;
+- (void)dealloc;
+- (void)setFloatValue:(float)aFloat;
+- (float)floatValue;
+- (void)setStringValue:(const unichar *)aString ofLength:(unsigned long)aLength;
+- (unichar *)stringValue;
+- (void)setListValue:(const unichar *)aList ofLength:(unsigned long)aLength;
+- (unichar *)listValue;
+- (unsigned long)length;
+- (long)type;
+@end

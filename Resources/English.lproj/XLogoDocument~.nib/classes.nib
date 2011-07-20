@@ -1,0 +1,31 @@
+{
+    IBClasses = (
+        {CLASS = FirstResponder; LANGUAGE = ObjC; SUPERCLASS = NSObject; }, 
+        {
+            ACTIONS = {run = id; setSpeed = id; stop = id; }; 
+            CLASS = LogoDocument; 
+            LANGUAGE = ObjC; 
+            OUTLETS = {listingView = id; outputView = id; parser = id; }; 
+            SUPERCLASS = NSDocument; 
+        }, 
+        {
+            CLASS = LogoParser; 
+            LANGUAGE = ObjC; 
+            OUTLETS = {errorView = id; outputView = id; }; 
+            SUPERCLASS = NSObject; 
+        }, 
+        {
+            CLASS = Turtle; 
+            LANGUAGE = ObjC; 
+            OUTLETS = {errorView = id; outputView = id; }; 
+            SUPERCLASS = NSObject; 
+        }, 
+        {
+            CLASS = TurtleView; 
+            LANGUAGE = ObjC; 
+            OUTLETS = {parser = id; }; 
+            SUPERCLASS = NSQuickDrawView; 
+        }
+    ); 
+    IBVersion = 1; 
+}

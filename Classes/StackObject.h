@@ -1,9 +1,10 @@
 //
-//  main.m
+//  StackObject.m
 //  Software: XLogo
 //
-//  Created by Jeff Skrysak on Thu Jun 12 2003.
-//  Copyright (c) 2003 Jeff Skrysak & Jens Bauer.
+//  Created by Jens Bauer on Thu Jun 28 2003.
+//
+//  Copyright (c) 2003 Jens Bauer
 //  All rights reserved.
 //
 //  Redistribution and use in source and binary forms, with or without
@@ -28,9 +29,16 @@
 //   SUCH DAMAGE.
 //
 
-#import <Cocoa/Cocoa.h>
+#import <Foundation/Foundation.h>
 
-int main(int argc, const char *argv[])
+
+@interface StackObject : NSObject
 {
-    return NSApplicationMain(argc, argv);
+	unsigned long	count;
+	const unichar	*programCounter;
 }
+- (id)initWithProgramCounter:(const unichar *)aProgramCounter andRepeat:(unsigned long)aRepeatCount;
+- (const unichar *)programCounter;
+- (unsigned long)count;
+- (void)decCount;
+@end
