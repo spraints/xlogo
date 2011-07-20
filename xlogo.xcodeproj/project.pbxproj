@@ -6,101 +6,7 @@
 	objectVersion = 42;
 	objects = {
 
-/* Begin PBXApplicationTarget section */
-		2A37F4C6FDCFA73011CA2CEA /* XLogo */ = {
-			isa = PBXApplicationTarget;
-			buildConfigurationList = 4C66DBAD0B5B136D00EC045B /* Build configuration list for PBXApplicationTarget "XLogo" */;
-			buildPhases = (
-				2A37F4C7FDCFA73011CA2CEA /* Headers */,
-				2A37F4C9FDCFA73011CA2CEA /* Resources */,
-				2A37F4CEFDCFA73011CA2CEA /* Sources */,
-				2A37F4D1FDCFA73011CA2CEA /* Frameworks */,
-			);
-			dependencies = (
-			);
-			name = XLogo;
-			productInstallPath = "$(HOME)/Applications";
-			productName = LogoTest;
-			productReference = 1758732AFF379DA111CA2CBB /* XLogo.app */;
-			productSettingsXML = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>
-<!DOCTYPE plist PUBLIC \"-//Apple Computer//DTD PLIST 1.0//EN\" \"http://www.apple.com/DTDs/PropertyList-1.0.dtd\">
-<plist version=\"1.0\">
-<dict>
-	<key>CFBundleDevelopmentRegion</key>
-	<string>English</string>
-	<key>CFBundleDocumentTypes</key>
-	<array>
-		<dict>
-			<key>CFBundleTypeExtensions</key>
-			<array>
-				<string>xlogo</string>
-			</array>
-			<key>CFBundleTypeIconFile</key>
-			<string>doc</string>
-			<key>CFBundleTypeName</key>
-			<string>XLogoDocument</string>
-			<key>CFBundleTypeRole</key>
-			<string>Editor</string>
-			<key>NSDocumentClass</key>
-			<string>LogoDocument</string>
-		</dict>
-	</array>
-	<key>CFBundleExecutable</key>
-	<string>XLogo</string>
-	<key>CFBundleGetInfoString</key>
-	<string>XLogo version 0.3.5 © 2003 Jeff Skrysak</string>
-	<key>CFBundleHelpBookFolder</key>
-	<string>xlogo help</string>
-	<key>CFBundleHelpBookName</key>
-	<string>XLogo Help</string>
-	<key>CFBundleIconFile</key>
-	<string>xlogo</string>
-	<key>CFBundleIdentifier</key>
-	<string>com.JeffSkrysak.XLogo</string>
-	<key>CFBundleInfoDictionaryVersion</key>
-	<string>6.0</string>
-	<key>CFBundleName</key>
-	<string>XLogo</string>
-	<key>CFBundlePackageType</key>
-	<string>APPL</string>
-	<key>CFBundleShortVersionString</key>
-	<string>0.3.5</string>
-	<key>CFBundleSignature</key>
-	<string>????</string>
-	<key>CFBundleVersion</key>
-	<string>0.3.5</string>
-	<key>NSMainNibFile</key>
-	<string>MainMenu</string>
-	<key>NSPrincipalClass</key>
-	<string>NSApplication</string>
-</dict>
-</plist>
-";
-		};
-/* End PBXApplicationTarget section */
-
 /* Begin PBXBuildFile section */
-		080E96D9FE201CDB7F000001 /* Credits.rtf in Resources */ = {isa = PBXBuildFile; fileRef = 2A37F4B9FDCFA73011CA2CEA /* Credits.rtf */; };
-		080E96DAFE201CDB7F000001 /* MainMenu.nib in Resources */ = {isa = PBXBuildFile; fileRef = 2A37F4B6FDCFA73011CA2CEA /* MainMenu.nib */; };
-		089C1661FE840EACC02AAC07 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C165FFE840EACC02AAC07 /* InfoPlist.strings */; };
-		1058C7A9FEA54F5311CA2CBB /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A7FEA54F5311CA2CBB /* Cocoa.framework */; };
-		1F01AF0204BC60DD005A17E1 /* title.png in Resources */ = {isa = PBXBuildFile; fileRef = 1F01AF0104BC60DD005A17E1 /* title.png */; };
-		1F05108404D1F35700FEFB36 /* pare.png in Resources */ = {isa = PBXBuildFile; fileRef = 1F05108304D1F35700FEFB36 /* pare.png */; };
-		1F05108604D1F73F00FEFB36 /* partir.png in Resources */ = {isa = PBXBuildFile; fileRef = 1F05108504D1F73F00FEFB36 /* partir.png */; };
-		1F59A39304D2084300FEFB36 /* xlogo help in Resources */ = {isa = PBXBuildFile; fileRef = 1FEB6EE504B7332200B7EED8 /* xlogo help */; };
-		1F672CFC04D42F9000AB81D1 /* depart.png in Resources */ = {isa = PBXBuildFile; fileRef = 1F672CFB04D42F9000AB81D1 /* depart.png */; };
-		1F7F37F904B9DE2700B14428 /* doc.icns in Resources */ = {isa = PBXBuildFile; fileRef = 1F7F37F804B9DE2700B14428 /* doc.icns */; };
-		1FEB6E8304B72E9700B7EED8 /* go.png in Resources */ = {isa = PBXBuildFile; fileRef = 1FEB6E7C04B72E9700B7EED8 /* go.png */; };
-		1FEB6E8404B72E9700B7EED8 /* load.png in Resources */ = {isa = PBXBuildFile; fileRef = 1FEB6E7D04B72E9700B7EED8 /* load.png */; };
-		1FEB6E8504B72E9700B7EED8 /* logo.png in Resources */ = {isa = PBXBuildFile; fileRef = 1FEB6E7E04B72E9700B7EED8 /* logo.png */; };
-		1FEB6E8604B72E9700B7EED8 /* printer.png in Resources */ = {isa = PBXBuildFile; fileRef = 1FEB6E7F04B72E9700B7EED8 /* printer.png */; };
-		1FEB6E8704B72E9700B7EED8 /* save.png in Resources */ = {isa = PBXBuildFile; fileRef = 1FEB6E8004B72E9700B7EED8 /* save.png */; };
-		1FEB6E8804B72E9700B7EED8 /* xlogo.icns in Resources */ = {isa = PBXBuildFile; fileRef = 1FEB6E8104B72E9700B7EED8 /* xlogo.icns */; };
-		1FED70F904D2EC9300FEFB36 /* tomare.png in Resources */ = {isa = PBXBuildFile; fileRef = 1FED70F804D2EC9300FEFB36 /* tomare.png */; };
-		1FED70FB04D2ED4900FEFB36 /* go_japanese.png in Resources */ = {isa = PBXBuildFile; fileRef = 1FED70FA04D2ED4900FEFB36 /* go_japanese.png */; };
-		1FF15BBB04D49F5F0053C108 /* inizia.png in Resources */ = {isa = PBXBuildFile; fileRef = 1FF15BBA04D49F5F0053C108 /* inizia.png */; };
-		1FFB4E9704B73F8400A4A4CF /* stop.png in Resources */ = {isa = PBXBuildFile; fileRef = 1FFB4E9604B73F8400A4A4CF /* stop.png */; };
-		2A37F4D0FDCFA73011CA2CEA /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 2A37F4B0FDCFA73011CA2CEA /* main.m */; settings = {ATTRIBUTES = (); }; };
 		4C66DBE40B5B193600EC045B /* Controller.h in Headers */ = {isa = PBXBuildFile; fileRef = F5CA271204AA158D01A8017D /* Controller.h */; };
 		4C66DBE50B5B193600EC045B /* LogoDocument.h in Headers */ = {isa = PBXBuildFile; fileRef = F5CA271904AA175E01A8017D /* LogoDocument.h */; };
 		4C66DBE60B5B193600EC045B /* Debugging.h in Headers */ = {isa = PBXBuildFile; fileRef = F5CA281704AA3F4901A8017D /* Debugging.h */; };
@@ -156,46 +62,11 @@
 		4C66DC1A0B5B193600EC045B /* Preferences.m in Sources */ = {isa = PBXBuildFile; fileRef = B4D6E4B6056CBCED00A8017D /* Preferences.m */; };
 		4C66DC1B0B5B193600EC045B /* Debugging.c in Sources */ = {isa = PBXBuildFile; fileRef = B4571CD7056EBE8600A8017D /* Debugging.c */; };
 		4C66DC1D0B5B193600EC045B /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A7FEA54F5311CA2CBB /* Cocoa.framework */; };
-		B41F377505541FF000A8017D /* kor.png in Resources */ = {isa = PBXBuildFile; fileRef = B41F377405541FF000A8017D /* kor.png */; };
-		B4571CD8056EBE8600A8017D /* Debugging.c in Sources */ = {isa = PBXBuildFile; fileRef = B4571CD7056EBE8600A8017D /* Debugging.c */; };
-		B461405B051EB8C100A8017D /* LogoColorTable.h in Headers */ = {isa = PBXBuildFile; fileRef = B4614059051EB8C100A8017D /* LogoColorTable.h */; };
-		B461405C051EB8C100A8017D /* LogoColorTable.m in Sources */ = {isa = PBXBuildFile; fileRef = B461405A051EB8C100A8017D /* LogoColorTable.m */; };
-		B4D6E4B7056CBCED00A8017D /* Preferences.h in Headers */ = {isa = PBXBuildFile; fileRef = B4D6E4B5056CBCED00A8017D /* Preferences.h */; };
-		B4D6E4B8056CBCED00A8017D /* Preferences.m in Sources */ = {isa = PBXBuildFile; fileRef = B4D6E4B6056CBCED00A8017D /* Preferences.m */; };
-		F52BE4AD04AFAF6201A8017D /* LogoParserExpression.h in Headers */ = {isa = PBXBuildFile; fileRef = F52BE4AB04AFAF6201A8017D /* LogoParserExpression.h */; };
-		F52BE4AE04AFAF6201A8017D /* LogoParserExpression.m in Sources */ = {isa = PBXBuildFile; fileRef = F52BE4AC04AFAF6201A8017D /* LogoParserExpression.m */; };
-		F5B0C25F04ACFC4C01A8017D /* StackObject.h in Headers */ = {isa = PBXBuildFile; fileRef = F5B0C25D04ACFC4C01A8017D /* StackObject.h */; };
-		F5B0C26004ACFC4C01A8017D /* StackObject.m in Sources */ = {isa = PBXBuildFile; fileRef = F5B0C25E04ACFC4C01A8017D /* StackObject.m */; };
-		F5C921D104B08C2601A8017D /* Variable.h in Headers */ = {isa = PBXBuildFile; fileRef = F5C921CF04B08C2601A8017D /* Variable.h */; };
-		F5C921D204B08C2601A8017D /* Variable.m in Sources */ = {isa = PBXBuildFile; fileRef = F5C921D004B08C2601A8017D /* Variable.m */; };
-		F5CA271404AA158D01A8017D /* Controller.h in Headers */ = {isa = PBXBuildFile; fileRef = F5CA271204AA158D01A8017D /* Controller.h */; };
-		F5CA271504AA158D01A8017D /* Controller.m in Sources */ = {isa = PBXBuildFile; fileRef = F5CA271304AA158D01A8017D /* Controller.m */; };
-		F5CA271804AA175201A8017D /* XLogoDocument.nib in Resources */ = {isa = PBXBuildFile; fileRef = F5CA271604AA175201A8017D /* XLogoDocument.nib */; };
-		F5CA271B04AA175E01A8017D /* LogoDocument.h in Headers */ = {isa = PBXBuildFile; fileRef = F5CA271904AA175E01A8017D /* LogoDocument.h */; };
-		F5CA271C04AA175E01A8017D /* LogoDocument.m in Sources */ = {isa = PBXBuildFile; fileRef = F5CA271A04AA175E01A8017D /* LogoDocument.m */; };
-		F5CA281804AA3F4901A8017D /* Debugging.h in Headers */ = {isa = PBXBuildFile; fileRef = F5CA281704AA3F4901A8017D /* Debugging.h */; };
-		F5CA282104AA4C4001A8017D /* NSTextViewOutputExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = F5CA281A04AA420601A8017D /* NSTextViewOutputExtensions.m */; };
-		F5CA282204AA4C4101A8017D /* NSTextViewOutputExtensions.h in Headers */ = {isa = PBXBuildFile; fileRef = F5CA281904AA420601A8017D /* NSTextViewOutputExtensions.h */; };
-		F5CA282504AA556701A8017D /* Turtle.h in Headers */ = {isa = PBXBuildFile; fileRef = F5CA282304AA556701A8017D /* Turtle.h */; };
-		F5CA282604AA556701A8017D /* Turtle.m in Sources */ = {isa = PBXBuildFile; fileRef = F5CA282404AA556701A8017D /* Turtle.m */; };
-		F5CA283104AA60BE01A8017D /* Utilities.h in Headers */ = {isa = PBXBuildFile; fileRef = F5CA282F04AA60BE01A8017D /* Utilities.h */; };
-		F5CA283204AA60BE01A8017D /* Utilities.c in Sources */ = {isa = PBXBuildFile; fileRef = F5CA283004AA60BE01A8017D /* Utilities.c */; };
-		F5CA284904AA907101A8017D /* DrawCommand.h in Headers */ = {isa = PBXBuildFile; fileRef = F5CA284704AA907101A8017D /* DrawCommand.h */; };
-		F5CA284A04AA907101A8017D /* DrawCommand.m in Sources */ = {isa = PBXBuildFile; fileRef = F5CA284804AA907101A8017D /* DrawCommand.m */; };
-		F5CA285104AA9B0F01A8017D /* TurtleView.h in Headers */ = {isa = PBXBuildFile; fileRef = F5CA284F04AA9B0F01A8017D /* TurtleView.h */; };
-		F5CA285204AA9B0F01A8017D /* TurtleView.m in Sources */ = {isa = PBXBuildFile; fileRef = F5CA285004AA9B0F01A8017D /* TurtleView.m */; };
-		F5CAB9F604ABB96301A8017D /* Commands.h in Headers */ = {isa = PBXBuildFile; fileRef = F5CAB9F404ABB96301A8017D /* Commands.h */; };
-		F5CAB9F704ABB96301A8017D /* Commands.c in Sources */ = {isa = PBXBuildFile; fileRef = F5CAB9F504ABB96301A8017D /* Commands.c */; };
-		F5CAB9F804ABBA7401A8017D /* LogoParser.h in Headers */ = {isa = PBXBuildFile; fileRef = F5CA272004AA230C01A8017D /* LogoParser.h */; };
-		F5CABA0804ABBFD701A8017D /* LogoParser.m in Sources */ = {isa = PBXBuildFile; fileRef = F5CA272104AA230C01A8017D /* LogoParser.m */; };
-		F5CABA1104ABCA9801A8017D /* Expression.h in Headers */ = {isa = PBXBuildFile; fileRef = F5CABA0F04ABCA9801A8017D /* Expression.h */; };
-		F5CABA1204ABCA9801A8017D /* Expression.m in Sources */ = {isa = PBXBuildFile; fileRef = F5CABA1004ABCA9801A8017D /* Expression.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		089C1660FE840EACC02AAC07 /* English */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = English; path = Resources/English.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		1058C7A7FEA54F5311CA2CBB /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = /System/Library/Frameworks/Cocoa.framework; sourceTree = "<absolute>"; };
-		1758732AFF379DA111CA2CBB /* XLogo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; path = XLogo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1F01AF0104BC60DD005A17E1 /* title.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = title.png; sourceTree = "<group>"; };
 		1F05108104D1ED7A00FEFB36 /* Spanish */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = Spanish; path = Resources/Spanish.lproj/MainMenu.nib; sourceTree = "<group>"; };
 		1F05108204D1F2E700FEFB36 /* Spanish */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = Spanish; path = Resources/Spanish.lproj/XLogoDocument.nib; sourceTree = "<group>"; };
@@ -227,7 +98,7 @@
 		2A37F4BAFDCFA73011CA2CEA /* English */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; name = English; path = Resources/English.lproj/Credits.rtf; sourceTree = "<group>"; };
 		2A37F4C4FDCFA73011CA2CEA /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = /System/Library/Frameworks/AppKit.framework; sourceTree = "<absolute>"; };
 		2A37F4C5FDCFA73011CA2CEA /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
-		4C66DC220B5B193600EC045B /* Info-XLogo__Upgraded_.plist */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = "Info-XLogo__Upgraded_.plist"; sourceTree = "<group>"; };
+		4C66DC220B5B193600EC045B /* Info-XLogo__Upgraded_.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Info-XLogo__Upgraded_.plist"; sourceTree = "<group>"; };
 		4C66DC230B5B193600EC045B /* XLogo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = XLogo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B41F37370554198300A8017D /* German */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = German; path = Resources/German.lproj/MainMenu.nib; sourceTree = "<group>"; };
 		B41F37380554198800A8017D /* German */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = German; path = Resources/German.lproj/XLogoDocument.nib; sourceTree = "<group>"; };
@@ -276,14 +147,6 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		2A37F4D1FDCFA73011CA2CEA /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				1058C7A9FEA54F5311CA2CBB /* Cocoa.framework in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		4C66DC1C0B5B193600EC045B /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -315,7 +178,6 @@
 		19C28FB0FE9D524F11CA2CBB /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				1758732AFF379DA111CA2CBB /* XLogo.app */,
 				4C66DC230B5B193600EC045B /* XLogo.app */,
 			);
 			name = Products;
@@ -470,29 +332,6 @@
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
-		2A37F4C7FDCFA73011CA2CEA /* Headers */ = {
-			isa = PBXHeadersBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				F5CA271404AA158D01A8017D /* Controller.h in Headers */,
-				F5CA271B04AA175E01A8017D /* LogoDocument.h in Headers */,
-				F5CA281804AA3F4901A8017D /* Debugging.h in Headers */,
-				F5CA282204AA4C4101A8017D /* NSTextViewOutputExtensions.h in Headers */,
-				F5CA282504AA556701A8017D /* Turtle.h in Headers */,
-				F5CA283104AA60BE01A8017D /* Utilities.h in Headers */,
-				F5CA284904AA907101A8017D /* DrawCommand.h in Headers */,
-				F5CA285104AA9B0F01A8017D /* TurtleView.h in Headers */,
-				F5CAB9F604ABB96301A8017D /* Commands.h in Headers */,
-				F5CAB9F804ABBA7401A8017D /* LogoParser.h in Headers */,
-				F5CABA1104ABCA9801A8017D /* Expression.h in Headers */,
-				F5B0C25F04ACFC4C01A8017D /* StackObject.h in Headers */,
-				F52BE4AD04AFAF6201A8017D /* LogoParserExpression.h in Headers */,
-				F5C921D104B08C2601A8017D /* Variable.h in Headers */,
-				B461405B051EB8C100A8017D /* LogoColorTable.h in Headers */,
-				B4D6E4B7056CBCED00A8017D /* Preferences.h in Headers */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		4C66DBE30B5B193600EC045B /* Headers */ = {
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
@@ -544,6 +383,8 @@
 		2A37F4A9FDCFA73011CA2CEA /* Project object */ = {
 			isa = PBXProject;
 			buildConfigurationList = 4C66DBB10B5B136D00EC045B /* Build configuration list for PBXProject "xlogo" */;
+			compatibilityVersion = "Xcode 2.4";
+			developmentRegion = English;
 			hasScannedForEncodings = 1;
 			knownRegions = (
 				English,
@@ -556,42 +397,14 @@
 			);
 			mainGroup = 2A37F4AAFDCFA73011CA2CEA /* LogoTest */;
 			projectDirPath = "";
+			projectRoot = "";
 			targets = (
 				4C66DBE20B5B193600EC045B /* XLogo (Upgraded) */,
-				2A37F4C6FDCFA73011CA2CEA /* XLogo */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
-		2A37F4C9FDCFA73011CA2CEA /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				080E96D9FE201CDB7F000001 /* Credits.rtf in Resources */,
-				080E96DAFE201CDB7F000001 /* MainMenu.nib in Resources */,
-				089C1661FE840EACC02AAC07 /* InfoPlist.strings in Resources */,
-				F5CA271804AA175201A8017D /* XLogoDocument.nib in Resources */,
-				1FEB6E8304B72E9700B7EED8 /* go.png in Resources */,
-				1FEB6E8404B72E9700B7EED8 /* load.png in Resources */,
-				1FEB6E8504B72E9700B7EED8 /* logo.png in Resources */,
-				1FEB6E8604B72E9700B7EED8 /* printer.png in Resources */,
-				1FEB6E8704B72E9700B7EED8 /* save.png in Resources */,
-				1FEB6E8804B72E9700B7EED8 /* xlogo.icns in Resources */,
-				1FFB4E9704B73F8400A4A4CF /* stop.png in Resources */,
-				1F7F37F904B9DE2700B14428 /* doc.icns in Resources */,
-				1F01AF0204BC60DD005A17E1 /* title.png in Resources */,
-				1F05108404D1F35700FEFB36 /* pare.png in Resources */,
-				1F05108604D1F73F00FEFB36 /* partir.png in Resources */,
-				1F59A39304D2084300FEFB36 /* xlogo help in Resources */,
-				1FED70F904D2EC9300FEFB36 /* tomare.png in Resources */,
-				1FED70FB04D2ED4900FEFB36 /* go_japanese.png in Resources */,
-				1F672CFC04D42F9000AB81D1 /* depart.png in Resources */,
-				1FF15BBB04D49F5F0053C108 /* inizia.png in Resources */,
-				B41F377505541FF000A8017D /* kor.png in Resources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		4C66DBF40B5B193600EC045B /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -623,30 +436,6 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
-		2A37F4CEFDCFA73011CA2CEA /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				2A37F4D0FDCFA73011CA2CEA /* main.m in Sources */,
-				F5CA271504AA158D01A8017D /* Controller.m in Sources */,
-				F5CA271C04AA175E01A8017D /* LogoDocument.m in Sources */,
-				F5CA282104AA4C4001A8017D /* NSTextViewOutputExtensions.m in Sources */,
-				F5CA282604AA556701A8017D /* Turtle.m in Sources */,
-				F5CA283204AA60BE01A8017D /* Utilities.c in Sources */,
-				F5CA284A04AA907101A8017D /* DrawCommand.m in Sources */,
-				F5CA285204AA9B0F01A8017D /* TurtleView.m in Sources */,
-				F5CAB9F704ABB96301A8017D /* Commands.c in Sources */,
-				F5CABA0804ABBFD701A8017D /* LogoParser.m in Sources */,
-				F5CABA1204ABCA9801A8017D /* Expression.m in Sources */,
-				F5B0C26004ACFC4C01A8017D /* StackObject.m in Sources */,
-				F52BE4AE04AFAF6201A8017D /* LogoParserExpression.m in Sources */,
-				F5C921D204B08C2601A8017D /* Variable.m in Sources */,
-				B461405C051EB8C100A8017D /* LogoColorTable.m in Sources */,
-				B4D6E4B8056CBCED00A8017D /* Preferences.m in Sources */,
-				B4571CD8056EBE8600A8017D /* Debugging.c in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		4C66DC0A0B5B193600EC045B /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -721,76 +510,6 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
-		4C66DBAE0B5B136D00EC045B /* Development */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				COPY_PHASE_STRIP = NO;
-				FRAMEWORK_SEARCH_PATHS = "";
-				GCC_DYNAMIC_NO_PIC = NO;
-				GCC_ENABLE_FIX_AND_CONTINUE = YES;
-				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
-				GCC_OPTIMIZATION_LEVEL = 0;
-				HEADER_SEARCH_PATHS = "";
-				INSTALL_PATH = "$(HOME)/Applications";
-				LIBRARY_SEARCH_PATHS = "";
-				OPTIMIZATION_CFLAGS = "-O0 -DDEBUGFLAG=1";
-				OTHER_CFLAGS = "";
-				OTHER_LDFLAGS = "";
-				PRODUCT_NAME = XLogo;
-				SECTORDER_FLAGS = "";
-				WARNING_CFLAGS = (
-					"-Wmost",
-					"-Wno-four-char-constants",
-					"-Wno-unknown-pragmas",
-				);
-				WRAPPER_EXTENSION = app;
-				ZERO_LINK = YES;
-			};
-			name = Development;
-		};
-		4C66DBAF0B5B136D00EC045B /* Deployment */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				COPY_PHASE_STRIP = YES;
-				FRAMEWORK_SEARCH_PATHS = "";
-				GCC_ENABLE_FIX_AND_CONTINUE = NO;
-				HEADER_SEARCH_PATHS = "";
-				INSTALL_PATH = "$(HOME)/Applications";
-				LIBRARY_SEARCH_PATHS = "";
-				OTHER_CFLAGS = "";
-				OTHER_LDFLAGS = "";
-				PRODUCT_NAME = XLogo;
-				SECTORDER_FLAGS = "";
-				WARNING_CFLAGS = (
-					"-Wmost",
-					"-Wno-four-char-constants",
-					"-Wno-unknown-pragmas",
-				);
-				WRAPPER_EXTENSION = app;
-				ZERO_LINK = NO;
-			};
-			name = Deployment;
-		};
-		4C66DBB00B5B136D00EC045B /* Default */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				FRAMEWORK_SEARCH_PATHS = "";
-				HEADER_SEARCH_PATHS = "";
-				INSTALL_PATH = "$(HOME)/Applications";
-				LIBRARY_SEARCH_PATHS = "";
-				OTHER_CFLAGS = "";
-				OTHER_LDFLAGS = "";
-				PRODUCT_NAME = XLogo;
-				SECTORDER_FLAGS = "";
-				WARNING_CFLAGS = (
-					"-Wmost",
-					"-Wno-four-char-constants",
-					"-Wno-unknown-pragmas",
-				);
-				WRAPPER_EXTENSION = app;
-			};
-			name = Default;
-		};
 		4C66DBB20B5B136D00EC045B /* Development */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -819,6 +538,8 @@
 		4C66DC1F0B5B193600EC045B /* Development */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_64_BIT_PRE_XCODE_3_1)";
+				ARCHS_STANDARD_32_64_BIT_PRE_XCODE_3_1 = "x86_64 i386 ppc";
 				COPY_PHASE_STRIP = NO;
 				FRAMEWORK_SEARCH_PATHS = "";
 				GCC_DYNAMIC_NO_PIC = NO;
@@ -833,6 +554,7 @@
 				OTHER_CFLAGS = "";
 				OTHER_LDFLAGS = "";
 				PRODUCT_NAME = XLogo;
+				SDKROOT = macosx;
 				SECTORDER_FLAGS = "";
 				WARNING_CFLAGS = (
 					"-Wmost",
@@ -847,10 +569,8 @@
 		4C66DC200B5B193600EC045B /* Deployment */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = (
-					ppc,
-					i386,
-				);
+				ARCHS = "$(ARCHS_STANDARD_32_64_BIT_PRE_XCODE_3_1)";
+				ARCHS_STANDARD_32_64_BIT_PRE_XCODE_3_1 = "x86_64 i386 ppc";
 				COPY_PHASE_STRIP = YES;
 				FRAMEWORK_SEARCH_PATHS = "";
 				GCC_ENABLE_FIX_AND_CONTINUE = NO;
@@ -862,6 +582,7 @@
 				OTHER_CFLAGS = "";
 				OTHER_LDFLAGS = "";
 				PRODUCT_NAME = XLogo;
+				SDKROOT = macosx;
 				SECTORDER_FLAGS = "";
 				WARNING_CFLAGS = (
 					"-Wmost",
@@ -876,10 +597,8 @@
 		4C66DC210B5B193600EC045B /* Default */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = (
-					ppc,
-					i386,
-				);
+				ARCHS = "$(ARCHS_STANDARD_32_64_BIT_PRE_XCODE_3_1)";
+				ARCHS_STANDARD_32_64_BIT_PRE_XCODE_3_1 = "x86_64 i386 ppc";
 				FRAMEWORK_SEARCH_PATHS = "";
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				HEADER_SEARCH_PATHS = "";
@@ -889,6 +608,7 @@
 				OTHER_CFLAGS = "";
 				OTHER_LDFLAGS = "";
 				PRODUCT_NAME = XLogo;
+				SDKROOT = macosx;
 				SECTORDER_FLAGS = "";
 				WARNING_CFLAGS = (
 					"-Wmost",
@@ -902,16 +622,6 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		4C66DBAD0B5B136D00EC045B /* Build configuration list for PBXApplicationTarget "XLogo" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				4C66DBAE0B5B136D00EC045B /* Development */,
-				4C66DBAF0B5B136D00EC045B /* Deployment */,
-				4C66DBB00B5B136D00EC045B /* Default */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Default;
-		};
 		4C66DBB10B5B136D00EC045B /* Build configuration list for PBXProject "xlogo" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
