@@ -4,7 +4,7 @@
 <meta name="AppleFont" content="Lucida Grande">
 <title>XLogo Help - LOGO Commands</title>
 </head>
-<body>
+<body link="#1AAF1E" vlink="#1AAF1E">
 
 <table border="0" cellpadding="0" cellspacing="0" width="625" align="left">
 	<tr>
@@ -27,8 +27,7 @@
 	<tr>
 		<td colspan="2">
 		<font face="Lucida Grande,Geneva,Arial" >
-		&nbsp;&nbsp;This is a short reference for LOGO commands.
-		<br>
+		&nbsp;&nbsp;<u>The basic LOGO commands are:</u>
 		<br>
 		<ul>
 			<li>FORWARD x</li>
@@ -41,9 +40,47 @@
 			<li>CLEAR - clear the screen</li>
 			<li>REPEAT x [command]</li>
 		</ul>	
-		The letter "x" above should be replaced by a number representing the number of
+		<i>The letter "x" above should be replaced by a number representing the number of
 		spaces to move (in the case of FORWARD and BACKWARD commands), the number
-		of degress to turn (in the case of RIGHT and LEFT), or the number of repetitions (REPEAT command).
+		of degress to turn (in the case of RIGHT and LEFT), or the number of repetitions (REPEAT command).</i>
+		</font>
+		</td>
+	</tr>
+	<tr>
+		<td colspan="2">
+		<br>
+		<font face="Lucida Grande,Geneva,Arial" >
+		&nbsp;&nbsp;<u>Advanced commands:</u>
+		<br>
+		<ul>
+			<li>NEWTURTLE "name - create a new turtle, with a name</li>
+			<li>TALKTO "name - send commands to a specific turtle</li>
+			<li>MAKE "name [value] - create a variable with a value</li>
+			<li>SETCOLOR :[color|variable] - set the drawing color</li>
+			<li>SETBG :[color|variable] - set the background color</li>
+		</ul>	
+		</font>
+		</td>
+	</tr>
+	<tr>
+		<td colspan="2">
+		<br>
+		<font face="Lucida Grande,Geneva,Arial" >
+		&nbsp;&nbsp;<u>Sample Code:</u>
+		<br>
+		<ol type="none">
+			<li>newturtle "Fred</li>
+			<li>talkto "Fred</li>
+			<li>setcolor :10</li>
+			<li>make "bgcolor 123</li>
+			<li>setbg :bgcolor</li>
+			<li>forward 100</li>
+			<li>right 90</li>
+			<li>repeat 4 [forward 100 right 90]</li>
+		</ol>
+		<br>
+		<br>
+		<br>
 		</font>
 		</td>
 	</tr>

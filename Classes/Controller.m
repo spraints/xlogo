@@ -33,9 +33,75 @@
 
 @implementation Controller
 
+
+//***********************************************************/
+// preferences - Get the preferences values from the OS and show the window
+//
 - (IBAction)preferences:(id)sender
 {
-    NSLog(@"Preferences chosen");
+    NSUserDefaults *defaults;
+    NSString *lineWidthValue;
+    int maximumTurtlesValue, saveSpeedValue;
+
+    // Initialze the defaults variable for the program
+    defaults = [NSUserDefaults standardUserDefaults];
+
+    // Assign each part of the default to the corresponding string variable
+    lineWidthValue = [defaults objectForKey:@"Line Width"];
+    maximumTurtlesValue = [defaults integerForKey:@"Maximum Turtles"];
+    saveSpeedValue = [defaults integerForKey:@"Turtle Speed Boolean"];
+
+    // Now we set the parts of the preferences panel GUI to reflect those values
+    if (maximumTurtlesValue)
+	{
+	[maximumTurtles setIntValue:maximumTurtlesValue];
+	}
+
+    if (saveSpeedValue)
+	{
+	[saveSpeed setState:saveSpeedValue];
+	}
+
+    if (lineWidthValue)
+	{
+	[lineWidth selectItemWithTitle:lineWidthValue];
+	}
+    
+    // Now show the panel (preferences window) to the user
+    [preferencesPanel makeKeyAndOrderFront:nil];
+}
+
+
+//***********************************************************/
+// cancelPreferences - Quit the window, without saving
+//
+- (IBAction)cancelPreferences:(id)sender
+{
+    [preferencesPanel close];
+}
+
+
+//***************************************************************/
+// savePreferences - Save the users preferences and exit window
+//
+- (IBAction)savePreferences:(id)sender
+{
+    NSUserDefaults *defaults;
+
+    // Initialize the defaults for the program
+    defaults = [NSUserDefaults standardUserDefaults];
+
+    // Store the value for the maximum number of turtles
+    [defaults setInteger:[maximumTurtles intValue] forKey:@"Maximum Turtles"];
+
+    // Store the value of the turtle speed boolean
+    [defaults setInteger:[saveSpeed state] forKey:@"Turtle Speed Boolean"];
+
+    // Store the value of the line width
+    [defaults setObject:[[lineWidth selectedItem] title] forKey:@"Line Width"];
+    
+    // Now close the window
+    [preferencesPanel close];
 }
 
 @end

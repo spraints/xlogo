@@ -167,35 +167,35 @@
 
 - (void)errorMessage:(NSString *)aMessage
 {
-	unsigned long			lineCount;
-	register const unichar	*s;
-	register unichar		c;
-	unsigned long			l;
+    unsigned long			lineCount;
+    register const unichar	*s;
+    register unichar		c;
+    unsigned long			l;
 
-	lineCount = 1;
-	s = listing;
-	l = programCounter - s;
+    lineCount = 1;
+    s = listing;
+    l = programCounter - s;
 
-	while(l--)
+    while(l--)
 	{
-		c = *s++;
-		if(10 == c && 13 == s[0])			// incorrect line ending style (LF/CR)
-		{
-			lineCount++;
-			s++;
-		}
-		else if(13 == c && 10 == s[0])		// DOS style line endings (CR/LF)
-		{
-			lineCount++;
-			s++;
-		}
-		else if(10 == c || 13 == c)			// Unix, Linux (LF) or Mac OS (CR) style line endings
-		{
-			lineCount++;
-		}
+	c = *s++;
+	if(10 == c && 13 == s[0])			// incorrect line ending style (LF/CR)
+	    {
+	    lineCount++;
+	    s++;
+	    }
+	else if(13 == c && 10 == s[0])		// DOS style line endings (CR/LF)
+	    {
+	    lineCount++;
+	    s++;
+	    }
+	else if(10 == c || 13 == c)			// Unix, Linux (LF) or Mac OS (CR) style line endings
+	    {
+	    lineCount++;
+	    }
 	}
 
-	[errorView appendLine:[NSString stringWithFormat:@"Error in line %d:\n%@", lineCount, aMessage] ofColor:[NSColor redColor]];
+    [errorView appendLine:[NSString stringWithFormat:@"Error in line %d:\n%@", lineCount, aMessage] ofColor:[NSColor redColor]];
 }
 
 - (void)setListing:(NSString *)aListing
@@ -344,6 +344,7 @@
 	NSString		*name;
 	Variable		*variable;
 	BOOL			found;
+	NSPoint			pt;
 
 	refresh = NO;
 
@@ -368,7 +369,13 @@
 		expression = [[Expression alloc] init];
 		[self skipWhite];
 		count = [listeningTurtles count];
+#if 0
+		int pap = LookupCommand(command, length);
+DEBUGMSG("pap=%d\n", pap);
+		switch(pap)
+#else
 		switch(LookupCommand(command, length))
+#endif
 		{
 		  case kCommandSetHeading:
 			if([self getExpression:expression])
@@ -382,7 +389,7 @@
 				}
 				else
 				{
-					[self errorMessage:@"SetHeading: nummeric expression expected"];
+					[self errorMessage:@"SetHeading: numeric expression expected"];
 				}
 			}
 			break;
@@ -410,6 +417,18 @@
 				refresh |= [[listeningTurtles objectAtIndex:i] show];
 			}
 			break;
+		  case kCommandSetPenSize:
+			  if([self getExpression:expression])
+				  {
+				  if(kExpressionKindNumber & [expression type])
+					  {
+					  for(i = 0; i < count; i++)
+						  {
+						  [outputView setPenSize:[expression floatValue]];
+						  }
+					  }
+				  }
+			  break;
 		  case kCommandSetColor:
 			if([self getExpression:expression])
 			{
@@ -447,7 +466,7 @@
 				}
 				else
 				{
-					[self errorMessage:@"Forward: nummeric expression expected"];
+					[self errorMessage:@"Forward: numeric expression expected"];
 				}
 			}
 			break;
@@ -463,7 +482,7 @@
 				}
 				else
 				{
-					[self errorMessage:@"Back: nummeric expression expected"];
+					[self errorMessage:@"Back: numeric expression expected"];
 				}
 			}
 			break;
@@ -479,7 +498,7 @@
 				}
 				else
 				{
-					[self errorMessage:@"LeftTurn: nummeric expression expected"];
+					[self errorMessage:@"LeftTurn: numeric expression expected"];
 				}
 			}
 			break;
@@ -495,7 +514,36 @@
 				}
 				else
 				{
-					[self errorMessage:@"RightTurn: nummeric expression expected"];
+					[self errorMessage:@"RightTurn: numeric expression expected"];
+				}
+			}
+			break;
+		  case kCommandSetXY:	// may be incorrect. setpos [x y] is supported more often
+			if([self getExpression:expression])
+			{
+				if(kExpressionKindNumber & [expression type])
+				{
+					pt.x = [expression floatValue];
+					if([self getExpression:expression])
+					{
+						if(kExpressionKindNumber & [expression type])
+						{
+							pt.y = [expression floatValue];
+							for(i = 0; i < count; i++)
+							{
+//								refresh |= [[listeningTurtles objectAtIndex:i] moveTo:pt];
+								refresh |= [[listeningTurtles objectAtIndex:i] setLocation:pt];
+							}
+						}
+						else
+						{
+							[self errorMessage:@"SetXY: numeric expression expected (y argument)"];
+						}
+					}
+				}
+				else
+				{
+					[self errorMessage:@"SetXY: numeric expression expected (x argument)"];
 				}
 			}
 			break;
@@ -593,11 +641,28 @@
 							}
 							else
 							{
-								col = [NSColor brownColor];
-								turtle = [[Turtle alloc] initWithName:temp andColor:col];
-								[turtle setOutputView:[self outputView]];
-								[turtle setErrorView:[self errorView]];
-								[self addTurtle:turtle];
+								NSUserDefaults *defaults;
+
+								// Initialize the defaults variable for the program
+								defaults = [NSUserDefaults standardUserDefaults];
+								int maxturtles = [defaults integerForKey:@"Maximum Turtles"];
+								if(![defaults integerForKey:@"Maximum Turtles"])
+								{
+									maxturtles = 99;
+								}
+
+								if(count <= maxturtles)
+								{
+									col = [NSColor brownColor];
+									turtle = [[Turtle alloc] initWithName:temp andColor:col];
+									[turtle setOutputView:[self outputView]];
+									[turtle setErrorView:[self errorView]];
+									[self addTurtle:turtle];
+								}
+								else
+								{
+									[self errorMessage:[NSString stringWithFormat:@"Maximum number of turtles reached, cannot create %@", temp]];
+								}
 							}
 							l -= length;
 							unitemp += length;
@@ -644,7 +709,7 @@
 							}
 							if(!found)
 							{
-								[self errorMessage:[NSString stringWithFormat:@"%@ is not here", temp]];
+								[self errorMessage:[NSString stringWithFormat:@"%@ does not exist", temp]];
 							}
 							l -= length;
 							unitemp += length;
@@ -690,7 +755,7 @@
 							}
 							if(!found)
 							{
-								[self errorMessage:[NSString stringWithFormat:@"%@ is not here", temp]];
+								[self errorMessage:[NSString stringWithFormat:@"%@ does not exist", temp]];
 							}
 							l -= length;
 							unitemp += length;
@@ -729,13 +794,19 @@
 							if([self getExpression:expression])
 							{
 								count = [variables count];
-								for(i = 0; i < count; i++)
+								i = 0;
+								while(i < count)	/* note: this is not a recommended way of programming. I do it only because I (think I) know what I'm doing. ;) */
 								{
 									variable = [variables objectAtIndex:i];
 									name = [variable name];
 									if(NSOrderedSame == [temp caseInsensitiveCompare:name])
 									{
 										[variables removeObject:variable];
+										count--;	/* this is the dirty part */
+									}
+									else
+									{
+										i++;
 									}
 								}
 								[variables addObject:[[Variable alloc] initWithName:temp andExpression:expression]];
@@ -803,6 +874,10 @@
 //							[turtle setLocation:pt];
 							refresh = [turtle moveTo:pt];		// this is better, it allows for absolute-point-drawing. :) (remember that penUp and penDown are still in effect!)
 						}
+					}
+				    else
+					{
+					[self errorMessage:[NSString stringWithFormat:@"Setxy incomplete", temp]];
 					}
 					break;
 				  case kCommandRepeat:

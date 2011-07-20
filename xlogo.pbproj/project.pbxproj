@@ -120,6 +120,74 @@
 //1F2
 //1F3
 //1F4
+		1F01AF0104BC60DD005A17E1 = {
+			isa = PBXFileReference;
+			path = title.png;
+			refType = 4;
+		};
+		1F01AF0204BC60DD005A17E1 = {
+			fileRef = 1F01AF0104BC60DD005A17E1;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		1F05108104D1ED7A00FEFB36 = {
+			isa = PBXFileReference;
+			name = Spanish;
+			path = Resources/Spanish.lproj/MainMenu.nib;
+			refType = 4;
+		};
+		1F05108204D1F2E700FEFB36 = {
+			isa = PBXFileReference;
+			name = Spanish;
+			path = Resources/Spanish.lproj/XLogoDocument.nib;
+			refType = 4;
+		};
+		1F05108304D1F35700FEFB36 = {
+			isa = PBXFileReference;
+			path = pare.png;
+			refType = 4;
+		};
+		1F05108404D1F35700FEFB36 = {
+			fileRef = 1F05108304D1F35700FEFB36;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		1F05108504D1F73F00FEFB36 = {
+			isa = PBXFileReference;
+			path = partir.png;
+			refType = 4;
+		};
+		1F05108604D1F73F00FEFB36 = {
+			fileRef = 1F05108504D1F73F00FEFB36;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		1F59A39304D2084300FEFB36 = {
+			fileRef = 1FEB6EE504B7332200B7EED8;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		1F672CFA04D42E9100AB81D1 = {
+			isa = PBXFileReference;
+			name = French;
+			path = Resources/French.lproj/XLogoDocument.nib;
+			refType = 4;
+		};
+		1F672CFB04D42F9000AB81D1 = {
+			isa = PBXFileReference;
+			path = depart.png;
+			refType = 4;
+		};
+		1F672CFC04D42F9000AB81D1 = {
+			fileRef = 1F672CFB04D42F9000AB81D1;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
 		1F7F37F804B9DE2700B14428 = {
 			isa = PBXFileReference;
 			name = doc.icns;
@@ -142,6 +210,12 @@
 			path = "Version Control.rtf";
 			refType = 4;
 		};
+		1FE2FB7004D0C42D00F42F44 = {
+			isa = PBXFileReference;
+			name = French;
+			path = Resources/French.lproj/MainMenu.nib;
+			refType = 4;
+		};
 		1FEB6E7A04B72E9700B7EED8 = {
 			children = (
 				1FEB6E7C04B72E9700B7EED8,
@@ -152,6 +226,13 @@
 				1FEB6E8104B72E9700B7EED8,
 				1FFB4E9604B73F8400A4A4CF,
 				1F7F37F804B9DE2700B14428,
+				1F01AF0104BC60DD005A17E1,
+				1F05108304D1F35700FEFB36,
+				1F05108504D1F73F00FEFB36,
+				1FED70F804D2EC9300FEFB36,
+				1FED70FA04D2ED4900FEFB36,
+				1F672CFB04D42F9000AB81D1,
+				1FF15BBA04D49F5F0053C108,
 			);
 			isa = PBXGroup;
 			path = images;
@@ -229,8 +310,59 @@
 			path = "xlogo help";
 			refType = 2;
 		};
-		1FEB6F0204B7332200B7EED8 = {
-			fileRef = 1FEB6EE504B7332200B7EED8;
+		1FED70F604D2EAC000FEFB36 = {
+			isa = PBXFileReference;
+			name = Japanese;
+			path = Resources/Japanese.lproj/MainMenu.nib;
+			refType = 4;
+		};
+		1FED70F704D2EBFE00FEFB36 = {
+			isa = PBXFileReference;
+			name = Japanese;
+			path = Resources/Japanese.lproj/XLogoDocument.nib;
+			refType = 4;
+		};
+		1FED70F804D2EC9300FEFB36 = {
+			isa = PBXFileReference;
+			path = tomare.png;
+			refType = 4;
+		};
+		1FED70F904D2EC9300FEFB36 = {
+			fileRef = 1FED70F804D2EC9300FEFB36;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		1FED70FA04D2ED4900FEFB36 = {
+			isa = PBXFileReference;
+			path = go_japanese.png;
+			refType = 4;
+		};
+		1FED70FB04D2ED4900FEFB36 = {
+			fileRef = 1FED70FA04D2ED4900FEFB36;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		1FF15BB804D49C680053C108 = {
+			isa = PBXFileReference;
+			name = Italian;
+			path = Resources/Italian.lproj/MainMenu.nib;
+			refType = 4;
+		};
+		1FF15BB904D49DCB0053C108 = {
+			isa = PBXFileReference;
+			name = Italian;
+			path = Resources/Italian.lproj/XLogoDocument.nib;
+			refType = 4;
+		};
+		1FF15BBA04D49F5F0053C108 = {
+			isa = PBXFileReference;
+			path = inizia.png;
+			refType = 4;
+		};
+		1FF15BBB04D49F5F0053C108 = {
+			fileRef = 1FF15BBA04D49F5F0053C108;
 			isa = PBXBuildFile;
 			settings = {
 			};
@@ -263,6 +395,14 @@
 			);
 			hasScannedForEncodings = 1;
 			isa = PBXProject;
+			knownRegions = (
+				English,
+				Japanese,
+				French,
+				German,
+				Spanish,
+				Italian,
+			);
 			mainGroup = 2A37F4AAFDCFA73011CA2CEA;
 			projectDirPath = "";
 			targets = (
@@ -331,6 +471,10 @@
 		2A37F4B6FDCFA73011CA2CEA = {
 			children = (
 				2A37F4B7FDCFA73011CA2CEA,
+				1FE2FB7004D0C42D00F42F44,
+				1F05108104D1ED7A00FEFB36,
+				1FED70F604D2EAC000FEFB36,
+				1FF15BB804D49C680053C108,
 			);
 			isa = PBXVariantGroup;
 			name = MainMenu.nib;
@@ -460,7 +604,7 @@
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleVersion</key>
-	<string>0.2</string>
+	<string>0.3</string>
 	<key>NSMainNibFile</key>
 	<string>MainMenu</string>
 	<key>NSPrincipalClass</key>
@@ -503,9 +647,16 @@
 				1FEB6E8604B72E9700B7EED8,
 				1FEB6E8704B72E9700B7EED8,
 				1FEB6E8804B72E9700B7EED8,
-				1FEB6F0204B7332200B7EED8,
 				1FFB4E9704B73F8400A4A4CF,
 				1F7F37F904B9DE2700B14428,
+				1F01AF0204BC60DD005A17E1,
+				1F05108404D1F35700FEFB36,
+				1F05108604D1F73F00FEFB36,
+				1F59A39304D2084300FEFB36,
+				1FED70F904D2EC9300FEFB36,
+				1FED70FB04D2ED4900FEFB36,
+				1F672CFC04D42F9000AB81D1,
+				1FF15BBB04D49F5F0053C108,
 			);
 			isa = PBXResourcesBuildPhase;
 			runOnlyForDeploymentPostprocessing = 0;
@@ -705,6 +856,10 @@
 		F5CA271604AA175201A8017D = {
 			children = (
 				F5CA271704AA175201A8017D,
+				1F672CFA04D42E9100AB81D1,
+				1F05108204D1F2E700FEFB36,
+				1FED70F704D2EBFE00FEFB36,
+				1FF15BB904D49DCB0053C108,
 			);
 			isa = PBXVariantGroup;
 			name = XLogoDocument.nib;

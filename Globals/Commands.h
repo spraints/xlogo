@@ -77,6 +77,7 @@ enum
 	kCommandSetXY,
 	kCommandTalkTo,
 	kCommandMake,
+	kCommandSetPenSize,
 
 	kCommandCount
 };

@@ -35,6 +35,14 @@
 
 @interface Controller : NSObject
 {
+    IBOutlet id preferencesPanel;
+    IBOutlet id maximumTurtles;
+    IBOutlet id lineWidth;
+    IBOutlet id saveSpeed;
 }
+
+// Preferences methods
 - (IBAction)preferences:(id)sender;
+- (IBAction)cancelPreferences:(id)sender;
+- (IBAction)savePreferences:(id)sender;
 @end

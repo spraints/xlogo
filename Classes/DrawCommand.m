@@ -36,54 +36,54 @@
 
 + (id)drawCommandWithColor:(NSColor *)aColor fromPoint:(NSPoint)aFromPoint toPoint:(NSPoint)aToPoint
 {
-	return([[DrawCommand alloc] initWithColor:aColor fromPoint:aFromPoint toPoint:aToPoint]);
+    return([[DrawCommand alloc] initWithColor:aColor fromPoint:aFromPoint toPoint:aToPoint]);
 }
 
 - (id)initWithColor:(NSColor *)aColor fromPoint:(NSPoint)aFromPoint toPoint:(NSPoint)aToPoint
 {
-	self = [super init];
-	if(self)
+    self = [super init];
+    if(self)
 	{
-		color = [aColor retain];
-		fromPoint = aFromPoint;
-		toPoint = aToPoint;
+	color = [aColor retain];
+	fromPoint = aFromPoint;
+	toPoint = aToPoint;
 	}
-	return(self);
+    return(self);
 }
 
 - (id)init
 {
-	self = [super init];
-	if(self)
+    self = [super init];
+    if(self)
 	{
-		color = [[NSColor blackColor] retain];
-		fromPoint.x = 0;
-		fromPoint.y = 0;
-		toPoint.x = 0;
-		toPoint.y = 0;
+	color = [[NSColor blackColor] retain];
+	fromPoint.x = 0;
+	fromPoint.y = 0;
+	toPoint.x = 0;
+	toPoint.y = 0;
 	}
-	return(self);
+    return(self);
 }
 
 - (void)dealloc
 {
-	[color release];
-	[super dealloc];
+    [color release];
+    [super dealloc];
 }
 
 - (NSColor *)color
 {
-	return(color);
+    return(color);
 }
 
 - (NSPoint)fromPoint
 {
-	return(fromPoint);
+    return(fromPoint);
 }
 
 - (NSPoint)toPoint
 {
-	return(toPoint);
+    return(toPoint);
 }
 
 @end

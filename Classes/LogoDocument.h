@@ -38,6 +38,7 @@
     IBOutlet id listingView;
     IBOutlet id outputView;
     IBOutlet id parser;
+    IBOutlet id speedSlider;
 
     float		frequency;
     NSTimer		*timer;
@@ -51,15 +52,19 @@
 - (IBAction)stop:(id)sender;
 - (IBAction)printDocument:(id)sender;
 
+
+// Creation and destruction
 - (id)init;
 - (void)dealloc;
 
+// Timer methods
 - (void)setFrequency:(float)aFrequency;
 - (float)frequency;
 - (void)timerStop;
 - (void)timerStart;
 - (void)timerTask:(NSTimer *)aTimer;
 
+// Stop and Go
 - (void)run;
 - (void)stop;
 

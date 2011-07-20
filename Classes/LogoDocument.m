@@ -34,19 +34,9 @@
 #import "NSTextViewOutputExtensions.h"
 #import "Turtle.h"
 
-#define XLogoDocumentType  @"XLogoDocument"
+#define XLogoDocumentType	@"XLogoDocument"
 
 @implementation LogoDocument
-
-- (IBAction)run:(id)sender
-{
-    [self run];
-}
-
-- (IBAction)stop:(id)sender
-{
-    [self stop];
-}
 
 
 //***********************************************************/
@@ -54,118 +44,180 @@
 //
 - (IBAction)printDocument:(id)sender
 {
-    [outputView print: sender];   // Send a print command to the View
+	[outputView print: sender];		// Send a print command to the View
 }
 
 
+//***********************************************************/
+// setSpeed - Set the speed of the turtle's drawing
+//
 - (IBAction)setSpeed:(id)sender
 {
-	float	speed;
+	float			speed;
+	NSUserDefaults	*defaults;
 
+	// Get the speed value from the GUI
 	speed = [sender floatValue];
+
+	// Initialize user preferences in casethe user wants to save the speed as a preference
+	defaults = [NSUserDefaults standardUserDefaults];
+
+	// Store the speed preference (if the user so desires)
+	if([defaults integerForKey:@"Turtle Speed Boolean"])
+	{
+		[defaults setFloat:speed forKey:@"Turtle Speed"];
+	}
+
+	// Catch values above 1
 	speed = 1.000001 - speed;
 
+	// Catch a zero value
 	if(0 == speed)
 	{
 		speed = 0.000001;
 	}
+
+	// Tell the timer the new speed
 	[self setFrequency:speed];
 }
 
-- (id)init
+
+//***********************************************************/
+// awakeFromNib - Standard cocoa method. Run when app loads
+//
+- (void)awakeFromNib
 {
-    [super init];
-    if(self)
+	// Get the user preferences
+	NSUserDefaults	*defaults;
+	defaults = [NSUserDefaults standardUserDefaults];
+
+	// Set the speed preference, show it in the GUI
+	if([defaults integerForKey:@"Turtle Speed Boolean"])
+	{
+		frequency = 1.000001 - [defaults floatForKey:@"Turtle Speed"];
+		[speedSlider setFloatValue: [defaults floatForKey:@"Turtle Speed"]];
+	}
+	else
 	{
 		frequency = 0.013;
-		timer = NULL;
-    }
-    return(self);
+	}
 }
 
+
+//***************************************************************/
+// init - Standard cocoa method. Run when object begins its life
+//
+- (id)init
+{
+	[super init];
+	if(self)
+	{
+		timer = NULL;
+	}
+	return(self);
+}
+
+
+//***************************************************************/
+// dealloc - Standard cocoa method. Run when object ends its life
+//
 - (void)dealloc
 {
-    [dataFromFile release];
-    dataFromFile = NULL;
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
+	[dataFromFile release];
+	dataFromFile = NULL;
+	[[NSNotificationCenter defaultCenter] removeObserver:self];
 	
-    [self timerStop];
-    [super dealloc];
+	[self timerStop];
+	[super dealloc];
 }
 
+
+// Accessor method
 - (NSString *)windowNibName
 {
-    return(@"XLogoDocument");
+	return(@"XLogoDocument");		// This must match the document info in info.plist
 }
 
-
-
+//*************************************************************************************/
+// loadDocumentWithInitialData - As the name sounds, for loading files in a new window
+//
 - (void)loadDocumentWithInitialData
 {
-    NSUnarchiver *unarchiver;
-    NSTextStorage *text;
+	NSUnarchiver	*unarchiver;
+	NSTextStorage	*text;
 
-    unarchiver = [[[NSUnarchiver alloc] initForReadingWithData:dataFromFile] autorelease];
+	// Open the file, load the data into memory
+	unarchiver = [[[NSUnarchiver alloc] initForReadingWithData:dataFromFile] autorelease];
 
-    text = [unarchiver decodeObject];
+	// Take the file data and turn it back into text
+	text = [unarchiver decodeObject];
 
-    if([text length])
-	 {
-	[listingView insertText:text];
-	 }
+	// If the text is longer than 0 in length, load it into the view
+	if([text length])
+	{
+		[listingView insertText:text];
+	}
 
-    [[self undoManager] removeAllActions];  // remove dirty-flag
+	[[self undoManager] removeAllActions];	// remove dirty-flag
 
-    [dataFromFile release];
-    dataFromFile = NULL;
+	// Clean up
+	[dataFromFile release];
+	dataFromFile = NULL;
 }
 
 
+// When the window loads, run this
 - (void)windowControllerDidLoadNib:(NSWindowController *) controller
 {
-    [super windowControllerDidLoadNib:controller];
-    [[listingView window] makeFirstResponder:listingView]; 
+	// Tell the controller to run it's own loadNib
+	[super windowControllerDidLoadNib:controller];
 
-    if(dataFromFile)
-	 {
-	[self loadDocumentWithInitialData];
-	 }
+	// Set focus on the text view, where commands are entered
+	[[listingView window] makeFirstResponder:listingView]; 
+
+	// If the person is opening a document, and not just a new window, load the data into the GUI
+	if(dataFromFile)
+	{
+		[self loadDocumentWithInitialData];
+	}
 }
 
 
 // For saving files
 - (NSData *)dataRepresentationOfType:(NSString *)type
 {
-    NSMutableData *data;
-    NSArchiver *archiver;
+	NSMutableData	*data;
+	NSArchiver		*archiver;
 
-    data = NULL;
-    archiver = NULL;
+	data = NULL;
+	archiver = NULL;
 
-    if([type isEqualToString:XLogoDocumentType])
-	 {
-	archiver = [[[NSArchiver alloc] initForWritingWithMutableData:[NSMutableData data]] autorelease];
-	[archiver encodeObject:[listingView textStorage]];
-	data = [archiver archiverData];
-	 }
-    return(data);
+	if([type isEqualToString:XLogoDocumentType])
+	{
+		archiver = [[[NSArchiver alloc] initForWritingWithMutableData:[NSMutableData data]] autorelease];
+		[archiver encodeObject:[listingView textStorage]];
+		data = [archiver archiverData];
+	}
+	return(data);
 }
 
 
 // For loading files
 - (BOOL)loadDataRepresentation:(NSData *)data ofType:(NSString *)type
 {
-    if([type isEqualToString:XLogoDocumentType])
-	 {
-	dataFromFile = [data retain];
-	return(YES);
+	if([type isEqualToString:XLogoDocumentType])
+	{
+		dataFromFile = [data retain];
+		return(YES);
 	}
-    else
-	 {
-	return(NO);
-	 }
+	else
+	{
+		return(NO);
+	}
 }
 
+
+// Accessor method
 - (void)setFrequency:(float)aFrequency
 {
 	frequency = aFrequency;
@@ -175,11 +227,17 @@
 	}
 }
 
+
+// Accessor method
 - (float)frequency
 {
 	return(frequency);
 }
 
+
+//***********************************************************/
+// timerStop - Stops the timer
+//
 - (void)timerStop
 {
 	if(timer)
@@ -191,23 +249,42 @@
 	}
 }
 
+
+//***********************************************************/
+// timerStart - Starts the timer
+//
 - (void)timerStart
 {
+	// First stop the timer if it has already been started, so we can start over from scratch
 	if(timer)
 	{
 		[self timerStop];
 	}
+
+	// Now create the timer.
 	timer = [NSTimer scheduledTimerWithTimeInterval:frequency target:self selector:@selector(timerTask:) userInfo:NULL repeats:YES];
 	[timer retain];
 }
 
+
+//***********************************************************/
+// timerTask - Details what to do each timer interval
+//
 - (void)timerTask:(NSTimer *)aTimer
 {
-	long	stat;
-	long	count;
-	BOOL	refresh;
+	long		stat;
+	long		count;
+	BOOL		refresh;
 
-	count = 2;					// we're cheating here. :)
+#ifdef SEMAPHORE
+	static BOOL	semaphore = 1;
+
+	if(semaphore)
+	{
+		semaphore = 0;
+#endif
+
+	count = 6;					// we're cheating here. :)
 	while(count--)
 	{
 		stat = [parser doCommand];
@@ -222,18 +299,28 @@
 			break;
 		}
 	}
+
 	if(refresh)
 	{
 		[outputView setNeedsDisplay:YES];
 	}
 
+#ifdef SEMAPHORE
+		semaphore = 1;
+	}
+	else
+	{
+DEBUGMSG("Yeh, yeh, I'm already at work!!\n");
+	}
+#endif
+
 #if 0
 	switch([parser doCommand])
 	{
-	  case kParserStop:				// stop interpreting the program
+	  case kParserStop:			// stop interpreting the program
 		[self timerStop];
 		// FallThru...
-	  case kParserUpdateDisplay:	// not all commands update the display; eg. pen up or if the pen is up and the turtle is moving...
+	  case kParserUpdateDisplay:		// not all commands update the display; eg. pen up or if the pen is up and the turtle is moving...
 		[outputView setNeedsDisplay:YES];
 		// FallThru...
 	  case kParserContinue:			// don't need to do anything
@@ -242,6 +329,9 @@
 #endif
 }
 
+//***********************************************************/
+// run - Starts the timer, and hence the turtle's drawing
+//
 - (void)run
 {
 	[self timerStop];				// stop processing commands, so that variables are not changed after re-initializing them
@@ -257,10 +347,20 @@
 //
 - (void)stop
 {
-    [self timerStop];	// stop processing commands
+	[self timerStop];	// stop processing commands
 }
 
 
+// Action method
+- (IBAction)run:(id)sender
+{
+	[self run];
+}
 
+// Action method
+- (IBAction)stop:(id)sender
+{
+	[self stop];
+}
 
 @end

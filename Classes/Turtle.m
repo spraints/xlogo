@@ -56,40 +56,52 @@ const float	defaultTurtleShape[] = {
 	70, 4,
 	-45, 3,
 	45, 2,
-//	45, 0.52,	// This is not necessary, as the code closes the polygon
 	360.0
 };
 
-const float	triangleTurtleShape[] = {
-	
-};
 
 @implementation Turtle
 
+
+//***********************************************/
+// init - Create the new turtle
+//
 - (id)init
 {
 	return([self initWithName:@"Bob" andColor:[NSColor greenColor]]);
-//	[parser addTurtle:[[Turtle alloc] initWithName:@"Frank" andColor:[NSColor brownColor]]];
 }
 
+
+//***********************************************/
+// initWithName - Create a new, named, turtle
+//
 - (id)initWithName:(NSString *)aName andColor:(NSColor *)aColor
 {
-	self = [super init];
-	if(self)
+    // Create the object data
+    self = [super init];
+
+    // If the creation was successful, then continue with the rest...
+    if(self)
 	{
-		path = NULL;
-		[self setTurtleName:aName];
-		[self setTurtleColor:aColor];
-		[self setTurtleSize:1.0];
-		[self setTurtleShape:defaultTurtleShape];
-		[self home];
-		[self north];
-		[self show];
-		[self penDown];
+	    path = NULL;
+	    [self setTurtleName:aName];
+	    [self setTurtleColor:aColor];
+	    [self setTurtleSize:1.0];
+	    [self setTurtleShape:defaultTurtleShape];
+	    [self home];           //
+	    [self north];          // Put him at (0,0), face him north, show him, and put the pen down
+	    [self show];           //
+	    [self penDown];        //
 	}
-	return(self);
+
+    // Send the new turtle back to the caller (probably to place it into an array)
+    return(self);
 }
 
+
+//***********************************************/
+// dealloc - Destroy the turtle object
+//
 - (void)dealloc
 {
 	[self setTurtleName:NULL];
@@ -97,405 +109,593 @@ const float	triangleTurtleShape[] = {
 	[super dealloc];
 }
 
+
+//***********************************************/
+// setTurtleName - Give the turtle a name
+//
 - (void)setTurtleName:(NSString *)aName
 {
-	if(turtleName)
+    if(turtleName)
 	{
-		[turtleName release];
+	[turtleName release];
 	}
-	turtleName = [aName retain];
+    turtleName = [aName retain];
 }
 
+
+// Accessor method
 - (NSString *)turtleName
 {
-	return(turtleName);
+    return(turtleName);
 }
 
+
+//***********************************************/
+// setTurtleColor - Give the turtle a color
+//
 - (void)setTurtleColor:(NSColor *)aColor
 {
 	if(turtleColor)
-	{
+		{
 		[turtleColor release];
-	}
-	turtleColor = [aColor retain];
+		}
+    turtleColor = [aColor retain];
 }
 
+
+// Accessor method
 - (NSColor *)turtleColor
 {
 	return(turtleColor);
 }
 
+
+//***********************************************/
+// setTurtleSize - Give the turtle a size (1.0 is normal)
+//
 - (void)setTurtleSize:(float)aTurtleSize
 {
 	turtleSize = aTurtleSize;
 }
 
+
+// Accessor method
 - (float)turtleSize
 {
 	return(turtleSize);
 }
 
+
+//***********************************************/
+// setTurtleShape - Give the turtle a shape
+//
 - (void)setTurtleShape:(const float *)aShape
 {
 	turtleShape = aShape;
 }
 
+
+//***********************************************/
+// setOutputView - Tell the turtle where to draw
+//
 - (void)setOutputView:(id)aOutputView
 {
 	[outputView release];
 	outputView = [aOutputView retain];
 }
 
+
+// Accessor method
 - outputView
 {
 	return(outputView);
 }
 
+
+//*****************************************************/
+// setErrorView - Tell the turtle where to list errors
+//
 - (void)setErrorView:(id)aErrorView
 {
 	[errorView release];
 	errorView = [aErrorView retain];
 }
 
+
+// Accessor method
 - errorView
 {
 	return(errorView);
 }
 
+
+// Accessor method
 - (NSPoint)location
 {
 	return(location);
 }
 
+
+//*****************************************************/
+// setLocation - Puts the turtle somewhere (x,y)
+//
 - (BOOL)setLocation:(NSPoint)aLocation
 {
-	NSPoint	oldLocation;
+	NSPoint	oldLocation;   // NSPoint is a struct of two values, x and y.
 
 	oldLocation = location;
 	location = aLocation;
+
+	// If the new location is equal to the old, return FALSE
 	return(oldLocation.x != location.x && oldLocation.y != oldLocation.y);
 }
 
+
+// Accessor method
 - (float)direction
 {
 	return(direction);
 }
 
+
+//*********************************************************/
+// setDirection - Tell the turtle which direction to face
+//
 - (BOOL)setDirection:(float)aDirection
 {
 	float	oldDirection;
 
 	oldDirection = direction;
+
+	// Catch some nasty value
 	direction = my_fmod(aDirection, 360.0);
+
+	// If the new direction is equal to the old, return FALSE (NO)
 	return(oldDirection != direction);
 }
 
+
+// Accessor method
 - (BOOL)visible
 {
 	return(visible);
 }
 
+
+//*********************************************************/
+// setVisible - Make the turtle visible on the screen
+//
 - (BOOL)setVisible:(BOOL)aVisible
 {
-	BOOL	oldVisible;
+    BOOL oldVisible;
 
-	oldVisible = visible;
-	visible = aVisible;
-	return(oldVisible != visible);
+    oldVisible = visible;
+    visible = aVisible;
+
+    // If the new value is equal to the old, return FALSE (NO)
+    return(oldVisible != visible);
 }
 
+
+//*********************************************************/
+// setPenColor - Set the drawing color
+//
 - (BOOL)setPenColor:(float)aPenColor
 {
-	penColor = aPenColor;
-	return(NO);
+    penColor = aPenColor;
+
+    // For now, just return FALSE (v0.3)
+    return(NO);
 }
 
+
+// Accessor method
 - (float)penColor
 {
 	return(penColor);
 }
 
+
+//*********************************************************/
+// initPath - Intialize the turtle's path
+//
 - (void)initPath
 {
-	if(!path)
+    // Only initialize if the path hasn't been initialized already
+    if(!path)
 	{
-		path = [[[NSBezierPath alloc] init] retain];
-		[path setLineWidth:1.0];
-		[path setLineCapStyle:NSRoundLineCapStyle];
-		[path setLineJoinStyle:NSRoundLineJoinStyle];
-		[path setMiterLimit:4.0];
+	path = [[[NSBezierPath alloc] init] retain];
+	[path setLineWidth:1.0];
+	[path setLineCapStyle:NSRoundLineCapStyle];
+	[path setLineJoinStyle:NSRoundLineJoinStyle];
+	[path setMiterLimit:4.0];
 	}
 }
 
+
+//******************************************************************/
+// drawTriangleAt - Draw a triangle at the point and heading given
+//
 - (void)drawTriangleAt:(NSPoint)aPoint heading:(float)aDirection withColor:(NSColor *)aColor
 {
-	NSPoint		pt[3];
-	float		steps;
+    NSPoint		pt[3];
+    float		steps;
 
-	if(!path)
+    // If the path hasn't be initialized, do so now (rare case)
+    if(!path)
 	{
-		[self initPath];
-	}
-	steps = 10.0 * turtleSize;
-
-	pt[0] = aPoint;
-	pt[1] = aPoint;
-	pt[2] = aPoint;
-
-	pt[0].x += sin(aDirection * 2.0 * PI / 360.0) * steps;
-	pt[0].y += cos(aDirection * 2.0 * PI / 360.0) * steps;
-
-	aDirection += 120.0;
-	if(aDirection >= 360.0)
-	{
-		aDirection -= 360.0;
+	[self initPath];
 	}
 
-	pt[1].x += sin(aDirection * 2.0 * PI / 360.0) * steps;
-	pt[1].y += cos(aDirection * 2.0 * PI / 360.0) * steps;
+    
+    steps = 10.0 * turtleSize;
 
-	aDirection += 120.0;
-	if(aDirection >= 360.0)
+    pt[0] = aPoint;
+    pt[1] = aPoint;
+    pt[2] = aPoint;
+
+    pt[0].x += sin(aDirection * 2.0 * PI / 360.0) * steps;
+    pt[0].y += cos(aDirection * 2.0 * PI / 360.0) * steps;
+
+    aDirection += 120.0;
+    if(aDirection >= 360.0)
 	{
-		aDirection -= 360.0;
+	aDirection -= 360.0;
 	}
 
-	pt[2].x += sin(aDirection * 2.0 * PI / 360.0) * steps;
-	pt[2].y += cos(aDirection * 2.0 * PI / 360.0) * steps;
+    pt[1].x += sin(aDirection * 2.0 * PI / 360.0) * steps;
+    pt[1].y += cos(aDirection * 2.0 * PI / 360.0) * steps;
 
+    aDirection += 120.0;
+    if(aDirection >= 360.0)
+	{
+	aDirection -= 360.0;
+	}
 
-	[aColor set];
-	[path moveToPoint:pt[0]];
-	[path lineToPoint:pt[1]];
-	[path stroke];
-	[path removeAllPoints];
+    pt[2].x += sin(aDirection * 2.0 * PI / 360.0) * steps;
+    pt[2].y += cos(aDirection * 2.0 * PI / 360.0) * steps;
 
-	[path moveToPoint:pt[1]];
-	[path lineToPoint:pt[2]];
-	[path stroke];
-	[path removeAllPoints];
+    // Set the drawing color
+    [aColor set];
+    
+    // Now we can start the drawing....
+    [path moveToPoint:pt[0]];
+    [path lineToPoint:pt[1]];
+    [path stroke];
+    [path removeAllPoints];
 
-	[path moveToPoint:pt[2]];
-	[path lineToPoint:pt[0]];
-	[path stroke];
-	[path removeAllPoints];
+    // Side two of the triangle
+    [path moveToPoint:pt[1]];
+    [path lineToPoint:pt[2]];
+    [path stroke];
+    [path removeAllPoints];
+
+    // Side three of the triangle
+    [path moveToPoint:pt[2]];
+    [path lineToPoint:pt[0]];
+    [path stroke];
+    [path removeAllPoints];
 }
 
+
+//******************************************************************/
+// drawSquareAtt - Draw a square at the point and heading given
+//
 - (void)drawSquareAt:(NSPoint)aPoint heading:(float)aDirection withColor:(NSColor *)aColor length:(float)sideLength
 {
 }
 
+
+//***********************************************/
+// drawTurtleAt - Draws the shape of the turtle 
+//
 - (void)drawTurtleAt:(NSPoint)aPoint heading:(float)aDirection withColor:(NSColor *)aColor
 {
-	NSPoint		pt0;	// first point
-	NSPoint		pt1;	// from
-	NSPoint		pt2;	// to
-	float		d;
-	float		steps;
-	float		dir;
-	const float	*s;
-	BOOL		more;
+    NSPoint		pt0;	// first point
+    NSPoint		pt1;	// from
+    NSPoint		pt2;	// to
+    float		d;
+    float		steps;
+    float		dir;
+    const float	*s;
+    BOOL		more;
 
-	s = turtleShape;
-	if(s)
+    s = turtleShape;
+
+    // If the shape is defined, continue...
+    if(s)
 	{
-		if(!path)
+	// If there is no path defined, make one.
+	if(!path)
+	    {
+	    [self initPath];
+	    }
+
+	// Set the turtle's color to the current color, for drawing
+	[aColor set];
+
+	d = *s++;
+	steps = *s++ * turtleSize;
+	dir = my_fmod(aDirection + d, 360.0);
+	pt0.x = aPoint.x + sin(dir * 2.0 * PI / 360.0) * steps;
+	pt0.y = aPoint.y + cos(dir * 2.0 * PI / 360.0) * steps;
+
+	pt1 = pt0;
+	more = YES;
+	while(more)
+	    {
+	    d = *s++;
+	    if(d < 360.0)
 		{
-			[self initPath];
-		}
-
-		[aColor set];
-
-		d = *s++;
 		steps = *s++ * turtleSize;
-		dir = my_fmod(aDirection + d, 360.0);
-		pt0.x = aPoint.x + sin(dir * 2.0 * PI / 360.0) * steps;
-		pt0.y = aPoint.y + cos(dir * 2.0 * PI / 360.0) * steps;
-
-		pt1 = pt0;
-		more = YES;
-		while(more)
-		{
-			d = *s++;
-			if(d < 360.0)
-			{
-				steps = *s++ * turtleSize;
-				dir = my_fmod(dir + d, 360.0);
-				pt2.x = pt1.x + sin(dir * 2.0 * PI / 360.0) * steps;
-				pt2.y = pt1.y + cos(dir * 2.0 * PI / 360.0) * steps;
-			}
-			else
-			{
-				pt2 = pt0;
-				more = NO;
-			}
-			[path moveToPoint:pt1];
-			[path lineToPoint:pt2];
-			[path stroke];
-			[path removeAllPoints];
-			pt1 = pt2;
+		dir = my_fmod(dir + d, 360.0);
+		pt2.x = pt1.x + sin(dir * 2.0 * PI / 360.0) * steps;
+		pt2.y = pt1.y + cos(dir * 2.0 * PI / 360.0) * steps;
 		}
+	    else
+		{
+		pt2 = pt0;
+		more = NO;
+		}
+
+	    // Draw the side
+	    [path moveToPoint:pt1];
+	    [path lineToPoint:pt2];
+	    [path stroke];
+	    [path removeAllPoints];
+
+	    // Change the starting point to the end of the last side
+	    pt1 = pt2;
+	    }
 	}
 }
 
+
+//***********************************************/
+// drawAtOffset - Offset draw the turtle
+//
 - (void)drawAtOffset:(NSPoint)aPoint
 {
-	if([self visible])
+    if([self visible])
 	{
-		aPoint.x += [self location].x;
-		aPoint.y += [self location].y;
-		[self drawTurtleAt:aPoint heading:[self direction] withColor:[self turtleColor]];
+	aPoint.x += [self location].x;
+	aPoint.y += [self location].y;
+	[self drawTurtleAt:aPoint heading:[self direction] withColor:[self turtleColor]];
 	}
 }
 
+
+//*********************************************************************/
+// moveTo - Move the turtle to a new place, drawing the move if needed
+//
 - (BOOL)moveTo:(NSPoint)aPoint
 {
-	DrawCommand	*drawCommand;
-	NSPoint	fromPt;
-	NSPoint	toPt;
-	NSColor	*theColor;
-	int		rgb[] = { 0x000000, 0x0000ff, 0xff0000, 0xff00ff, 0x00ff00, 0x00ffff, 0xffff00, 0xffffff };
-	int		col;
-	float	r;
-	float	g;
-	float	b;
+    DrawCommand	*drawCommand;
+    NSPoint	fromPt;
+    NSPoint	toPt;
+    NSColor	*theColor;
 
-	col = rgb[7 & ((int) [self penColor])];
-	r = (1.0 / 256.0) * ((float) (0xff & (col >> 16)));
-	g = (1.0 / 256.0) * ((float) (0xff & (col >> 8)));
-	b = (1.0 / 256.0) * ((float) (0xff & col));
+    // Colors:             black      blue      red      purple    green   lightblue   yellow     white
+    int		rgb[] = { 0x000000, 0x0000ff, 0xff0000, 0xff00ff, 0x00ff00, 0x00ffff, 0xffff00, 0xffffff };
+    int		col;
 
-	theColor = [NSColor colorWithCalibratedRed:r green:g blue:b alpha:1.0];
+    // To store each part of the color RGB spectrum
+    float	r;
+    float	g;
+    float	b;
 
-	if(draw)
+    // Get the current color and dissect it
+    col = rgb[7 & ((int) [self penColor])];
+    r = (1.0 / 256.0) * ((float) (0xff & (col >> 16)));
+    g = (1.0 / 256.0) * ((float) (0xff & (col >> 8)));
+    b = (1.0 / 256.0) * ((float) (0xff & col));
+
+    // Now turn the color into a Cocoa NSColor
+    theColor = [NSColor colorWithCalibratedRed:r green:g blue:b alpha:1.0];
+
+    // If we are to draw, do so..
+    if(draw)
 	{
-		fromPt = location;
-		toPt = aPoint;
-		drawCommand = [[DrawCommand alloc] initWithColor:theColor fromPoint:fromPt toPoint:toPt];
-		[outputView addCommand:drawCommand];
+	fromPt = location;
+	toPt = aPoint;
+	drawCommand = [[DrawCommand alloc] initWithColor:theColor fromPoint:fromPt toPoint:toPt];
+	[outputView addCommand:drawCommand];
 	}
-	if([self setLocation:aPoint])	// if location changed
+
+	
+    if([self setLocation:aPoint])	// if location changed
 	{
-		if(draw || visible)			// if we're drawing or the turtle is visible
+	    if(draw || visible)		// if we're drawing or the turtle is visible
 		{
-			return(YES);			// then we need to update the display!
+		return(YES);		// then we need to update the display!
 		}
 	}
-	return(NO);						// nothing changed, don't update display
+    return(NO);				// nothing changed, don't update display
 }
 
+
+//*********************************************************************/
+// move - Move the turtle using steps
+//
 - (BOOL)move:(float)aSteps stepsInDirection:(float)aDirection
 {
-	NSPoint	pt;
+    NSPoint	pt;
 
-	pt = location;
-	pt.x += sin(aDirection * 2 * PI / 360.0) * aSteps;
-	pt.y += cos(aDirection * 2 * PI / 360.0) * aSteps;
-	return([self moveTo:pt]);
+    pt = location;
+    pt.x += sin(aDirection * 2 * PI / 360.0) * aSteps;
+    pt.y += cos(aDirection * 2 * PI / 360.0) * aSteps;
+    return([self moveTo:pt]);
 }
 
+
+//*********************************************************************/
+// clearGraphics - Clear the screen
+//
 - (BOOL)clearGraphics
 {
-	return([outputView clear]);
+    return([outputView clear]);
 }
 
+
+//*********************************************************************/
+// home - Send the turtle home
+//
 - (BOOL)home
 {
-	NSPoint	pt;
-
-	pt.x = 0.0;
-	pt.y = 0.0;
-	return([self moveTo:pt]);
+    NSPoint	pt;
+    
+    pt.x = 0.0;
+    pt.y = 0.0;
+    return([self moveTo:pt]);
 }
 
+
+//*********************************************************************/
+// north - Face the turtle North
+//
 - (BOOL)north
 {
-	return([self setDirection:0.0] && visible);
+    return([self setDirection:0.0] && visible);
 }
 
+
+//*********************************************************************/
+// northWest - Face the turtle NorthWest
+//
 - (BOOL)northWest
 {
-	return([self setDirection:45.0] && visible);
+    return([self setDirection:45.0] && visible);
 }
 
+
+//*********************************************************************/
+// west - Face the turtle West
+//
 - (BOOL)west
 {
-	return([self setDirection:90.0] && visible);
+    return([self setDirection:90.0] && visible);
 }
 
+
+//*********************************************************************/
+// southWest - Face the turtle SouthWest
+//
 - (BOOL)southWest
 {
-	return([self setDirection:135.0] && visible);
+    return([self setDirection:135.0] && visible);
 }
 
+
+//*********************************************************************/
+// south - Face the turtle South
+//
 - (BOOL)south
 {
-	return([self setDirection:180.0] && visible);
+    return([self setDirection:180.0] && visible);
 }
 
+
+//*********************************************************************/
+// southEast - Face the turtle SouthEast
+//
 - (BOOL)southEast
 {
-	return([self setDirection:225.0] && visible);
+    return([self setDirection:225.0] && visible);
 }
 
+
+//*********************************************************************/
+// east - Face the turtle East
+//
 - (BOOL)east
 {
-	return([self setDirection:270.0] && visible);
+    return([self setDirection:270.0] && visible);
 }
 
+
+//*********************************************************************/
+// northEast - Face the turtle NorthEast
+//
 - (BOOL)northEast
 {
-	return([self setDirection:315.0] && visible);
+    return([self setDirection:315.0] && visible);
 }
 
+
+//*********************************************************************/
+// back - Send the turtle walking backwards 
+//
 - (BOOL)back:(float)aSteps
 {
-	return([self move:aSteps stepsInDirection:direction + 180.0]);
+    return([self move:aSteps stepsInDirection:direction + 180.0]);
 }
 
+
+//*********************************************************************/
+// forward - Send the turtle walking forwards
+//
 - (BOOL)forward:(float)aSteps
 {
-	return([self move:aSteps stepsInDirection:direction]);
+    return([self move:aSteps stepsInDirection:direction]);
 }
 
+
+//*********************************************************************/
+// turnLeft - Turn the turtle toward the left
+//
 - (BOOL)turnLeft:(float)aDegrees
 {
-	return([self setDirection:direction - aDegrees] && visible);
+    return([self setDirection:direction - aDegrees] && visible);
 }
 
+
+//*********************************************************************/
+// turnRight - Turn the turtle toward the right
+//
 - (BOOL)turnRight:(float)aDegrees
 {
-	return([self setDirection:direction + aDegrees] && visible);
+    return([self setDirection:direction + aDegrees] && visible);
 }
 
+
+//*********************************************************************/
+// penUp - Stop drawing by setting the pen to up (off the page)
+//
 - (BOOL)penUp
 {
-	draw = NO;
-	return(NO);
+    draw = NO;
+    return(draw);
 }
 
+
+//*********************************************************************/
+// penDown - Start drawing by setting the pen to down (on the page)
+//
 - (BOOL)penDown
 {
-	draw = YES;
-//	[self moveTo:location];		// make a pixel, pen is down! (not a good idea, as the turtle starts with the pen down!)
-//	return(YES);
-	draw = YES;
-	return(NO);
+    draw = YES;
+    return(draw);
 }
 
+
+// Accessor method
 - (BOOL)hide
 {
-	return([self setVisible:NO]);
+    return([self setVisible:NO]);
 }
 
+
+// Accessor method
 - (BOOL)show
 {
-	return([self setVisible:YES]);
+    return([self setVisible:YES]);
 }
 
+
+// Accessor method
 - (BOOL)repeat:(float)aCount
 {
-	return(NO);
+    return(NO);
 }
 
 @end

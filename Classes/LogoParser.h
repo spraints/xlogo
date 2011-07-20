@@ -86,8 +86,12 @@ enum
 	unsigned		stackIndex;
 	NSMutableArray	*variables;
 }
+
+// Creation and destruction
 - (id)initWithOutputView:(id)aOutputView errorView:(id)aErrorView;
 - (void)dealloc;
+
+// Turtle management
 - (void)addTurtle:(Turtle *)aTurtle;
 - (void)removeTurtle:(Turtle *)aTurtle;
 - (void)activateTurtle:(Turtle *)aTurtle;

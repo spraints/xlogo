@@ -35,6 +35,7 @@
 // Indeed, the expression format of Logo is crap! I wish it'd be more logical!
 // I tried shortening the methods, by first figuring out which operator is going to be used;
 // this saves *some* space, but it's far from perfect!
+// 30/7-2003: Messed with lists and words. Disabled code in level7 and moved list/word handling to level0 (getExpression) instead, this works better, but limits possibilites.
 
 #import "LogoParserExpression.h"
 #import "LogoParser.h"
@@ -269,6 +270,7 @@
 			programCounter = s - 1;
 		}
 		break;
+#if 0
 	  case '"':		// word
 		programCounter = s;
 		result = [self getWord:&s andLength:&length];
@@ -281,6 +283,7 @@
 			programCounter = s - 1;
 		}
 		break;
+#endif
 	  case ':':		// variable
 		programCounter = s;
 		result = [self getWord:&s andLength:&length];
@@ -319,6 +322,7 @@
 			programCounter = s - 1;
 		}
 		break;
+#if 0
 	  case '[':		// list
 		programCounter = s;
 		result = [self getList:&s andLength:&length];
@@ -332,6 +336,7 @@
 			programCounter = s - 1;
 		}
 		break;
+#endif
 	  default:		// probably a number
 		result = [self getFloat:&value];
 		if(result)
@@ -344,14 +349,16 @@
 
 - (BOOL)level6:(Expression *)expression					// Sign ('+', '-', '~')
 {
-	BOOL		result;
-	unichar		c;
-	long		type;
-	long		operator;
+	BOOL			result;
+	const unichar	*s;
+	unichar			c;
+	long			type;
+	long			operator;
 
 	result = NO;
 
 	[self skipWhite];
+	s = programCounter;
 	c = programCounter[0];								// Get operator character.
 	operator = kOperatorNone;
 	switch(c)
@@ -374,10 +381,11 @@
 	}
 	if([self level6:expression])						// Get first expression (left hand)
 	{
-		result = YES;
 		type = [expression type];						// Get type of this first expression
 		if(kExpressionKindNumber & [expression type])
 		{
+			result = YES;
+			s = programCounter;
 			switch(operator)
 			{
 			  case kOperatorPlus:	// do nothing
@@ -393,21 +401,28 @@
 				break;
 			}
 		}
+		else
+		{
+			// can't do sign on a name or list.
+		}
 	}
+	programCounter = s;
 	return(result);
 }
 
 - (BOOL)level5:(Expression *)expression					// Shift Left, Shift Right (very time consuming, avoid using these if possible!)
 {
-	BOOL		result;
-	Expression	*right;
-	unichar		c;
-	long		type;
-	long		operator;
-	float		val1;
-	float		val2;
+	BOOL			result;
+	Expression		*right;
+	const unichar	*s;
+	unichar			c;
+	long			type;
+	long			operator;
+	float			val1;
+	float			val2;
 
 	result = NO;
+	s = programCounter;
 	if([self level6:expression])						// Get first expression (left hand)
 	{
 		type = [expression type];						// Get type of this first expression
@@ -417,6 +432,7 @@
 		while(YES == result)
 		{
 			[self skipWhite];
+			s = programCounter;
 			c = programCounter[0];						// Get operator character.
 			operator = kOperatorNone;
 			if(c == programCounter[1])					// We need 2 matching characters, either '<<' or '>>'
@@ -444,6 +460,7 @@
 				{
 					if(kExpressionKindNumber & type)	// If type is a number, we know how to handle it
 					{
+						s = programCounter;
 						result = YES;					// Everything is alright, this is a success!
 						val1 = [expression floatValue];
 						val2 = [right floatValue];
@@ -470,20 +487,23 @@
 			}
 		}
 	}
+	programCounter = s;
 	return(result);
 }
 
 - (BOOL)level4:(Expression *)expression					// And, Or, Xor
 {
-	BOOL		result;
-	Expression	*right;
-	unichar		c;
-	long		type;
-	long		operator;
-	float		val1;
-	float		val2;
+	BOOL			result;
+	Expression		*right;
+	const unichar	*s;
+	unichar			c;
+	long			type;
+	long			operator;
+	float			val1;
+	float			val2;
 
 	result = NO;
+	s = programCounter;
 	if([self level5:expression])						// Get first expression (left hand)
 	{
 		type = [expression type];						// Get type of this first expression
@@ -493,6 +513,7 @@
 		while(YES == result)
 		{
 			[self skipWhite];
+			s = programCounter;
 			c = programCounter[0];						// Get operator character.
 			operator = kOperatorNone;
 			switch(c)
@@ -519,6 +540,7 @@
 				{
 					if(kExpressionKindNumber & type)	// If type is a number, we know how to handle it
 					{
+						s = programCounter;
 						result = YES;					// Everything is alright, this is a success!
 						val1 = [expression floatValue];
 						val2 = [right floatValue];
@@ -540,20 +562,23 @@
 			}
 		}
 	}
+	programCounter = s;
 	return(result);
 }
 
 - (BOOL)level3:(Expression *)expression					// Multiplication, Division, Modulo
 {
-	BOOL		result;
-	Expression	*right;
-	unichar		c;
-	long		type;
-	long		operator;
-	float		val1;
-	float		val2;
+	BOOL			result;
+	Expression		*right;
+	const unichar	*s;
+	unichar			c;
+	long			type;
+	long			operator;
+	float			val1;
+	float			val2;
 
 	result = NO;
+	s = programCounter;
 	if([self level4:expression])						// Get first expression (left hand)
 	{
 		type = [expression type];						// Get type of this first expression
@@ -563,6 +588,7 @@
 		while(YES == result)
 		{
 			[self skipWhite];
+			s = programCounter;
 			c = programCounter[0];						// Get operator character.
 			operator = kOperatorNone;
 			switch(c)
@@ -590,6 +616,7 @@
 				{
 					if(kExpressionKindNumber & type)	// If type is a number, we know how to handle it
 					{
+						s = programCounter;
 						result = YES;					// Everything is alright, this is a success!
 						val1 = [expression floatValue];
 						val2 = [right floatValue];
@@ -611,20 +638,23 @@
 			}
 		}
 	}
+	programCounter = s;
 	return(result);
 }
 
 - (BOOL)level2:(Expression *)expression					// Addition, Subtraction
 {
-	BOOL		result;
-	Expression	*right;
-	unichar		c;
-	long		type;
-	long		operator;
-	float		val1;
-	float		val2;
+	BOOL			result;
+	Expression		*right;
+	const unichar	*s;
+	unichar			c;
+	long			type;
+	long			operator;
+	float			val1;
+	float			val2;
 
 	result = NO;
+	s = programCounter;
 	if([self level3:expression])						// Get first expression (left hand)
 	{
 		type = [expression type];						// Get type of this first expression
@@ -634,6 +664,7 @@
 		while(YES == result)
 		{
 			[self skipWhite];
+			s = programCounter;
 			c = programCounter[0];						// Get operator character.
 			operator = kOperatorNone;
 			switch(c)
@@ -658,6 +689,7 @@
 				{
 					if(kExpressionKindNumber & type)	// If type is a number, we know how to handle it
 					{
+						s = programCounter;
 						result = YES;					// Everything is alright, this is a success!
 						val1 = [expression floatValue];
 						val2 = [right floatValue];
@@ -676,22 +708,25 @@
 			}
 		}
 	}
+	programCounter = s;
 	return(result);
 }
 
 - (BOOL)level1:(Expression *)expression					// Comparing
 {
-	BOOL		result;
-	Expression	*right;
-	unichar		c;
-	unichar		c1;
-	long		type;
-	long		operator;
-	float		val1;
-	float		val2;
+	BOOL			result;
+	Expression		*right;
+	const unichar	*s;
+	unichar			c;
+	unichar			c1;
+	long			type;
+	long			operator;
+	float			val1;
+	float			val2;
 
 	right = [[Expression alloc] init];
 	result = NO;
+	s = programCounter;
 	if([self level2:expression])						// Get first expression (left hand)
 	{
 		type = [expression type];						// Get type of this first expression
@@ -700,6 +735,7 @@
 		while(YES == result)
 		{
 			[self skipWhite];
+			s = programCounter;
 			c = programCounter[0];						// Get operator character.
 			if(c)
 			{
@@ -771,6 +807,7 @@
 				{
 					if(kExpressionKindNumber & type)	// If type is a number, we know how to handle it
 					{
+						s = programCounter;
 						result = YES;					// Everything is alright, this is a success!
 						val1 = [expression floatValue];
 						val2 = [right floatValue];
@@ -801,6 +838,7 @@
 			}
 		}
 	}
+	programCounter = s;
 	return(result);
 }
 
@@ -808,9 +846,47 @@
 {
 	BOOL			result;
 	const unichar	*oldPC;
+	const unichar	*s;
+	unichar			c;
+	unsigned long	length;
 
 	oldPC = programCounter;				// save in case of failure
-	result = [self level1:expression];
+
+	result = NO;
+	[self skipWhite];
+	s = programCounter;
+	c = *s++;
+	switch(c)
+	{
+	  case '"':		// word (word cannot be operated on!)
+		programCounter = s;
+		result = [self getWord:&s andLength:&length];
+		if(result)
+		{
+			[expression setStringValue:s ofLength:length];
+		}
+		else
+		{
+			programCounter = s - 1;
+		}
+		break;
+	  case '[':		// list (list cannot be operated on!)
+		programCounter = s;
+		result = [self getList:&s andLength:&length];
+		if(result)
+		{
+			programCounter++;
+			[expression setListValue:s ofLength:length];
+		}
+		else
+		{
+			programCounter = s - 1;
+		}
+		break;
+	  default:
+		result = [self level1:expression];
+		break;
+	}
 	if(NO == result)
 	{
 		programCounter = oldPC;			// failure, jump back to start!

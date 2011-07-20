@@ -43,28 +43,28 @@
 
 - (id)initWithProgramCounter:(const unichar *)aProgramCounter andRepeat:(unsigned long)aRepeatCount
 {
-	self = [super init];
-	if(self)
+    self = [super init];
+    if(self)
 	{
-		count = aRepeatCount;
-		programCounter = aProgramCounter;
+	count = aRepeatCount;
+	programCounter = aProgramCounter;
 	}
-	return(self);
+    return(self);
 }
 
 - (const unichar *)programCounter
 {
-	return(programCounter);
+    return(programCounter);
 }
 
 - (unsigned long)count
 {
-	return(count);
+    return(count);
 }
 
 - (void)decCount
 {
-	count--;
+    count--;
 }
 
 @end

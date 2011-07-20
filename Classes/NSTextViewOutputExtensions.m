@@ -34,26 +34,34 @@
 
 @implementation NSTextView (NSTextViewOutputExtensions)
 
+
+//***********************************************************/
+// appendString - Add a string to the textview (fancier than appendAttributedString)
+//
 - (void)appendString:(NSString *)aString ofColor:(NSColor *)textColor
 {
-	NSAttributedString	*attrStr;
-	NSDictionary		*dict;
+    NSAttributedString	*attrStr;
+    NSDictionary		*dict;
 
-	dict = [NSDictionary dictionaryWithObjectsAndKeys:textColor, NSForegroundColorAttributeName, [NSFont userFixedPitchFontOfSize:0.0], NSFontAttributeName, nil];
-	attrStr = [[NSAttributedString alloc] initWithString:aString attributes:dict];
-	[[self textStorage] appendAttributedString:attrStr];
+    dict = [NSDictionary dictionaryWithObjectsAndKeys:textColor, NSForegroundColorAttributeName, [NSFont userFixedPitchFontOfSize:0.0], NSFontAttributeName, nil];
+    attrStr = [[NSAttributedString alloc] initWithString:aString attributes:dict];
+    [[self textStorage] appendAttributedString:attrStr];
 }
 
+
+//***********************************************************/
+// appendLine - Add a line of text to the textview (fancier than appendAttributedString)
+//
 - (void)appendLine:(NSString *)aString ofColor:(NSColor *)textColor
 {
-	NSAttributedString	*attrStr;
-	NSDictionary		*dict;
-	NSString			*str;
+    NSAttributedString	*attrStr;
+    NSDictionary		*dict;
+    NSString			*str;
 
-	str = [aString stringByAppendingString:@"\n"];
-	dict = [NSDictionary dictionaryWithObjectsAndKeys:textColor, NSForegroundColorAttributeName, [NSFont userFixedPitchFontOfSize:0.0], NSFontAttributeName, nil];
-	attrStr = [[NSAttributedString alloc] initWithString:str attributes:dict];
-	[[self textStorage] appendAttributedString:attrStr];
+    str = [aString stringByAppendingString:@"\n"];
+    dict = [NSDictionary dictionaryWithObjectsAndKeys:textColor, NSForegroundColorAttributeName, [NSFont userFixedPitchFontOfSize:0.0], NSFontAttributeName, nil];
+    attrStr = [[NSAttributedString alloc] initWithString:str attributes:dict];
+    [[self textStorage] appendAttributedString:attrStr];
 }
 
 
@@ -62,17 +70,16 @@
 //
 - (void)clearAllText
 {
-    NSRange allChars;
-
-    // The NSRange allChars is a struct of two parts, location (where to start)
+    // The NSRange allChars is a struct made up of two parts, location (where to start)
     // and length (where to end). Since we want to delete all of the TextView
     // we start at 0 and then make the length equal to the amount of text currently
-    // in the view - if we didnt do that, we would get an error.
+    // in the view - if we didnt do that, we would get an error when trying to delete.
+    NSRange allChars;
     allChars.location = 0;
     allChars.length = [[self textStorage] length];
 
     // Since NSTextStorage is a semi-subclass of NSMutableAttributedString, we can
-    // use its function "deleteCharactersInRange" to clear it all
+    // use its function "deleteCharactersInRange" to clear it all, using the range above
     [[self textStorage] deleteCharactersInRange:allChars];
 }
 

@@ -38,18 +38,20 @@
     IBOutlet id errorView;
     IBOutlet id outputView;
 
-	NSString		*turtleName;
-	NSColor			*turtleColor;
-	float			turtleSize;
-	const float		*turtleShape;
-	NSBezierPath	*path;
+	NSString		*turtleName;      // Name of the turtle
+	NSColor			*turtleColor;     // Color of the turtle
+	float			turtleSize;       // Size of the turtle (normally 1.0)
+	const float		*turtleShape;     // Shape of the turtle (polygon points)
+	NSBezierPath	        *path;
 
-	NSPoint			location;
-	float			direction;
-	float			penColor;
-	BOOL			draw;
-	BOOL			visible;
+	NSPoint			location;         // Location of the turtle
+	float			direction;        // Direction they are facing
+	float			penColor;         // Drawing color
+	BOOL			draw;             // Pen up or pen down
+	BOOL			visible;          // Show the turtle to the user or not
 }
+
+// Creation and destruction
 - (id)initWithName:(NSString *)aName andColor:(NSColor *)aColor;
 - (void)dealloc;
 
@@ -80,6 +82,7 @@
 - (void)drawTurtleAt:(NSPoint)aPoint heading:(float)aDirection withColor:(NSColor *)aColor;
 - (void)drawAtOffset:(NSPoint)aPoint;
 
+// Movement commands
 - (BOOL)moveTo:(NSPoint)aPoint;
 - (BOOL)move:(float)aSteps stepsInDirection:(float)aDirection;
 - (BOOL)clearGraphics;

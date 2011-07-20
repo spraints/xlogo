@@ -44,6 +44,7 @@
 		path = NULL;
 		drawCommands = NULL;
 		paperColor = 0;
+		lineWidth = 3.0;
 	}
 	return(self);
 }
@@ -59,6 +60,18 @@
 {
 	initializeFlag = YES;
 	[self setPaperColor:7];
+	
+	// Let's get the line width from the user preferences
+	defaults = [NSUserDefaults standardUserDefaults];
+	lineWidthString = [defaults objectForKey:@"Line Width"];
+	if(lineWidthString)
+	    {
+	    [self setPenSize: [lineWidthString floatValue]];
+	    }
+	else
+	    {
+	    [self setPenSize: 3.0];
+	    }
 }
 
 
@@ -71,126 +84,160 @@
     return YES;
 }
 
-
+//************************************************************/
+// drawRect - The standard NSView method to handle drawing
+//
 - (void)drawRect:(NSRect)rect
 {
-	DrawCommand	*drawCommand;
-	unsigned	i;
-	unsigned	count;
-	NSPoint		pt;
-	NSArray		*turtles;
-	float		hOffset;
-	float		vOffset;
-	NSColor		*theColor;
-	NSColor         *borderColor;  // Added by Jeff Skrysak
-	int			rgb[] = { 0x000000, 0x0000ff, 0xff0000, 0xff00ff, 0x00ff00, 0x00ffff, 0xffff00, 0xffffff };
-	int			col;
-	float		r;
-	float		g;
-	float		b;
+    DrawCommand	*drawCommand;
+    unsigned	i;
+    unsigned	count;
+    NSPoint	pt;
+    NSArray	*turtles;
+    float	hOffset;
+    float	vOffset;
+    NSColor	*theColor;
+    NSColor     *borderColor;  // Added by Jeff Skrysak
+    int		rgb[] = { 0x000000, 0x0000ff, 0xff0000, 0xff00ff, 0x00ff00, 0x00ffff, 0xffff00, 0xffffff };
+    int		col;
+    float	r;
+    float	g;
+    float	b;
 
-	if(!initializeFlag)
+    // If the view hasn't been setup, do that now
+    if(!initializeFlag)
 	{
-		[self setup];
+	[self setup];
 	}
 
-	col = rgb[7 & ((int) [self paperColor])];
-	r = (1.0 / 256.0) * ((float) (0xff & (col >> 16)));
-	g = (1.0 / 256.0) * ((float) (0xff & (col >> 8)));
-	b = (1.0 / 256.0) * ((float) (0xff & col));
-	theColor = [NSColor colorWithCalibratedRed:r green:g blue:b alpha:1.0];
+    col = rgb[7 & ((int) [self paperColor])];
+    r = (1.0 / 256.0) * ((float) (0xff & (col >> 16)));
+    g = (1.0 / 256.0) * ((float) (0xff & (col >> 8)));
+    b = (1.0 / 256.0) * ((float) (0xff & col));
+    theColor = [NSColor colorWithCalibratedRed:r green:g blue:b alpha:1.0];
 
-	if(!path)
-	{
-		path = [[[NSBezierPath alloc] init] retain];
-		[path setLineWidth:1.0];
-		[path setLineCapStyle:NSRoundLineCapStyle];
-		[path setLineJoinStyle:NSRoundLineJoinStyle];
-		[path setMiterLimit:4.0];
-	}
-
-//	[[NSColor whiteColor] set];
-	[theColor set];
-	NSRectFill(rect);
 	
-	// Draw a border (default: black, 1 pixel wide) around the view [Added by Jeff Skrysak]
-	borderColor = [NSColor blackColor];
-	[borderColor set];
-	NSFrameRect(rect);             
-
-	hOffset = [self frame].size.width / 2;
-	vOffset = [self frame].size.height / 2;
-
-	pt.x = hOffset;
-	pt.y = vOffset;
-	count = [drawCommands count];
-	for(i = 0; i < count; i++)
+    if(!path)
 	{
-		drawCommand = [drawCommands objectAtIndex:i];
-		[[drawCommand color] set];
-		pt = [drawCommand fromPoint];
-		pt.x += hOffset;
-		pt.y += vOffset;
-		[path moveToPoint:pt];
-		pt = [drawCommand toPoint];
-		pt.x += hOffset;
-		pt.y += vOffset;
-		[path lineToPoint:pt];
-		[path stroke];
-		[path removeAllPoints];
+	path = [[[NSBezierPath alloc] init] retain];
+	[path setLineWidth:lineWidth];
+	[path setLineCapStyle:NSRoundLineCapStyle];
+	[path setLineJoinStyle:NSRoundLineJoinStyle];
+	[path setMiterLimit:4.0];
 	}
 
-	pt.x = hOffset;
-	pt.y = vOffset;
-	turtles = [parser turtles];
-	count = [turtles count];
-	for(i = 0; i < count; i++)
+    // Draw the background (white)
+    [theColor set];
+    NSRectFill(rect);
+	
+    // Draw a border (default: black, 1 pixel wide) around the view [Added by Jeff Skrysak]
+    borderColor = [NSColor blackColor];
+    [borderColor set];
+    NSFrameRect(rect);             
+
+    // Find home (0, 0)
+    hOffset = [self frame].size.width / 2;
+    vOffset = [self frame].size.height / 2;
+
+    // Start off at (0, 0)
+    pt.x = hOffset;
+    pt.y = vOffset;
+
+    // Go through all of the paths and draw them
+    count = [drawCommands count];
+    for(i = 0; i < count; i++)
 	{
-		[[turtles objectAtIndex:i] drawAtOffset:pt];
+	[path setLineWidth:lineWidth];
+	drawCommand = [drawCommands objectAtIndex:i];
+	[[drawCommand color] set];
+	pt = [drawCommand fromPoint];
+	pt.x += hOffset;
+	pt.y += vOffset;
+	[path moveToPoint:pt];
+	pt = [drawCommand toPoint];
+	pt.x += hOffset;
+	pt.y += vOffset;
+	[path lineToPoint:pt];
+	[path stroke];
+	[path removeAllPoints];
+	}
+
+    pt.x = hOffset;
+    pt.y = vOffset;
+    turtles = [parser turtles];   // Get the list of turtles
+    count = [turtles count];      // Find the number of turtles
+
+    // Now draw edach turtle
+    for(i = 0; i < count; i++)
+	{
+	[[turtles objectAtIndex:i] drawAtOffset:pt];
 	}
 }
 
+//************************************************************/
+// addCommand - Add a new drawing command to the array
+//
 - (void)addCommand:(DrawCommand *)drawCommand
 {
-	if(!initializeFlag)
+    // Okay, if the view hasn't initialized yet, get that done
+    if(!initializeFlag)
 	{
-		[self setup];
+	[self setup];
 	}
-	if(!drawCommands)
+
+    // Also, if the array of commands hasn't been initialized yet, do that
+    // otherwise we could get some nasty effects
+    if(!drawCommands)
 	{
-		drawCommands = [[NSMutableArray array] retain];
+	drawCommands = [[NSMutableArray array] retain];
 	}
-	[drawCommands addObject:drawCommand];
+
+    // NOW we add the new command..
+    [drawCommands addObject:drawCommand];
 }
 
 - (BOOL)clear
 {
-	if(!initializeFlag)
+    if(!initializeFlag)
 	{
-		[self setup];
+	[self setup];
 	}
-	if(drawCommands)
+    
+    if(drawCommands)
 	{
-		[drawCommands release];
-		drawCommands = NULL;
-		return(YES);
+	[drawCommands release];
+	drawCommands = NULL;
+	return(YES);
 	}
 	return(NO);
 }
 
 - (BOOL)setPaperColor:(float)aPaperColor
 {
-	if(paperColor != aPaperColor)
+    if(paperColor != aPaperColor)
 	{
-		paperColor = aPaperColor;
-		return(YES);
+	paperColor = aPaperColor;
+	return(YES);
 	}
 	return(NO);
 }
 
+// Accessor method
 - (float)paperColor
 {
-	return(paperColor);
+    return(paperColor);
 }
 
+// Accessor method
+- (BOOL)setPenSize:(float)newLineWidth
+{
+    lineWidth = newLineWidth;
+    return(YES);
+}
+
+// Accessor method
+- (float)penSize
+{
+    return(lineWidth);
+}
 @end

@@ -105,6 +105,7 @@ void InitCommands()
 		{ "floodfill", kCommandFloodFill },
 		{ "setposition", kCommandSetPosition },
 		{ "removeturtle", kCommandRemoveTurtle },	/* implemented */
+		{ "setpensize", kCommandSetPenSize },	/* implemented */
 
 		{ NULL, kCommandUnknown }
 	};

@@ -1,9 +1,10 @@
 {
     IBClasses = (
         {
-            ACTIONS = {preferences = id; }; 
+            ACTIONS = {cancelPreferences = id; preferences = id; savePreferences = id; }; 
             CLASS = Controller; 
             LANGUAGE = ObjC; 
+            OUTLETS = {lineWidth = id; maximumTurtles = id; preferencesPanel = id; saveSpeed = id; }; 
             SUPERCLASS = NSObject; 
         }, 
         {CLASS = FirstResponder; LANGUAGE = ObjC; SUPERCLASS = NSObject; }

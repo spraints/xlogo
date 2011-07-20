@@ -38,18 +38,28 @@
 @class DrawCommand;
 @interface TurtleView : NSView
 {
-        IBOutlet id parser;
+	IBOutlet id parser;
 	NSMutableArray	*drawCommands;
 	NSBezierPath	*path;
 	float			paperColor;
 	BOOL			initializeFlag;
+	float lineWidth;
+	NSString *lineWidthString;
+	NSUserDefaults *defaults;
 }
 
+// Creation and destruction
 - (id)init;
 - (void)dealloc;
+
+// Drawing 
 - (void)drawRect:(NSRect)rect;
 - (void)addCommand:(DrawCommand *)drawCommand;
 - (BOOL)clear;
+
+// Accessor methods
 - (BOOL)setPaperColor:(float)aPaperColor;
 - (float)paperColor;
+- (BOOL)setPenSize:(float)newLineWidth;
+- (float)penSize;
 @end

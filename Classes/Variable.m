@@ -37,35 +37,35 @@
 
 - (id)init
 {
-	return([self initWithName:NULL andExpression:NULL]);
+    return([self initWithName:NULL andExpression:NULL]);
 }
 
 - (id)initWithName:(NSString *)aName andExpression:(Expression *)aExpression
 {
-	self = [super init];
-	if(self)
+    self = [super init];
+    if(self)
 	{
-		name = [aName retain];
-		expression = [aExpression retain];
+	name = [aName retain];
+	expression = [aExpression retain];
 	}
-	return(self);
+    return(self);
 }
 
 - (void)dealloc
 {
-	[expression release];
-	[name release];
-	[super dealloc];
+    [expression release];
+    [name release];
+    [super dealloc];
 }
 
 - (NSString *)name
 {
-	return(name);
+    return(name);
 }
 
 - (Expression *)expression
 {
-	return(expression);
+    return(expression);
 }
 
 @end
