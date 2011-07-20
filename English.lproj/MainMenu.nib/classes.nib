@@ -1,0 +1,29 @@
+{
+    IBClasses = (
+        {CLASS = CommandMaster; LANGUAGE = ObjC; SUPERCLASS = NSObject; }, 
+        {CLASS = FirstResponder; LANGUAGE = ObjC; SUPERCLASS = NSObject; }, 
+        {CLASS = Turtle; LANGUAGE = ObjC; SUPERCLASS = NSObject; }, 
+        {
+            ACTIONS = {
+                activateTurtle = id; 
+                changeSpeed = id; 
+                loadCommands = id; 
+                newCommand = id; 
+                printView = id; 
+                saveCommands = id; 
+            }; 
+            CLASS = TurtleController; 
+            LANGUAGE = ObjC; 
+            OUTLETS = {
+                commandField = NSTextField; 
+                commandList = NSTextView; 
+                commandMaster = id; 
+                turtle = id; 
+                turtleView = id; 
+            }; 
+            SUPERCLASS = NSObject; 
+        }, 
+        {CLASS = TurtleView; LANGUAGE = ObjC; SUPERCLASS = NSView; }
+    ); 
+    IBVersion = 1; 
+}
