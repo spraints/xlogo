@@ -100,7 +100,10 @@ enum
 //	kExpressionTypeStringList			= 0x09,	// list of numbers and strings
 //	kExpressionTypeNumberOrListList		= 0x0a,	// list of numbers and lists
 //	kExpressionTypeListList				= 0x0b,	// list of lists
-	kExpressionTypeAny					= 0xff,	// anything's possible ;)
+    
+    // Why 7f? An expression that uses this won't allow values higher than 7f, and I just couldn't stand the warning
+    // it was causing.
+	kExpressionTypeAny					= 0x7f,	// anything's possible ;)
 
 	kJunkEnum928347e						// dummy (to avoid warnings when compiling)
 };

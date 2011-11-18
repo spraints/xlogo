@@ -54,7 +54,7 @@
 // (so we only need to change the converter-code in one place)
 - (float)speedToFrequency:(float)aSpeed
 {
-#warning "implement better solution for turtle speed"
+    // TODO: implement better solution for turtle speed
 	// Invert value (in one of my sources, I have a better solution)
 	aSpeed = 1.000001 - aSpeed;
 
