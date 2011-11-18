@@ -43,9 +43,9 @@ void InitCommands()
 	typedef struct CommandList CommandList;
 	struct CommandList
 	{
-		const unsigned char	*name;
-		long				commandNumber;
-		unsigned char		matchTemplate[8];
+		const char *name;
+		long commandNumber;
+		unsigned char matchTemplate[8];
 	};
 
 	static CommandList	commandList[]= {
@@ -120,7 +120,7 @@ void InitCommands()
 	};
 	int					i;
 	int					size;
-	const unsigned char	*s;
+	const char          *s;
 	unichar				*d;
 	unichar				c;
 
@@ -159,7 +159,7 @@ void InitCommands()
 	}
 }
 
-long LookupCommand(const unichar *aCommand, unsigned long length, const unsigned char **p_template)
+long LookupCommand(const unichar *aCommand, unsigned long length, const char **p_template)
 {
 	Command	*p;
 

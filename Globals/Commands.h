@@ -110,7 +110,7 @@ struct Command
 {
 	unichar			*name;
 	long			commandNumber;
-	unsigned char	matchTemplate[8];
+	char            matchTemplate[8];
 };
 
 #if 0	// no longer needed
@@ -118,7 +118,7 @@ extern Command	*g_commands;
 #endif
 
 void InitCommands();
-long LookupCommand(const unichar *aCommand, unsigned long length, const unsigned char **p_template);
+long LookupCommand(const unichar *aCommand, unsigned long length, const char **p_template);
 const unichar *CommandName(long command);
 
 #ifdef __cplusplus

@@ -35,6 +35,7 @@
 
 
 @interface LogoParser (LogoParserExpression)
+- (void)skipWhite;
 - (BOOL)getList:(const unichar **)p_list andLength:(unsigned long *)p_length;
 - (BOOL)getWord:(const unichar **)p_word andLength:(unsigned long *)p_length;
 - (BOOL)getFloat:(float *)p_float;
