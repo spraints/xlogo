@@ -849,7 +849,8 @@ DEBUGMSG("expression[1] type:%08x\n", [expression[1] type]);
 							refresh |= [turtle setDirection:[expression[0] floatValue]];
 							break;
 						  case kCommandForward:
-							refresh |= [turtle forward:[expression[0] floatValue]];
+                            [turtle forward:[expression[0] floatValue]];
+                            refresh = YES;
 							break;
 						  case kCommandBack:
 							refresh |= [turtle back:[expression[0] floatValue]];

@@ -59,11 +59,14 @@
 	aSpeed = 1.000001 - aSpeed;
 
 	// Catch a zero value, so we don't divide by zero later on
-	if(0 == aSpeed)
+	if(aSpeed <= 0)
 	{
 		aSpeed = 0.000001;
 	}
-	return(aSpeed);
+
+    aSpeed += 0.5;
+	
+    return aSpeed;
 }
 
 //***********************************************************/
@@ -265,28 +268,21 @@
 {
 	long		stat;
 	long		count;
-	BOOL		refresh;
 
-	count = 6;					// we're cheating here. :)
-	refresh = NO;				// per default, don't refresh!
+	count = 1;					// we're cheating here. :)
 	while(count--)
 	{
 		stat = [parser doCommand];
 		if(kParserUpdateDisplay == stat)
 		{
-			refresh = YES;
+            [outputView display];
 		}
 		else if(kParserStop == stat)
 		{
-			refresh = YES;
+            [outputView display];
 			[self timerStop];
 			break;
 		}
-	}
-
-	if(refresh)
-	{
-		[outputView setNeedsDisplay:YES];
 	}
 
 #if 0
