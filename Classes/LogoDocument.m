@@ -58,11 +58,12 @@
 {
     if(aSpeed < 0.45) aSpeed = 0.45;
     if(aSpeed > 1.00) aSpeed = 1.00;
+    
     // Convert so it spans 1.0 .. 10.0
     aSpeed -= 0.45;
     aSpeed *= 9.0 / 0.55;
     aSpeed += 1.0;
-    NSLog(@"Converted speed: %f", aSpeed);
+
     return 1.0 / aSpeed / aSpeed;
 }
 

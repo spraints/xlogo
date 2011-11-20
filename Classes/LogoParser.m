@@ -376,21 +376,6 @@
 	return(length);
 }
 
-- (void)skipWhite			// skip over spaces, tabs, linefeeds, formfeeds and carriage returns
-{
-	register unichar		c;
-	register const unichar	*s;
-
-	s = programCounter;
-	c = *s++;
-	while(32 == c || (9 <= c && 13 >= c))
-	{
-		c = *s++;
-	}
-	s--;
-	programCounter = s;
-}
-
 #if 0	// a test-thing!
 - (const unichar *)firstWhiteOf:(const unichar *)programPtr
 {
@@ -445,11 +430,11 @@
 	BOOL				found;
 	long				cmd;
 	const unichar		*command;
-	const unsigned char	*matchTemplate;
+	const char          *matchTemplate;
 	unsigned long		startingLine;
 	unsigned long		startingColumn;
-	unsigned long		endingLine;
-	unsigned long		endingColumn;
+//	unsigned long		endingLine;
+//	unsigned long		endingColumn;
 #if 0	// a test-thing!
 	unsigned long		selectionStart;
 	unsigned long		selectionEnd;
@@ -849,7 +834,8 @@ DEBUGMSG("expression[1] type:%08x\n", [expression[1] type]);
 							refresh |= [turtle setDirection:[expression[0] floatValue]];
 							break;
 						  case kCommandForward:
-							refresh |= [turtle forward:[expression[0] floatValue]];
+                            [turtle forward:[expression[0] floatValue]];
+                            refresh = YES;
 							break;
 						  case kCommandBack:
 							refresh |= [turtle back:[expression[0] floatValue]];

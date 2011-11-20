@@ -100,7 +100,10 @@ enum
 //	kExpressionTypeStringList			= 0x09,	// list of numbers and strings
 //	kExpressionTypeNumberOrListList		= 0x0a,	// list of numbers and lists
 //	kExpressionTypeListList				= 0x0b,	// list of lists
-	kExpressionTypeAny					= 0xff,	// anything's possible ;)
+    
+    // Why 7f? An expression that uses this won't allow values higher than 7f, and I just couldn't stand the warning
+    // it was causing.
+	kExpressionTypeAny					= 0x7f,	// anything's possible ;)
 
 	kJunkEnum928347e						// dummy (to avoid warnings when compiling)
 };
@@ -110,7 +113,7 @@ struct Command
 {
 	unichar			*name;
 	long			commandNumber;
-	unsigned char	matchTemplate[8];
+	char            matchTemplate[8];
 };
 
 #if 0	// no longer needed
@@ -118,7 +121,7 @@ extern Command	*g_commands;
 #endif
 
 void InitCommands();
-long LookupCommand(const unichar *aCommand, unsigned long length, const unsigned char **p_template);
+long LookupCommand(const unichar *aCommand, unsigned long length, const char **p_template);
 const unichar *CommandName(long command);
 
 #ifdef __cplusplus
