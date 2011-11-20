@@ -52,21 +52,19 @@
 //***********************************************************/
 // speedToFrequency - a shared method for converting the speed to frequency
 // (so we only need to change the converter-code in one place)
-- (float)speedToFrequency:(float)aSpeed
+// Input: aSpeed: a float between 0.45 and 1.0 (from the slider).
+// Output: The number of seconds between each step of execution (for the timer).
+- (float)speedToInterval:(float)aSpeed
 {
-    // TODO: implement better solution for turtle speed
-	// Invert value (in one of my sources, I have a better solution)
-	aSpeed = 1.000001 - aSpeed;
+    if(aSpeed < 0.45) aSpeed = 0.45;
+    if(aSpeed > 1.00) aSpeed = 1.00;
+    
+    // Convert so it spans 1.0 .. 10.0
+    aSpeed -= 0.45;
+    aSpeed *= 9.0 / 0.55;
+    aSpeed += 1.0;
 
-	// Catch a zero value, so we don't divide by zero later on
-	if(aSpeed <= 0)
-	{
-		aSpeed = 0.000001;
-	}
-
-    aSpeed += 0.5;
-	
-    return aSpeed;
+    return 1.0 / aSpeed / aSpeed;
 }
 
 //***********************************************************/
@@ -78,11 +76,12 @@
 
 	// Get the speed value from the GUI
 	speed = [sender floatValue];
+    NSLog(@"New speed: %f", speed);
 
 	[[Preferences sharedInstance] setTurtleSpeed:speed];
 
 	// Tell the timer the new speed
-	[self setFrequency:[self speedToFrequency:speed]];
+	[self setInterval:[self speedToInterval:speed]];
 }
 
 
@@ -91,7 +90,7 @@
 //
 - (void)awakeFromNib
 {
-	frequency = [self speedToFrequency:[[Preferences sharedInstance] turtleSpeed]];
+	interval = [self speedToInterval:[[Preferences sharedInstance] turtleSpeed]];
 }
 
 //***************************************************************/
@@ -213,9 +212,9 @@
 
 
 // Accessor method
-- (void)setFrequency:(float)aFrequency
+- (void)setInterval:(float)anInterval
 {
-	frequency = aFrequency;
+	interval = anInterval;
 	if(timer)
 	{
 		[self timerStart];
@@ -224,9 +223,9 @@
 
 
 // Accessor method
-- (float)frequency
+- (float)interval
 {
-	return(frequency);
+	return(interval);
 }
 
 
@@ -256,7 +255,8 @@
 	}
 
 	// Now create the timer.
-	timer = [NSTimer scheduledTimerWithTimeInterval:frequency target:self selector:@selector(timerTask:) userInfo:NULL repeats:YES];
+    NSLog(@"Start timer with interval %f", interval);
+	timer = [NSTimer scheduledTimerWithTimeInterval:interval target:self selector:@selector(timerTask:) userInfo:NULL repeats:YES];
 	[timer retain];
 }
 
@@ -266,38 +266,10 @@
 //
 - (void)timerTask:(NSTimer *)aTimer
 {
-	long		stat;
-	long		count;
-
-	count = 1;					// we're cheating here. :)
-	while(count--)
-	{
-		stat = [parser doCommand];
-		if(kParserUpdateDisplay == stat)
-		{
-            [outputView display];
-		}
-		else if(kParserStop == stat)
-		{
-            [outputView display];
-			[self timerStop];
-			break;
-		}
-	}
-
-#if 0
-	switch([parser doCommand])
-	{
-	  case kParserStop:			// stop interpreting the program
-		[self timerStop];
-		// FallThru...
-	  case kParserUpdateDisplay:		// not all commands update the display; eg. pen up or if the pen is up and the turtle is moving...
-		[outputView setNeedsDisplay:YES];
-		// FallThru...
-	  case kParserContinue:			// don't need to do anything
-		break;
-	}
-#endif
+    NSLog(@"TICK");
+    long stat = [parser doCommand];
+    if(kParserStop == stat) [self timerStop];
+    [outputView setNeedsDisplay:YES];
 }
 
 //***********************************************************/

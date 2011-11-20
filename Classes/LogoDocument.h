@@ -40,7 +40,7 @@
 	IBOutlet id	parser;
 	IBOutlet id	speedSlider;
 
-	float		frequency;
+	float		interval;
 	NSTimer		*timer;
 
     // File data holder
@@ -58,8 +58,8 @@
 - (void)dealloc;
 
 // Timer methods
-- (void)setFrequency:(float)aFrequency;
-- (float)frequency;
+- (void)setInterval:(float)anInterval;
+- (float)interval;
 - (void)timerStop;
 - (void)timerStart;
 - (void)timerTask:(NSTimer *)aTimer;
