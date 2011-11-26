@@ -76,7 +76,7 @@
 											<array class="NSMutableArray" key="NSSubviews">
 												<object class="NSTextView" id="348202427">
 													<reference key="NSNextResponder" ref="465178160"/>
-													<int key="NSvFlags">274</int>
+													<int key="NSvFlags">2322</int>
 													<set class="NSMutableSet" key="NSDragTypes">
 														<string>Apple HTML pasteboard type</string>
 														<string>Apple PDF pasteboard type</string>
@@ -238,7 +238,7 @@
 											<reference key="NSDocView" ref="348202427"/>
 											<reference key="NSBGColor" ref="217110530"/>
 											<object class="NSCursor" key="NSCursor" id="670473817">
-												<string key="NSHotSpot">{4, 4}</string>
+												<string key="NSHotSpot">{1, -1}</string>
 												<int key="NSCursorType">0</int>
 											</object>
 											<int key="NScvFlags">4</int>
@@ -287,7 +287,7 @@
 											<array class="NSMutableArray" key="NSSubviews">
 												<object class="NSTextView" id="878588006">
 													<reference key="NSNextResponder" ref="933886411"/>
-													<int key="NSvFlags">274</int>
+													<int key="NSvFlags">2322</int>
 													<set class="NSMutableSet" key="NSDragTypes">
 														<string>Apple HTML pasteboard type</string>
 														<string>Apple PDF pasteboard type</string>
@@ -507,10 +507,6 @@
 								<string key="NSKeyEquivalent"/>
 								<int key="NSPeriodicDelay">400</int>
 								<int key="NSPeriodicInterval">75</int>
-								<object class="NSCustomResource" key="NSSound">
-									<string key="NSClassName">NSSound</string>
-									<string key="NSResourceName">Glass</string>
-								</object>
 							</object>
 						</object>
 						<object class="NSBox" id="403151309">
@@ -651,10 +647,6 @@
 								<string key="NSKeyEquivalent"/>
 								<int key="NSPeriodicDelay">400</int>
 								<int key="NSPeriodicInterval">75</int>
-								<object class="NSCustomResource" key="NSSound">
-									<string key="NSClassName">NSSound</string>
-									<string key="NSResourceName">Basso</string>
-								</object>
 							</object>
 						</object>
 						<object class="NSButton" id="369254355">
@@ -663,7 +655,7 @@
 							<string key="NSFrame">{{682, 555}, {58, 56}}</string>
 							<reference key="NSSuperview" ref="61083505"/>
 							<reference key="NSWindow"/>
-							<reference key="NSNextKeyView" ref="470544802"/>
+							<reference key="NSNextKeyView" ref="786140514"/>
 							<bool key="NSEnabled">YES</bool>
 							<object class="NSButtonCell" key="NSCell" id="441198767">
 								<int key="NSCellFlags">67239424</int>
@@ -689,7 +681,7 @@
 							<string key="NSFrame">{{694, 544}, {34, 14}}</string>
 							<reference key="NSSuperview" ref="61083505"/>
 							<reference key="NSWindow"/>
-							<reference key="NSNextKeyView" ref="369254355"/>
+							<reference key="NSNextKeyView" ref="470544802"/>
 							<bool key="NSEnabled">YES</bool>
 							<object class="NSTextFieldCell" key="NSCell" id="548700911">
 								<int key="NSCellFlags">67239424</int>
@@ -720,7 +712,7 @@
 							<string key="NSFrame">{{117, 550}, {198, 49}}</string>
 							<reference key="NSSuperview" ref="61083505"/>
 							<reference key="NSWindow"/>
-							<reference key="NSNextKeyView" ref="786140514"/>
+							<reference key="NSNextKeyView" ref="369254355"/>
 							<bool key="NSEnabled">YES</bool>
 							<object class="NSImageCell" key="NSCell" id="539906361">
 								<int key="NSCellFlags">130560</int>
